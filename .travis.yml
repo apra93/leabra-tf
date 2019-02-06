@@ -1,0 +1,51 @@
+language: python
+  
+env: 
+   global:
+      - OFFICIAL_REPO="apra93/leabra-tf"
+      - BUILD_DOCS=1
+      - secure: ""
+
+python:
+  # We don't actually use the Travis Python, but this keeps it organized.
+  - "3.6"    
+  
+install:
+  - sudo apt-get update
+  # We do this conditionally because it saves us some downloading if the
+  # version is the same.
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+  # Grab all dependencies
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip wheel pytest
+  # Launch Conda environment
+  - source activate test-environment
+  # Install the requirements
+  - pip install codecov
+  - pip install -r requirements.txt
+  # Install
+  - pip install -e
+
+script:
+  - coverage run run_tests.py
+  - flake8 leabra-tf
+  - set -e  
+  - |
+    if [[ -n "$DOCTR_DEPLOY_ENCRYPTION_KEY_APRA93_LEABRA-TF" && $BUILD_DOCS ]]; then
+    # Create HTML documentation  
+    pushd docs
+    make html
+    popd
+    # Publish docs.
+    doctr deploy . --built-docs docs/build/html --deploy-branch-name gh-pages --command "touch .nojekyll; git add .nojekyll"
+    fi
+
+after_success:
+  - coverage report -m
+  - codecov

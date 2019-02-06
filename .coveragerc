@@ -1,0 +1,11 @@
+[run]
+source =
+    leabratf
+[report]
+omit =
+    #versioning
+    .*version.*
+    *_version.py
+    #tests
+    *test*
+    leabratf/tests/*
