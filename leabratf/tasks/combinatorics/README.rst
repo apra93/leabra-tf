@@ -13,14 +13,19 @@ General Properties
 - Combinatorial structure is implemented by having *four* different input-output
   slots.
 - The output mapping for a given slot depends only on the corresponding input
-  pattern for that slot (see Brousse, 1993; Noelle & Cottrell, 1996, for similar
-  tasks).
+  pattern for that slot (see
+  `Brousse, 1993 <https://scholar.colorado.edu/csci_techreports/647/>`_;
+  `Noelle & Cottrell, 1996 <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295>`_,
+  for similar tasks).
 - Each slow has a vocabulary of input-output mappings.
 - Input vocabulary consists of all 45 combinations of 5 horizontal and 5
   vertical bars in a 5x5 grid.
 - Output mapping is a localist identification of the two input bars (similar to
-  bar tasks used by Foldiak, 1990; Saund, 1995; Zemel, 1993; Dayan & Zemel,
-  1995).
+  bar tasks used by
+  `Foldiak, 1990 <https://link.springer.com/article/10.1007%2FBF02331346>`_;
+  `Saund, 1995 <https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51>`_;
+  `Zemel, 1993 <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050>`_;
+  `Dayan & Zemel, 1995 <http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf>`_).
 - Total number of distinct input patterns is approximately 4.1 million.
 - Models are intended only to train on 100 randomly constructed examples, and
   then test on an arbitraily large testing set (500 in the paper).
