@@ -21,14 +21,14 @@ Release Schedule
 
 **0.0 Release**
 
-- Implement the task described in O'Reilly's paper.
-- Establish a baseline on the task using ``leabra7``.
-- Compare against results shown in O'Reilly's paper.
 - Create a documentation page that will automatically add new notebooks as they
   are created.
 - Create a new README that details how to go about the repo, and move components
   (like this release schedule) to their own pages in the documentation.
+- Implement the task described in O'Reilly's paper.
 - Establish a baseline using other canonical deep networks (DNs).
+- Establish a baseline on the task using ``leabra7``.
+- Compare against results shown in O'Reilly's paper.
 - Run the same DNs on TPUs, and establish baselines between GPU and
   TPU performance.
 - Pull out competitive inhibition learning component from leabra and add it to
