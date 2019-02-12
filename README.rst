@@ -2,6 +2,12 @@
 Leabra Tensorflow - Under Construction
 ======================================
 
+.. image:: https://travis-ci.org/pcdshub/hutch-python.svg?branch=master
+   :target: https://travis-ci.org/pcdshub/hutch-python
+   :alt: Build Status
+
+
+
 A tensorflow + TPU exploration of the "Local, Error-driven and Associative,
 Biologically Realistic Algorithm" (LEABRA). For details see the
 `wikipedia <https://en.wikipedia.org/wiki/Leabra>`_ or
