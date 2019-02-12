@@ -4,7 +4,7 @@ env:
    global:
       - OFFICIAL_REPO="apra93/leabra-tf"
       - BUILD_DOCS=1
-      - secure: ""
+      - secure: "ZBFUytO0R9a0ACeZfY9z07yPp2hZgqSPa1SYzNGpk544LfQH49fKNCOzkqDbLkk0YPfjskQd4sp98+ZZWHz7T8iZYisROOkZIquzWEfk4PhJa9L+sIQuqZ7I7Qtc10hiF2tOprF0lJHeGKs90mAxiTMhiDElOUKJfCoPHfsUmt8Cc/6T/d/stFRKaGpzsckpiGpkFmUQpbRX0taf2crt+So7EjkQlaY+TASGGfYoRYsSUjbNoN/zc7LdR+fHivNkTwrkTVIyXMFD+nvGdznIM5RxQNY4NiFitFOhIjiaA4EhzVP5gBymDYNOblT/KaigeOaK5x3+AiRzg8frJLPUhvXrVsayd/F21BN2KEYv0btl9PCUokNEfO8Sl1UME2c4ZR4op5InOdiR6b8QitcIwjFv5X3LrPfM69Z5sUPSMEDYl0dHH3h8wc/QRSJYK4yz8WGtVIOR/6Rekpoa9rpVIaY4EC7x+a0diAEg5RSMHwyovSoDHcRP6EEgRYJf7WWcTdgFOljX9vbEt2mKsqiHE/xRcc4xgfEkJrabJJectiU/dieytnMLGVfk3W/RP1QyHiZEieZbXCpCkqvVjU5V/OvR4hSg9m9uaIvFaFDo++3p01Gcp3uCwz/TKdKyea4XcroUjcwjX1ES3To6XyNJ1XHgkeucNXOv1REJTIVdPFg="
 
 python:
   # We don't actually use the Travis Python, but this keeps it organized.
