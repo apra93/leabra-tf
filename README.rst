@@ -54,7 +54,10 @@ Release Schedule
   computationally expensive.
 - Set up continuous integration (CI) either locally (ex. jenkins) or on the
   cloud (ex travisci, circleci).
-- Compile notebooks into a 1.0 release report, and write documentation.
+- Set up repo coverage.
+- Compile notebooks into a 1.0 release report.
+- Write documentation, add references, and fill out READMEs in various parts of
+  the repo.
 - Setup vulture and assess how well it can prune repos
 - Prune away by hand anything vulture misses.
 - Make all tests (implementation and analysis) pass with the pruned repo.
