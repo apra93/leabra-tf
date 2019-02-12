@@ -23,6 +23,7 @@ Release Schedule
 
 - Implement the task described in O'Reilly's paper.
 - Establish a baseline on the task using ``leabra7``.
+- Compare against results shown in O'Reilly's paper.
 - Create a documentation page that will automatically add new notebooks as they
   are created.
 - Create a new README that details how to go about the repo, and move components
@@ -78,7 +79,7 @@ Release Schedule
 - Mass parameter search for optimal MDNs on the TPUs.
 - Recreate relevant portions of 1.0 analysis on MNIST and compare the results.
 
-**1.6-1.9 Releases** (Optional)
+**1.6-1.9 Releases**
 
 - Recreate full leabra in tensorflow, then compare against SDNs and MDNs.
 
