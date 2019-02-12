@@ -41,8 +41,10 @@ Release Schedule
 - Implement competitive inhibition and hebbian learning in DNs in GPUs and TPUs.
 - Assess performance compared to leabra.
 - Mass-parameter search on the TPUs to compare with leabra.
+- Revaluate different versioning packages and write down reasoning for the
+  choice.
 
-**0.1-1.0 Releases**
+**1.0 Release**
 
 - Streamline analysis pipeline to be reproducible on your own machine (if not
   already)
@@ -53,12 +55,17 @@ Release Schedule
 - Set up continuous integration (CI) either locally (ex. jenkins) or on the
   cloud (ex travisci, circleci).
 - Compile notebooks into a 1.0 release report, and write documentation.
-- Vulturize all unused files and directories.
-- Ensure that all tests (implementation and analysis) pass with the pruned repo.
+- Setup vulture and assess how well it can prune repos
+- Prune away by hand anything vulture misses.
+- Make all tests (implementation and analysis) pass with the pruned repo.
+- Make pull-request (PR) and wait three days before merging. Don't work on it in
+  between.
 
 **1.1 Release**
 
-- Make the repo or final report runnable on other machines (containerize)
+- Revisit containerization of packages and choose one to go forward with and
+  document reasoning.
+- Containerize the package and ensure tests pass on all relevant machines.
 
 **1.2-1.5 Releases**
 
@@ -76,8 +83,9 @@ Release Schedule
 
 - Streamline analysis pipeline to be reproducible on your own machine (if not
   already)
-- Write new implementation and analysis tests, and add to CI.
+- Write new implementation and analysis tests, then add to CI pipeline.
 - Compile notebooks into a 2.0 release report, and write documentation.
+- Make PR and wait three days before merging. Don't work on it in between.
 
 **2.1 Release**
 
