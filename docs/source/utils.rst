@@ -1,9 +1,7 @@
 Utility Functions
 =================
 
-.. autoclass:: leabratf.RotatingFileHandlerRelativePath
-
-.. autofunction:: leabratf.utils.absolute_submodule_path
+.. autoclass:: leabratf.utils.RotatingFileHandlerRelativePath
 
 .. autofunction:: leabratf.utils.setup_logging
 
