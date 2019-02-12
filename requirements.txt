@@ -5,9 +5,11 @@ awscli
 flake8
 numpy
 pandas
-jupyter
+jupyterlab
 pyyaml
 coloredlogs
 versioneer
 matplotlib
+seaborn
 watermark
+tqdm
