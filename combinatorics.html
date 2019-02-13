@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.28.g5a90fe7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Operations" href="data.html" />
+    <link rel="prev" title="Release Schedule" href="release_schedule.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Leabra Tensorflow
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.28.g5a90fe7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_schedule.html">Release Schedule</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tasks</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Combinatorial Generalizaton and Interactivity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-properties">General Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#desiderata">Desiderata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paper-links">Paper Links</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Main Script</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Model Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Leabra Tensorflow</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Combinatorial Generalizaton and Interactivity</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/combinatorics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p>===</p>
+<div class="section" id="combinatorial-generalizaton-and-interactivity">
+<h1>Combinatorial Generalizaton and Interactivity<a class="headerlink" href="#combinatorial-generalizaton-and-interactivity" title="Permalink to this headline">¶</a></h1>
+<p>The task described here is meant to be an implementation of O’Reily’s task in
+<a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/08997660152002834">Generalization in Interactive Networks: The Benefits of Inhibitory Competition and Hebbian Learning</a>.
+The majority of the text below is taken directly from section <strong>2</strong> of the
+paper.</p>
+<div class="section" id="general-properties">
+<h2>General Properties<a class="headerlink" href="#general-properties" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Combinatorial structure is implemented by having <em>four</em> different input-output
+slots.</li>
+<li>The output mapping for a given slot depends only on the corresponding input
+pattern for that slot (see
+<a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, 1993</a>;
+<a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle &amp; Cottrell, 1996</a>,
+for similar tasks).</li>
+<li>Each slow has a vocabulary of input-output mappings.</li>
+<li>Input vocabulary consists of all 45 combinations of 5 horizontal and 5
+vertical bars in a 5x5 grid.</li>
+<li>Output mapping is a localist identification of the two input bars (similar to
+bar tasks used by
+<a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02331346">Foldiak, 1990</a>;
+<a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51">Saund, 1995</a>;
+<a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, 1993</a>;
+<a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan &amp; Zemel, 1995</a>).</li>
+<li>Total number of distinct input patterns is approximately 4.1 million.</li>
+<li>Models are intended only to train on 100 randomly constructed examples, and
+then test on an arbitraily large testing set (500 in the paper).</li>
+<li>Error criterion is scored such that each output unit has to be on the right
+side of 0.5 according to the correct target pattern.</li>
+</ul>
+</div>
+<div class="section" id="desiderata">
+<h2>Desiderata<a class="headerlink" href="#desiderata" title="Permalink to this headline">¶</a></h2>
+<p>The paper described the task as having several desiderata.</p>
+<ul class="simple">
+<li>It has a simple combinatorial structure that allows for novel inputs to be
+composed from a small vocabulary of features.</li>
+<li>There is some interesting substructure to the vocabulary mapping at each slot.</li>
+<li>The structure of the task should be apparent in the weight patterns of the
+models.</li>
+</ul>
+</div>
+<div class="section" id="paper-links">
+<h2>Paper Links<a class="headerlink" href="#paper-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, O. (1993). Generativity and systematicity in neural network combinatorial learning</a></li>
+<li><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle, D. C., &amp; Cottrell, G. W. (1996). In search of articulated attractors</a></li>
+<li><a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02331346">F¨oldi´ak, P. (1990). Forming sparse representations by local anti-Hebbian learning</a></li>
+<li><a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51">Saund, E. (1995). A multiple cause mixture model for unsupervised learning</a></li>
+<li><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, R. S. (1993). A minimum description length framework for unsupervised learning</a></li>
+<li><a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan, P., &amp; Zemel, R. S. (1995). Competition and multiple cause models</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data.html" class="btn btn-neutral float-right" title="Data Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="release_schedule.html" class="btn btn-neutral" title="Release Schedule" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

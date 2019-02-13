@@ -1,3 +1,4 @@
+./_sources/combinatorics.rst.txt
 ./_sources/commands.rst.txt
 ./_sources/data.rst.txt
 ./_sources/features.rst.txt
@@ -62,6 +63,7 @@
 ./_static/up-pressed.png
 ./_static/up.png
 ./_static/websupport.js
+./combinatorics.html
 ./commands.html
 ./data.html
 ./features.html
