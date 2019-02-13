@@ -25,7 +25,7 @@ src="https://img.shields.io/codecov/c/github/apra93/leabra-tf.svg?logo=codecov&s
   </a>
 
 <!-- Add in a break between the badges and the next section. Will likely not be necessary if there is a header after this -->
-  <br><br>
+  <br>
 </div>
 
 A tensorflow + TPU exploration of the "Local, Error-driven and Associative,
