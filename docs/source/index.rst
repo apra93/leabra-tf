@@ -13,9 +13,13 @@ Contents:
    :caption: Getting Started
 
    getting-started
-   commands
    release_schedule
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Tasks
+
+   combinatorics	     
 
 .. toctree::
    :maxdepth: 2
@@ -26,7 +30,6 @@ Contents:
    models
    visualization
    utils
-	     
 
 Indices and tables
 ==================
