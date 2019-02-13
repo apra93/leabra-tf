@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Utility Functions &mdash; Leabra Tensorflow 0+untagged.19.gde7aca6 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Visualization" href="visualization.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Leabra Tensorflow
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.19.gde7aca6
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_schedule.html">Release Schedule</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Main Script</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Model Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utility Functions</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Leabra Tensorflow</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Utility Functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="utility-functions">
+<h1>Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="leabratf.utils.RotatingFileHandlerRelativePath">
+<em class="property">class </em><code class="descclassname">leabratf.utils.</code><code class="descname">RotatingFileHandlerRelativePath</code><span class="sig-paren">(</span><em>filename</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils.RotatingFileHandlerRelativePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extension of the filehandler class that appends the current directory to the
+inputted filename. This is so the log files can be found relative to this
+file rather than from wherever the script is run.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.utils.setup_logging">
+<code class="descclassname">leabratf.utils.</code><code class="descname">setup_logging</code><span class="sig-paren">(</span><em>path_yaml=None</em>, <em>dir_logs=None</em>, <em>default_level=20</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils.setup_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the logging module to make a properly configured logger.</p>
+<p>This will go into the <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> file in the top level directory, and
+try to load the logging configuration. If it fails for any reason, it will
+just use the default configuration. For more details on how the logger will
+be configured, see the <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path_yaml</strong> (<em>str</em><em> or </em><em>Path</em><em>, </em><em>optional</em>) – Path to the yaml file.</li>
+<li><strong>dir_logs</strong> (<em>str</em><em> or </em><em>Path</em><em>, </em><em>optional</em>) – Path to the log directory.</li>
+<li><strong>default_level</strong> (<em>logging.LEVEL</em><em>, </em><em>optional</em>) – Logging level for the default logging setup if the yaml fails.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.utils.as_list">
+<code class="descclassname">leabratf.utils.</code><code class="descname">as_list</code><span class="sig-paren">(</span><em>obj</em>, <em>length=None</em>, <em>tp=None</em>, <em>iter_to_list=True</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils.as_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force an argument to be a list, optionally of a given length, optionally
+with all elements cast to a given type if not None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>obj</strong> (<em>Object</em>) – The obj we want to convert to a list.</li>
+<li><strong>length</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Length of new list. Applies if the inputted obj is not an iterable and
+iter_to_list is false.</li>
+<li><strong>tp</strong> (<em>type</em><em>, </em><em>optional</em>) – Type to cast the values inside the list as.</li>
+<li><strong>iter_to_list</strong> (<em>bool</em><em>, </em><em>optional</em>) – Determines if we should cast an iterable (not str) obj as a list or to
+enclose it in one.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> – The object enclosed or cast as a list.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.utils.isiterable">
+<code class="descclassname">leabratf.utils.</code><code class="descname">isiterable</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils.isiterable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that determines if an object is an iterable, not including
+str.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obj</strong> (<em>object</em>) – Object to test if it is an iterable.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>bool</strong> – True if the obj is an iterable, False if not.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.utils.flatten">
+<code class="descclassname">leabratf.utils.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>inp_iter</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a flattened list of the inputted iterable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>inp_iter</strong> (<em>iterable</em>) – The iterable to flatten.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>flattened_iter</strong> – The contents of the iterable as a flat list</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.utils._flatten">
+<code class="descclassname">leabratf.utils.</code><code class="descname">_flatten</code><span class="sig-paren">(</span><em>inp_iter</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils._flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively iterate through values in nested iterables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>inp_iter</strong> (<em>iterable</em>) – The iterable to flatten.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>value</strong> – The contents of the iterable</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="visualization.html" class="btn btn-neutral" title="Visualization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
