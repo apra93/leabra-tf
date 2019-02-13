@@ -32,6 +32,7 @@ sys.path.insert(0,module_path)
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.napoleon',
+              'm2r',
 			 ]
 
 ## TODO:
@@ -42,13 +43,12 @@ extensions = ['sphinx.ext.autodoc',
 #   - IPython.sphinxext.ipython_directive
 #   - IPython.sphinxext.ipython_console_highlighting
 #   - sphinx.ext.autosectionlabel - This one seems particularly useful
-#   - m2r
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'

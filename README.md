@@ -21,7 +21,8 @@ src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=flat-s
 <!--     <img -->
 <!-- src="https://img.shields.io/codecov/c/github/pcdshub/pcdsdevices/master.svg?style=flat-square" -->
 <!--       alt="Test Coverage" /> -->
-  </a>
+<!-- </a> -->
+  <br><br>
 </div>
 
 A tensorflow + TPU exploration of the "Local, Error-driven and Associative,
