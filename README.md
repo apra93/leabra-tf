@@ -1,4 +1,5 @@
 <h1 align="center">Leabra Tensorflow - Under Construction</h1>
+<!-- Pulled from the readme of pcdsdevices https://github.com/pcdshub/pcdsdevices -->
 
 <div align="center">
   <strong>A tensorflow + TPU exploration of LEABRA</strong>
@@ -16,12 +17,14 @@
 src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=flat-square"
       alt="Build Status" />
   </a>
-<!--   <\!-- Test Coverage -\-> -->
-<!--   <a href="https://codecov.io/github/pcdshub/pcdsdevices"> -->
-<!--     <img -->
-<!-- src="https://img.shields.io/codecov/c/github/pcdshub/pcdsdevices/master.svg?style=flat-square" -->
-<!--       alt="Test Coverage" /> -->
-<!-- </a> -->
+  <!-- Test Coverage -->
+  <a href="https://codecov.io/gh/apra93/leabra-tf">
+    <img
+src="https://img.shields.io/codecov/c/github/apra93/leabra-tf.svg?logo=codecov&style=flat-square"
+      alt="Test Coverage" />
+  </a>
+
+<!-- Add in a break between the badges and the next section. Will likely not be necessary if there is a header after this -->
   <br><br>
 </div>
 
@@ -44,6 +47,7 @@ Implementation is drawn from this paper by Randall C. O'Reilly:
 - [Markdown online editor](https://jbt.github.io/markdown-editor/)
 - [reStructuredText cheatsheet](https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst)
 - [reStructuredText online editor](http://rst.ninjs.org/)
+- [Shields.io](https://shields.io/)
 
 *Will be removed upon 0.0 release.*
 
