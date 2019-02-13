@@ -36,12 +36,14 @@ script:
   - set -e  
   - |
     if [[ -n "$DOCTR_DEPLOY_ENCRYPTION_KEY_APRA93_LEABRA-TF" && $BUILD_DOCS ]]; then
+    # Install the requirements to build the documentation
+    conda install --file docs-requirements.txt -c anaconda -c conda-forge
     # Create HTML documentation  
     pushd docs
     make html
     popd
     # Publish docs.
-    doctr deploy . --built-docs docs/build/html --deploy-branch-name gh-pages --command "touch .nojekyll; git add .nojekyll"
+    doctr deploy . --built-docs docs/build/html --deploy-branch-name gh-pages
     fi
 
 after_success:
