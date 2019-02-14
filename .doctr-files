@@ -5,6 +5,7 @@
 ./_sources/getting-started.rst.txt
 ./_sources/index.rst.txt
 ./_sources/models.rst.txt
+./_sources/notebooks/0.0-Notebook-Template.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/utils.rst.txt
 ./_sources/visualization.rst.txt
@@ -71,6 +72,7 @@
 ./getting-started.html
 ./index.html
 ./models.html
+./notebooks/0.0-Notebook-Template.html
 ./objects.inv
 ./release_schedule.html
 ./search.html

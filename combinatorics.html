@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.28.g5a90fe7 documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.30.g016fe75 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.28.g5a90fe7
+                0+untagged.30.g016fe75
               </div>
             
           
@@ -84,7 +84,6 @@
             
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release_schedule.html">Release Schedule</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tasks</span></p>
@@ -96,13 +95,17 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Main Script</span></p>
+<p class="caption"><span class="caption-text">Scripts</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data Operations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Feature Engineering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Model Building</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utility Functions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/0.0-Notebook-Template.html">0.0 Leabra-tf Notebook Template</a></li>
 </ul>
 
             
@@ -167,7 +170,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p>===</p>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
 <div class="section" id="combinatorial-generalizaton-and-interactivity">
 <h1>Combinatorial Generalizaton and Interactivity<a class="headerlink" href="#combinatorial-generalizaton-and-interactivity" title="Permalink to this headline">¶</a></h1>
 <p>The task described here is meant to be an implementation of O’Reily’s task in
