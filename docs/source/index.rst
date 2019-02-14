@@ -12,7 +12,6 @@ Contents:
    :maxdepth: 2
    :caption: Getting Started
 
-   getting-started
    release_schedule
 
 .. toctree::
@@ -23,7 +22,7 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-   :caption: Main Script
+   :caption: Scripts
 
    data
    features
@@ -31,6 +30,21 @@ Contents:
    visualization
    utils
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Reports
+   :glob:
+	 
+   reports/*
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Notebooks
+   :glob:
+	 
+   notebooks/*
+	     
+	     
 Indices and tables
 ==================
 

@@ -11,12 +11,13 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import os
+from pathlib import Path
 import sys
 import sphinx_rtd_theme
 
-module_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'../../')
-sys.path.insert(0,module_path)
+module_path = Path(__file__).resolve().parent.parent.parent
+# Insert the module path into index 0
+sys.path.insert(0, str(module_path))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -33,6 +34,7 @@ sys.path.insert(0,module_path)
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.napoleon',
               'm2r',
+              'nbsphinx',
 			 ]
 
 ## TODO:
@@ -81,7 +83,9 @@ release = leabratf.__version__
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ['_build',
+                    '**.ipynb_checkpoints',
+				   ]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None
@@ -182,6 +186,10 @@ html_static_path = ['_static']
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'leabra-tfdoc'
+
+# Set nbsphinx to never run the notebooks, and simply add them to the
+# documentation
+nbsphinx_execute = 'never'
 
 
 # -- Options for LaTeX output --------------------------------------------------
