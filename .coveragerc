@@ -9,3 +9,4 @@ omit =
     #tests
     *test*
     leabratf/tests/*
+    leabratf/models/official/*
