@@ -1,6 +1,4 @@
-"""
-Tests for leabratf.utils.py
-"""
+"""Tests for the combigen task."""
 import logging
 
 import pytest
