@@ -7,6 +7,7 @@
 ./_sources/models.rst.txt
 ./_sources/notebooks/0.0-Notebook-Template.ipynb.txt
 ./_sources/notebooks/0.1-Designing-the-Combigen-Task.ipynb.txt
+./_sources/notebooks/0.2-Running-a-Basic-Model-on-Combigen.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/utils.rst.txt
 ./_sources/visualization.rst.txt
@@ -75,6 +76,7 @@
 ./models.html
 ./notebooks/0.0-Notebook-Template.html
 ./notebooks/0.1-Designing-the-Combigen-Task.html
+./notebooks/0.2-Running-a-Basic-Model-on-Combigen.html
 ./objects.inv
 ./release_schedule.html
 ./search.html
