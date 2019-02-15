@@ -191,6 +191,12 @@ htmlhelp_basename = 'leabra-tfdoc'
 # documentation
 nbsphinx_execute = 'never'
 
+# To get SVG and PDF plots for nbsphinx
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
+
 
 # -- Options for LaTeX output --------------------------------------------------
 
