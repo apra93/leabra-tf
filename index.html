@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Notes &mdash; Leabra Tensorflow 0+untagged.30.g016fe75 documentation</title>
+  <title>Notes &mdash; Leabra Tensorflow 0+untagged.32.g7ff0c48 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0+untagged.30.g016fe75
+                0+untagged.32.g7ff0c48
               </div>
             
           
@@ -100,6 +100,7 @@
 <p class="caption"><span class="caption-text">Notebooks</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/0.0-Notebook-Template.html">0.0 Leabra-tf Notebook Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html">0.1 Implementing the Combinatorial Generalization Task</a></li>
 </ul>
 
             
@@ -274,9 +275,9 @@ Biologically Realistic Algorithm” (LEABRA). For details see the
 <p class="caption"><span class="caption-text">Tasks</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="combinatorics.html">Combinatorial Generalizaton and Interactivity</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="combinatorics.html#general-properties">General Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics.html#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="combinatorics.html#desiderata">Desiderata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combinatorics.html#paper-links">Paper Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combinatorics.html#references">References</a></li>
 </ul>
 </li>
 </ul>
@@ -308,6 +309,16 @@ Biologically Realistic Algorithm” (LEABRA). For details see the
 <li class="toctree-l2"><a class="reference internal" href="notebooks/0.0-Notebook-Template.html#Preprocessing">Preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/0.0-Notebook-Template.html#Plotting">Plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/0.0-Notebook-Template.html#Hints">Hints</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html">0.1 Implementing the Combinatorial Generalization Task</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html#Jupyter-Extensions">Jupyter Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html#Imports">Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html#Initial-Setup">Initial Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html#Visualizing-the-Task">Visualizing the Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html#Inverse-Transform">Inverse Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html#Going-3-D">Going 3-D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html#Performance-Testing">Performance Testing</a></li>
 </ul>
 </li>
 </ul>
@@ -366,6 +377,8 @@ Biologically Realistic Algorithm” (LEABRA). For details see the
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
 
   

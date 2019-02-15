@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.30.g016fe75 documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.32.g7ff0c48 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.30.g016fe75
+                0+untagged.32.g7ff0c48
               </div>
             
           
@@ -89,9 +89,9 @@
 <p class="caption"><span class="caption-text">Tasks</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Combinatorial Generalizaton and Interactivity</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-properties">General Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#desiderata">Desiderata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#paper-links">Paper Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 </ul>
@@ -106,6 +106,7 @@
 <p class="caption"><span class="caption-text">Notebooks</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/0.0-Notebook-Template.html">0.0 Leabra-tf Notebook Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/0.1-Designing-the-Combigen-Task.html">0.1 Implementing the Combinatorial Generalization Task</a></li>
 </ul>
 
             
@@ -200,24 +201,19 @@
 <a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/08997660152002834">Generalization in Interactive Networks: The Benefits of Inhibitory Competition and Hebbian Learning</a>.
 The majority of the text below is taken directly from section <strong>2</strong> of the
 paper.</p>
-<div class="section" id="general-properties">
-<h2>General Properties<a class="headerlink" href="#general-properties" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Combinatorial structure is implemented by having <em>four</em> different input-output
 slots.</li>
 <li>The output mapping for a given slot depends only on the corresponding input
-pattern for that slot (see
-<a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, 1993</a>;
-<a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle &amp; Cottrell, 1996</a>,
+pattern for that slot (see <a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, 1993</a>; <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle &amp; Cottrell, 1996</a>,
 for similar tasks).</li>
 <li>Each slow has a vocabulary of input-output mappings.</li>
 <li>Input vocabulary consists of all 45 combinations of 5 horizontal and 5
 vertical bars in a 5x5 grid.</li>
 <li>Output mapping is a localist identification of the two input bars (similar to
-bar tasks used by
-<a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02331346">Foldiak, 1990</a>;
-<a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51">Saund, 1995</a>;
-<a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, 1993</a>;
+bar tasks used by <a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02331346">Foldiak, 1990</a>; <a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51">Saund, 1995</a>; <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, 1993</a>;
 <a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan &amp; Zemel, 1995</a>).</li>
 <li>Total number of distinct input patterns is approximately 4.1 million.</li>
 <li>Models are intended only to train on 100 randomly constructed examples, and
@@ -237,8 +233,8 @@ composed from a small vocabulary of features.</li>
 models.</li>
 </ul>
 </div>
-<div class="section" id="paper-links">
-<h2>Paper Links<a class="headerlink" href="#paper-links" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, O. (1993). Generativity and systematicity in neural network combinatorial learning</a></li>
 <li><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle, D. C., &amp; Cottrell, G. W. (1996). In search of articulated attractors</a></li>
@@ -247,7 +243,7 @@ models.</li>
 <li><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, R. S. (1993). A minimum description length framework for unsupervised learning</a></li>
 <li><a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan, P., &amp; Zemel, R. S. (1995). Competition and multiple cause models</a></li>
 </ul>
-</div>
+<!-- Markdown References --></div>
 </div>
 
 
@@ -296,6 +292,8 @@ models.</li>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
 
   
