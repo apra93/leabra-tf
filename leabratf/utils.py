@@ -5,14 +5,17 @@ import os
 import inspect
 import logging
 import logging.config
-from pathlib import Path
-from collections.abc import Iterable
-from logging.handlers import RotatingFileHandler
-
 import yaml
 import coloredlogs
+import numpy as np
 
-from .constants import DIR_REPO, DIR_LOGS
+from collections.abc import Iterable
+from functools import wraps
+from pathlib import Path
+from logging.handlers import RotatingFileHandler
+
+
+from leabratf.constants import DIR_REPO, DIR_LOGS
 
 logger = logging.getLogger(__name__)
 
@@ -202,3 +205,41 @@ def flatten(inp_iter):
         The contents of the iterable as a flat list
     """
     return list(_flatten(inp_iter))
+
+def make_input_3d(func, *args, **kwargs):
+    """Looks at the first argument of a function and if it's a 2-D array, it
+    will make it 3-D by just reshaping in another one.
+
+    Parameters
+    ----------
+    func : function
+    	Function being decorated. Needs to take an array as the first argument.
+    """
+    @wraps(func)
+    def decorator(*args, **kwargs):
+        # Check to make sure its an array
+        if isinstance(args[0], np.ndarray):
+            # Turn it to a list so we can change it
+            args = list(args)
+            # Pull out the shape
+            shape = args[0].shape
+            
+            # If it is of shape 2, add in an extra dim at the start.
+            if len(shape) == 2:
+                args[0] = args[0].reshape(1, *shape)
+            # Do nothing if it is already 3-D
+            elif len(shape) == 3:
+                pass
+            # Do nothing for all other dimensions but send a warning
+            else:
+                logger.warning('Dimension of first element is expected to be 2 '
+                               'but got {0}. Skipping reshape operation.'
+                               ''.format(len(shape)))
+                
+        # Send a warning if something not an ndarray was passed
+        else:
+            logger.warning('First argument passed is not of type `np.ndarray`. '
+                           'Skipping reshape operation.')
+        # Return the passed function
+        return func(*args, **kwargs)
+    return decorator

@@ -28,4 +28,20 @@ def test_isiterable_correctly_returns(test):
 
 @pytest.mark.parametrize("test", test_lists)
 def test_flatten_works_correctly(test):
-    assert utils.flatten(test) == [1,2,3,4,5]    
+    assert utils.flatten(test) == [1,2,3,4,5]
+
+@pytest.mark.parametrize("shape", [(1,1), (1,2), (2,1), (100,100)])
+def test_make_input_3d_works_on_arrays(shape):
+    @utils.make_input_3d
+    def test_func(arg):
+        return arg
+    assert np.array_equal(test_func(np.ones(shape)).shape, (1, *shape))
+
+@pytest.mark.parametrize("inputs", [(1,), (1,1,1), (1,1,1,1)])
+def test_make_input_3d_doesnt_work_on_certain_inputs(inputs):
+    @utils.make_input_3d
+    def test_func(arg):
+        return arg
+    assert np.array_equal(test_func(np.ones(inputs)).shape, inputs)
+    assert test_func(str(inputs)) == str(inputs)
+    
