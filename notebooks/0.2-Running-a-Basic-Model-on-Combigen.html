@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.2 Running a Basic Model on Combigen &mdash; Leabra Tensorflow 0+untagged.42.g640bcd8 documentation</title>
+  <title>0.2 Running a Basic Model on Combigen &mdash; Leabra Tensorflow 0+untagged.45.g004dfcf documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0+untagged.42.g640bcd8
+                0+untagged.45.g004dfcf
               </div>
             
           
@@ -105,7 +105,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Imports">Imports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Global-Definitions">Global Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-Combigen-Task">The Combigen Task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Combigen-Fix">Combigen Fix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#O’Reily-BP-Model">O’Reily BP Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Get-the-Data">Get the Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Preprocessing">Preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Plotting">Plotting</a></li>
@@ -405,7 +407,7 @@ div.rendered_html tbody tr:hover {
 <h2>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h2>
 <p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -421,9 +423,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-The watermark extension is already loaded. To reload it, use:
-  %reload_ext watermark
-Fri Feb 15 2019 15:37:18
+Fri Feb 15 2019 16:56:18
 
 CPython 3.6.8
 IPython 7.2.0
@@ -441,7 +441,7 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 4
 interpreter: 64bit
-Git hash   : 13b3db5beb9cc8a5a61b58aea65abc96e39810e5
+Git hash   : 9b40f795643082ed3f0a6c317c7f94f2089fce50
 Git branch : resnet
 </pre></div></div>
 </div>
@@ -456,7 +456,7 @@ Using TensorFlow backend.
 <p>Load <a class="reference external" href="https://ipython.org/ipython-doc/3/config/extensions/autoreload.html">autoreload</a> which will always reload modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <p>This behavior can be inverted by running <code class="docutils literal notranslate"><span class="pre">autoreload</span> <span class="pre">2</span></code> which will set everything to be auto-reloaded <em>except</em> for modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -469,7 +469,7 @@ Using TensorFlow backend.
 </div>
 <p>Load <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in one of the more <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>-friendly <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/plotting.html">rich-output modes</a>. Some options (that may or may not have worked) are <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">notebook</span></code>, and <code class="docutils literal notranslate"><span class="pre">gtk</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -483,7 +483,7 @@ Using TensorFlow backend.
 <h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h2>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -501,14 +501,15 @@ Using TensorFlow backend.
 </div>
 <p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Constants to be used throughout the package</span>
-<span class="o">%</span><span class="k">aimport</span> leabratf.
-<span class="c1"># Import the data subdirectories</span>
-<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_DATA_EXT</span><span class="p">,</span> <span class="n">DIR_DATA_INT</span><span class="p">,</span> <span class="n">DIR_DATA_PROC</span><span class="p">,</span> <span class="n">DIR_DATA_RAW</span>
+<span></span><span class="c1"># Task script</span>
+<span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.combigen</span> <span class="k">as</span> <span class="nn">cbg</span>
+<span class="c1"># Visualization for the task</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.visualization.combigen_heatmap
+<span class="kn">import</span> <span class="nn">leabratf.visualization.combigen_heatmap</span> <span class="k">as</span> <span class="nn">cbhm</span>
 <span class="c1"># Utility functions</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.utils
 <span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
@@ -520,7 +521,7 @@ Using TensorFlow backend.
 <h2>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h2>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -531,7 +532,7 @@ Using TensorFlow backend.
 <p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -543,15 +544,181 @@ Using TensorFlow backend.
 </div>
 </div>
 </div>
-<div class="section" id="Global-Definitions">
-<h2>Global Definitions<a class="headerlink" href="#Global-Definitions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="The-Combigen-Task">
+<h2>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h2>
+<p>Now that the task has been put together from nb 0.1, let’s import the functionified version of it and start prepping for running the model.</p>
+<p>First let’s refresh our memory on the task.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Visulize a few combinations of x and y</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="c1"># Generate a signle y</span>
+    <span class="n">example_y</span> <span class="o">=</span> <span class="n">cbg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">()</span>
+    <span class="c1"># Generate a single x from the y</span>
+    <span class="n">example_x</span> <span class="o">=</span> <span class="n">cbg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">example_y</span><span class="p">)</span>
+    <span class="n">cbhm</span><span class="o">.</span><span class="n">heatmap</span><span class="p">([</span><span class="n">example_y</span><span class="p">,</span> <span class="n">example_x</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width_ratios&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]},</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2019-02-15 17:42:41 apra-xps13 leabratf.utils[20843] WARNING First argument passed is not of type `np.ndarray`. Skipping reshape operation.
+2019-02-15 17:42:41 apra-xps13 leabratf.utils[20843] WARNING First argument passed is not of type `np.ndarray`. Skipping reshape operation.
+2019-02-15 17:42:41 apra-xps13 leabratf.utils[20843] WARNING First argument passed is not of type `np.ndarray`. Skipping reshape operation.
+2019-02-15 17:42:41 apra-xps13 leabratf.utils[20843] WARNING First argument passed is not of type `np.ndarray`. Skipping reshape operation.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_1.png" src="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_2.png" src="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_3.png" src="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_3.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_4.png" src="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_4.png" />
+</div>
+</div>
+<p>Just by luck, I spotted a corner case for the task that would make it impossible to classify, which is the situation where one of the columns in the label is completely on. This will need to be remedied first before continuing with the notebook.</p>
+<p>If this is not present in the notebook at the time of viewing that is either because it hasn’t out of chance or I’ve already made the change to the repo.</p>
+</div>
+<div class="section" id="Combigen-Fix">
+<h2>Combigen Fix<a class="headerlink" href="#Combigen-Fix" title="Permalink to this headline">¶</a></h2>
+<p>It is currently defined as the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dims</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So let’s tweak it so it ensures that one of the indices are zero.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[126]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an array of labels to construct the data from.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_samples : int, optional</span>
+<span class="sd">            Number of samples to return.</span>
+
+<span class="sd">    size : int, optional</span>
+<span class="sd">            Size of the nxn matrix to use for the task.</span>
+
+<span class="sd">    dims : int, optional</span>
+<span class="sd">            Number of dimensions for the task.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    labels : np.ndarray (n_samples x size x dims)</span>
+<span class="sd">            The resulting task labels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate baseline labels</span>
+    <span class="n">raw_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dims</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Random selection of indices to zero out</span>
+    <span class="n">arg_zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="n">n_samples</span><span class="o">*</span><span class="n">dims</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Alternating indices to loop through the dims of the labels</span>
+    <span class="n">dim_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">dims</span><span class="p">),</span> <span class="n">n_samples</span><span class="p">)</span>
+    <span class="c1"># Repeating indices to loop through the samples</span>
+    <span class="n">sample_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">),</span> <span class="n">dims</span><span class="p">)</span>
+
+    <span class="c1"># Zero out a random selection of indices</span>
+    <span class="n">raw_labels</span><span class="p">[</span><span class="n">sample_indices</span><span class="p">,</span> <span class="n">arg_zero</span><span class="p">,</span> <span class="n">dim_indices</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">raw_labels</span>
+</pre></div>
+</div>
+</div>
+<p>And now let’s just visually inspect a sampling of <code class="docutils literal notranslate"><span class="pre">y</span></code>s to see if it ever happens.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[130]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Visualize a bunch of y values</span>
+<span class="n">cbhm</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">generate_labels</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_24_0.png" src="../_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_24_0.png" />
+</div>
+</div>
+<p>Looks good so far, let’s try being systematic.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[145]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Generate a large number of y values to test</span>
+<span class="n">large_test_Y</span> <span class="o">=</span> <span class="n">generate_labels</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span>
+
+<span class="c1"># Sum over the long dimension of each sample to see how many of them are set to</span>
+<span class="c1"># the on state. If they are all on, then it will sum to the length of the dim.</span>
+<span class="n">values_in_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">large_test_Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">large_test_Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="c1"># We should see that all values up to the last one are set to True</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">present</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values_in_sum</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{0}</span><span class="s1">&quot; present in sum: </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">present</span><span class="p">))</span>
+
+<span class="c1"># Delete large_test_Y just because of how large it is</span>
+<span class="k">del</span> <span class="n">large_test_Y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#34;0&#34; present in sum: True
+&#34;1&#34; present in sum: True
+&#34;2&#34; present in sum: True
+&#34;3&#34; present in sum: True
+&#34;4&#34; present in sum: True
+&#34;5&#34; present in sum: False
+</pre></div></div>
+</div>
+<p>Now that it works as expected, lets move back to setting up the data.</p>
+</div>
+<div class="section" id="O’Reily-BP-Model">
+<h2>O’Reily BP Model<a class="headerlink" href="#O’Reily-BP-Model" title="Permalink to this headline">¶</a></h2>
+<p>Before working with anything close to state of the art (SOTA), a good place to start is with the backpropagation model that O’Reily used in his paper. It’s described as a fully connected network with 100 hidden units.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># data_str = &quot;&quot;                            # Data filename</span>
-<span class="c1"># data_path = DIR_DATA_RAW / data_str      # Full path to the data</span>
+<span></span><span class="c1"># Keras ResNet routines</span>
+<span class="kn">from</span> <span class="nn">keras.applications.resnet50</span> <span class="k">import</span> <span class="n">ResNet50</span>
+
 </pre></div>
 </div>
 </div>
