@@ -6,8 +6,8 @@
 ./_images/notebooks_0.1-Designing-the-Combigen-Task_43_1.png
 ./_images/notebooks_0.1-Designing-the-Combigen-Task_43_2.png
 ./_images/notebooks_0.1-Designing-the-Combigen-Task_43_3.png
-./_images/notebooks_0.1.1-Combigen-All-True-Fix_21_1.png
-./_images/notebooks_0.1.1-Combigen-All-True-Fix_21_2.png
+./_images/notebooks_0.1.1-Combigen-All-True-Bug-Fix_21_1.png
+./_images/notebooks_0.1.1-Combigen-All-True-Bug-Fix_21_2.png
 ./_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_1.png
 ./_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_2.png
 ./_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_19_3.png
@@ -22,7 +22,7 @@
 ./_sources/models.rst.txt
 ./_sources/notebooks/0.0-Notebook-Template.ipynb.txt
 ./_sources/notebooks/0.1-Designing-the-Combigen-Task.ipynb.txt
-./_sources/notebooks/0.1.1-Combigen-All-True-Fix.ipynb.txt
+./_sources/notebooks/0.1.1-Combigen-All-True-Bug-Fix.ipynb.txt
 ./_sources/notebooks/0.2-Running-a-Basic-Model-on-Combigen.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/utils.rst.txt
@@ -92,7 +92,7 @@
 ./models.html
 ./notebooks/0.0-Notebook-Template.html
 ./notebooks/0.1-Designing-the-Combigen-Task.html
-./notebooks/0.1.1-Combigen-All-True-Fix.html
+./notebooks/0.1.1-Combigen-All-True-Bug-Fix.html
 ./notebooks/0.2-Running-a-Basic-Model-on-Combigen.html
 ./objects.inv
 ./release_schedule.html
