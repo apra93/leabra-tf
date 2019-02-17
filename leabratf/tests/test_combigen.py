@@ -10,7 +10,7 @@ test_y = [np.array([[0, 1],
                     [1, 0],
                     [1, 1],
                     [0, 0],
-                    [1, 1]]),]
+                    [1, 1]])]
 test_x = [np.array([[1, 0, 1, 0, 1],
                     [1, 1, 1, 1, 1],
                     [1, 1, 1, 1, 1],
@@ -40,5 +40,5 @@ def test_inverse_transform_single_sample(test_x, test_y):
     assert np.array_equal(test_x, gen_x)
 
 def test_inverse_transform():
-    gen_X = combigen.inverse_transform(test_y)
+    gen_X = combigen.inverse_transform(np.array(test_y))
     assert np.array_equal(test_x, gen_X)        

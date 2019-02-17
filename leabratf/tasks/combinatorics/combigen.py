@@ -74,4 +74,6 @@ def inverse_transform(Y, *args, **kwargs):
     X : list of np.ndarrays
     	List of samples transformed from Y to X.
     """
-    return [inverse_transform_single_sample(y) for y in Y]
+    length, size, dims = Y.shape
+    return np.concatenate([inverse_transform_single_sample(y) for y in Y],
+                          axis=0).reshape(length, *([size]*dims))
