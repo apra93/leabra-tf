@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.2 Running a Basic Model on Combigen &mdash; Leabra Tensorflow 0+untagged.45.g004dfcf documentation</title>
+  <title>0.2 Running a Basic Model on Combigen &mdash; Leabra Tensorflow 0+untagged.48.g6a8ddc3 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0+untagged.45.g004dfcf
+                0+untagged.48.g6a8ddc3
               </div>
             
           
@@ -108,9 +108,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#The-Combigen-Task">The Combigen Task</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Combigen-Fix">Combigen Fix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#O’Reily-BP-Model">O’Reily BP Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Get-the-Data">Get the Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Preprocessing">Preprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Plotting">Plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Hints">Hints</a></li>
 </ul>
 </li>
@@ -423,7 +420,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Fri Feb 15 2019 16:56:18
+Sun Feb 17 2019 01:05:50
 
 CPython 3.6.8
 IPython 7.2.0
@@ -441,8 +438,8 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 4
 interpreter: 64bit
-Git hash   : 9b40f795643082ed3f0a6c317c7f94f2089fce50
-Git branch : resnet
+Git hash   : 004dfcf92461e28b894964312ee85c596fb8363c
+Git branch : master
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -501,11 +498,12 @@ Using TensorFlow backend.
 </div>
 <p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Task script</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.combigen
 <span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.combigen</span> <span class="k">as</span> <span class="nn">cbg</span>
 <span class="c1"># Visualization for the task</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.visualization.combigen_heatmap
@@ -521,7 +519,7 @@ Using TensorFlow backend.
 <h2>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h2>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -532,7 +530,7 @@ Using TensorFlow backend.
 <p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -710,54 +708,220 @@ Using TensorFlow backend.
 </div>
 <div class="section" id="O’Reily-BP-Model">
 <h2>O’Reily BP Model<a class="headerlink" href="#O’Reily-BP-Model" title="Permalink to this headline">¶</a></h2>
-<p>Before working with anything close to state of the art (SOTA), a good place to start is with the backpropagation model that O’Reily used in his paper. It’s described as a fully connected network with 100 hidden units.</p>
+<p>Before working with anything close to state of the art (SOTA), a good place to start is with the backpropagation model that O’Reily used in his paper. It’s described as a fully connected network with 100 hidden units, so let’s put all that into a hyper-parameter variable.</p>
+<p>Note: Instead of dictionaries to hold config-type data, I’m using <code class="docutils literal notranslate"><span class="pre">pdict</span></code>s from the <a class="reference external" href="https://github.com/iansf/pstar">pstar</a> repo as mentioned in (<a class="reference external" href="https://danijar.com/patterns-for-fast-prototyping-with-tensorflow/">this</a> blog post.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Keras ResNet routines</span>
-<span class="kn">from</span> <span class="nn">keras.applications.resnet50</span> <span class="k">import</span> <span class="n">ResNet50</span>
+<span></span><span class="c1"># pdicts allow for attribute dictionary setting among other things</span>
+<span class="kn">from</span> <span class="nn">pstar</span> <span class="k">import</span> <span class="n">pdict</span>
+<span class="c1"># for the checkpoint path</span>
+<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_MODELS</span>
 
+<span class="n">hyper_params</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">()</span>
+
+<span class="c1"># Task parameters - see the 0.1 for the experimental design</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">combigen_dims</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">combigen_size</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1"># Stack number is currently not implemented, but will be for future analyses</span>
+<span class="c1"># hyper_params.combigen_stack = 4</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">n_train</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">n_test</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="c1"># Network parameters - see paper description</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">layer_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">output_size</span> <span class="o">=</span> <span class="n">hyper_params</span><span class="p">[[</span><span class="s1">&#39;combigen_size&#39;</span><span class="p">,</span> <span class="s1">&#39;combigen_dims&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Training parameters</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Experiment Parameters</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">save_weights</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">validation_iters</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">hyper_params</span><span class="o">.</span><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">DIR_MODELS</span> <span class="o">/</span> <span class="s1">&#39;checkpoints&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<p>Let’s put together the dataset object that will be fed into the model. First generate the master list of data to be used for training and testing.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+</pre></div>
 </div>
-<div class="section" id="Get-the-Data">
-<h2>Get the Data<a class="headerlink" href="#Get-the-Data" title="Permalink to this headline">¶</a></h2>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">y</span> <span class="o">=</span> <span class="n">cbg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">hyper_params</span><span class="o">.</span><span class="n">n_train</span> <span class="o">+</span> <span class="n">hyper_params</span><span class="o">.</span><span class="n">n_test</span><span class="p">,</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">hyper_params</span><span class="o">.</span><span class="n">combigen_size</span><span class="p">,</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">hyper_params</span><span class="o">.</span><span class="n">combigen_dims</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">cbg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="c1"># Quick sanity check</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Lets print some quick info</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape y: </span><span class="si">{0}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">Shape X: </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Shape y: (1100, 5, 2)
+Shape X: (1100, 5, 5)
+</pre></div></div>
+</div>
+<p>And then let’s put it in a <code class="docutils literal notranslate"><span class="pre">dataset</span></code> object.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Define the dataset</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">hyper_params</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+<span class="c1"># Define the iterator and next element</span>
+<span class="n">iterator</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">make_one_shot_iterator</span><span class="p">()</span>
+<span class="n">next_element</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>And to make sure everything is as expected.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">next_element</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(array([[[False,  True, False, False,  True],
+        [False,  True, False, False,  True],
+        [ True,  True,  True,  True,  True],
+        [ True,  True,  True,  True,  True],
+        [False,  True, False, False,  True]]]), array([[[0, 0],
+        [0, 1],
+        [1, 0],
+        [1, 0],
+        [0, 1]]]))
+</pre></div></div>
+</div>
+<p>Now we can start putting together the model.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>def create_model_obp(input_tensor, mode, hyper_params):
+    &quot;&quot;&quot;Function that generates the the O&#39;Reily backpropagation model.&quot;&quot;&quot;
+    model = pdict()
+    with tf.variable_scope(&quot;OBPDenseNet&quot;) as scope:
+        # Reuse the weights if we&#39;re evaling
+        if mode == tf.estimator.ModeKeys.EVAL:`
+            scope.reuse_variables()
+        # Reshape the data accordingly
+        x = tf.reshape(tensor=input_tensor, shape=[-1, *hyper_params.output_size], name=&#39;input&#39;)
+        # Single hidden layer
+        model.logits = tf.layers.dense(x, units=hyper_params.layer_size)
+        model.probs = tf.nn.softmax(logits=model.logits, name=&#39;probs&#39;)
+    return model
+</pre></div>
+</div>
+</div>
+<p>Next the loss.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">create_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">hyper_params</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function that returns the loss of a model on the labels.&quot;&quot;&quot;</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">()</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">hyper_params</span><span class="o">.</span><span class="n">output_size</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+    <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span>
+        <span class="n">logits</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">logits</span><span class="p">,</span>
+        <span class="n">labels</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
+    <span class="p">))</span>
+    <span class="n">loss_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/loss&#39;</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">loss_name</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">)</span>
+    <span class="n">metrics</span><span class="o">.</span><span class="n">loss_name</span> <span class="o">=</span> <span class="n">loss_op</span>
+
+    <span class="k">return</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">metrics</span>
+</pre></div>
+</div>
+</div>
+<p>Now put them together along with an optimizer to create <code class="docutils literal notranslate"><span class="pre">model_fn</span></code></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">model_fn</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">hyper_params</span><span class="p">):</span>
+    <span class="c1"># Create the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_model_obp</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">hyper_params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">PREDICT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">EstimatorSpec</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">predictions</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Loss</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="n">create_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">hyper_params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">EVAL</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">EstimatorSpec</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">eval_metric_ops</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+
+    <span class="c1"># Optimizer</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">ModeKeys</span><span class="o">.</span><span class="n">TRAIN</span><span class="p">:</span>
+        <span class="n">train_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span>
+            <span class="n">learning_rate</span><span class="o">=</span><span class="n">hyper_params</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Invalid mode entered, </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+
+
+<span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">Estimator</span><span class="p">(</span><span class="n">model_fn</span><span class="p">,</span> <span class="n">hyper_params</span><span class="o">=</span><span class="n">hyper_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-96-81bad5f81a71&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span>
+<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg"> </span>estimator <span class="ansi-blue-fg">=</span> tf<span class="ansi-blue-fg">.</span>estimator<span class="ansi-blue-fg">.</span>Estimator<span class="ansi-blue-fg">(</span>model_fn<span class="ansi-blue-fg">,</span> hyper_params<span class="ansi-blue-fg">=</span>hyper_params<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span>
+
+<span class="ansi-red-fg">TypeError</span>: __init__() got an unexpected keyword argument &#39;hyper_params&#39;
+</pre></div></div>
+</div>
+<p>So let’s just confirm that <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code> is happy with the function.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># data = pd.read_csv(str(data_path), delim_whitespace=False, index_col=0)</span>
-<span class="c1"># logger.info(&quot;Loaded dataset &#39;{0}&#39; from &#39;{1}&#39;&quot;.format(data_path.name, data_path.parent.name))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Preprocessing">
-<h2>Preprocessing<a class="headerlink" href="#Preprocessing" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># data_norm = (data - data.mean()) / data.std()</span>
-<span class="c1"># logger.info(&quot;Processed data &#39;{0}&#39;&quot;.format(data_path.stem))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Plotting">
-<h2>Plotting<a class="headerlink" href="#Plotting" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># [plt.plot(data_norm[i,:]) for i in range(len(data_norm))]</span>
-<span class="c1"># plt.show()</span>
+<span></span>
 </pre></div>
 </div>
 </div>
@@ -766,7 +930,7 @@ Using TensorFlow backend.
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># ...</span>
+<span></span>
 </pre></div>
 </div>
 </div>
@@ -775,16 +939,7 @@ Using TensorFlow backend.
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># ...</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># ...</span>
+<span></span>
 </pre></div>
 </div>
 </div>
