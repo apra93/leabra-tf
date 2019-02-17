@@ -27,7 +27,18 @@ def generate_labels(n_samples=1, size=5, dims=2):
     labels : np.ndarray (n_samples x size x dims)
     	The resulting task labels.
     """
-    return np.random.choice(2, (n_samples, size, dims), True)
+    # Generate baseline labels
+    raw_labels = np.random.choice(2, (n_samples, size, dims), replace=True)
+    # Random selection of indices to zero out
+    arg_zero = np.random.choice(size, (n_samples*dims), replace=True)
+    # Alternating indices to loop through the dims of the labels
+    dim_indices = np.tile(range(dims), n_samples)
+    # Repeating indices to loop through the samples
+    sample_indices = np.repeat(range(n_samples), dims)
+    
+    # Zero out a random selection of indices
+    raw_labels[sample_indices, arg_zero, dim_indices] = 0
+    return raw_labels        
 
 def inverse_transform_single_sample(y):
     """Turns the inputted nxn array into the nx2 array
