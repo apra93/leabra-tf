@@ -114,5 +114,8 @@ data/external/*
 figures/unsorted/*
 figures/*.*
 
+# None of the models
+models/*
+
 # But keep all the .gitkeep files
 !*.gitkeep
