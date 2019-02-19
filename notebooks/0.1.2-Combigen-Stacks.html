@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.1.2 Combigen Stacks &mdash; Leabra Tensorflow 0+untagged.55.g71e15f1 documentation</title>
+  <title>0.1.2 Combigen Stacks &mdash; Leabra Tensorflow 0+untagged.56.gecb793d documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.55.g71e15f1
+                0+untagged.56.gecb793d
               </div>
             
           
@@ -424,7 +424,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Mon Feb 18 2019 22:23:28
+Tue Feb 19 2019 00:21:34
 
 CPython 3.6.8
 IPython 7.2.0
@@ -440,7 +440,7 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 4
 interpreter: 64bit
-Git hash   : 63aa85b0c2db9af7f58e4a10b50490d68e54af03
+Git hash   : 71e15f127ed90ba0b13002fd4882983f74176e16
 Git branch : resnet
 </pre></div></div>
 </div>
@@ -543,7 +543,7 @@ Git branch : resnet
 <p>For more detail on the task, check out nb-0.1 and nb-0.1.1. For now, let’s instantiate local versions of the relevant combigen functions so we can start modifying them.</p>
 <p>First let’s start the label generation function, <code class="docutils literal notranslate"><span class="pre">generate_labels</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -565,8 +565,8 @@ Git branch : resnet
 </div>
 </div>
 <p>And let’s just see what a resulting label look like.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -576,16 +576,9 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.2-Combigen-Stacks_21_0.png" src="../_images/notebooks_0.1.2-Combigen-Stacks_21_0.png" />
-</div>
-</div>
 <p>So let’s make a better version that will include stacks, and see what it outputs.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -612,40 +605,9 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(1, 4, 5, 2)
-[[[[0 1]
-   [0 0]
-   [0 0]
-   [0 0]
-   [1 1]]
-
-  [[0 0]
-   [1 0]
-   [0 0]
-   [0 0]
-   [1 0]]
-
-  [[0 0]
-   [0 0]
-   [1 0]
-   [1 0]
-   [0 0]]
-
-  [[1 0]
-   [0 0]
-   [0 0]
-   [1 0]
-   [1 0]]]]
-</pre></div></div>
-</div>
 <p>Looks good so far, lets run a couple tests to ensure the zeroing is working properly. First check that it trivially returns arrays of the requested shape.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -659,18 +621,9 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|██████████| 4/4 [00:00&lt;00:00, 1587.40it/s]
-2019-02-18 22:23:30 apra-xps13 leabratf[7129] INFO Passed!
-</pre></div></div>
-</div>
 <p>Next, let’s make sure the zeroing fix is still working for all stacks. Borrowing and tweaking the function in nb-0.1.1:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -707,21 +660,12 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|██████████| 3/3 [00:05&lt;00:00,  2.13s/it]
-2019-02-18 22:23:36 apra-xps13 leabratf[7129] INFO Passed!
-</pre></div></div>
-</div>
 </div>
 <div class="section" id="Heatmap-for-Stacked-Labels">
 <h2>Heatmap for Stacked Labels<a class="headerlink" href="#Heatmap-for-Stacked-Labels" title="Permalink to this headline">¶</a></h2>
 <p>Now let’s try to get the heatmap to work with the new shape of the labels. First let’s show the old implementation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -772,8 +716,8 @@ Git branch : resnet
 </div>
 </div>
 <p>And now let’s redefine it with some changes.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[123]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -810,8 +754,8 @@ Git branch : resnet
             <span class="n">stacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">stack</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">sample</span> <span class="k">for</span> <span class="n">stack</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">stack</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stacks</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">stack</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 
             <span class="n">heatmaps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
                 <span class="n">stack</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="n">cbar</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -830,16 +774,10 @@ Git branch : resnet
     <span class="k">return</span> <span class="n">heatmaps</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">heatmap_stacked</span><span class="p">(</span><span class="n">generate_labels_stacked</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
 <span class="n">heatmap_stacked</span><span class="p">(</span><span class="n">generate_labels_stacked</span><span class="p">(</span><span class="n">N</span><span class="p">),</span><span class="n">generate_labels_stacked</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.2-Combigen-Stacks_31_0.png" src="../_images/notebooks_0.1.2-Combigen-Stacks_31_0.png" />
 </div>
 </div>
 </div>
@@ -847,7 +785,7 @@ Git branch : resnet
 <h2>Stacked Inverse Transform<a class="headerlink" href="#Stacked-Inverse-Transform" title="Permalink to this headline">¶</a></h2>
 <p>And now let’s rework <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code>. Below is the old implementation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -869,15 +807,15 @@ Git branch : resnet
 </div>
 </div>
 <p>And now let’s make it a stacked implementation.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">inverse_transform_stacked</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;...&quot;&quot;&quot;</span>
     <span class="n">n_samples</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">inverse_transform_single_sample_stacked</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">inverse_transform_single_sample</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
                            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">Y</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">y</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
         <span class="n">n_samples</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="o">*</span><span class="p">([</span><span class="n">size</span><span class="p">]</span><span class="o">*</span><span class="n">dims</span><span class="p">))</span>
 
@@ -886,20 +824,13 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.2-Combigen-Stacks_35_0.png" src="../_images/notebooks_0.1.2-Combigen-Stacks_35_0.png" />
-</div>
-</div>
 <p>And now let’s test to make sure the inverse transform is still correct.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">test_shapes_03</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
+<span></span><span class="n">test_shapes_03</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span><span class="c1">#, [10, 4, 5, 2], [10,10,10,2]]</span>
 
 <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">test_shapes_03</span><span class="p">):</span>
     <span class="n">example_y</span> <span class="o">=</span> <span class="n">generate_labels_stacked</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">)</span>
@@ -913,21 +844,24 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|██████████| 3/3 [00:00&lt;00:00, 386.09it/s]
-2019-02-18 22:54:09 apra-xps13 leabratf[7129] INFO Passed!
-</pre></div></div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">expected_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">stack</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">example_y</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">example_y</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="Stacked-Combigen-Visualization">
 <h2>Stacked Combigen Visualization<a class="headerlink" href="#Stacked-Combigen-Visualization" title="Permalink to this headline">¶</a></h2>
 <p>The last function that needs to be changed is <code class="docutils literal notranslate"><span class="pre">visualize_combigen</span></code>, so just like before let’s show the original implmentation.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -949,8 +883,8 @@ Git branch : resnet
 </div>
 </div>
 <p>And then the changed version:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[128]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -978,15 +912,8 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.2-Combigen-Stacks_41_0.png" src="../_images/notebooks_0.1.2-Combigen-Stacks_41_0.png" />
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[129]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -996,19 +923,12 @@ Git branch : resnet
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.2-Combigen-Stacks_42_0.png" src="../_images/notebooks_0.1.2-Combigen-Stacks_42_0.png" />
-</div>
-</div>
 </div>
 <div class="section" id="Performance">
 <h2>Performance<a class="headerlink" href="#Performance" title="Permalink to this headline">¶</a></h2>
 <p>Last thing to check for is the performance change with the added implementation. Let’s compare the new implementation compared to the old one when required to generate four times as much data.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[133]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1029,17 +949,6 @@ Git branch : resnet
 <span class="o">%</span><span class="k">timeit</span> generate_stacked_data()
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Timing of old implementation:
-47.6 ms ± 1.67 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
-Timing of stacked implementation:
-47.6 ms ± 628 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
-</pre></div></div>
 </div>
 <p>More or less identical.</p>
 </div>
