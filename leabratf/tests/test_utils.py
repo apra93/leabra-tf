@@ -16,6 +16,12 @@ test_values = [2, np.pi, True, "test_s", "10", ["test"], ("test",), {"test":1}]
 test_lists = [[1,2,3,4,5], [[1],[2],[3],[4],[5]], [[1,2,3],[4,5]],
               [[1,[2,[3,[4,[5]]]]]]]
 
+def test_RotatingFileHandlerRelativePath_instantiates():
+    assert utils.RotatingFileHandlerRelativePath('test')
+
+def test_setup_logging_doesnt_raise_an_exception():
+    utils.setup_logging()
+
 @pytest.mark.parametrize("test", test_values)
 def test_isiterable_correctly_returns(test):
     iterable = utils.isiterable(test)

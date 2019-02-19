@@ -24,9 +24,6 @@ Contents:
    :maxdepth: 2
    :caption: Scripts
 
-   data
-   features
-   models
    visualization
    utils
 
