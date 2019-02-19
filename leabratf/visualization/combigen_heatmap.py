@@ -10,11 +10,10 @@ from leabratf.utils import make_input_3d
 
 logger = logging.getLogger(__name__)
 
-# General warning, this will overwrite the originally defined heatmap
-@make_input_3d
-def heatmap(data, vmin=0, vmax=2, cbar=False, linewidths=1, square=True, 
-            samples_per_row=10, gridspec_kw=None, sharey=True, sharex=True,
-            titles=None, *args, **kwargs):
+def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
+            square=True, gridspec_kw=None, sharey=True, sharex=True,
+            titles=None, squeeze=False, y_label='Samples', x_label=None,
+            *args, **kwargs):
     """Wrapper function of `sns.heatmap` with some different defaults. 
     
     Only changed values are shown, see the documentation for `sns.heatmap`
@@ -22,6 +21,12 @@ def heatmap(data, vmin=0, vmax=2, cbar=False, linewidths=1, square=True,
         
     Parameters
     ----------
+    data : np.ndarray
+    	The data to send to the heatmap
+
+    data2 : np.ndarray, optional
+    	A second dataset to send to the heatmap in a zip     
+    
     vmin : float, optional
         Min color. Now set to 0
         
@@ -36,10 +41,6 @@ def heatmap(data, vmin=0, vmax=2, cbar=False, linewidths=1, square=True,
         
     square : bool, optional
         Maintain aspect ratio. Now set to True
-        
-    samples_per_row : int, optional
-        Number of samples to have in a plotting row before creating a 
-        new row
 
     gridspec_kw : dict, optional
     	Dictionary of grid specifications for the subplots
@@ -49,18 +50,27 @@ def heatmap(data, vmin=0, vmax=2, cbar=False, linewidths=1, square=True,
     
     sharex : bool, optional
     	Have the subplots share the x axis.
+
+    titles : iterable, optional
+    	Titles to add to each of the subplots
+
+    squeeze : bool, optional
+    	Make the plots compact.
+
+    y_label : str, optional
+    	A label to add to the y axis of the plot
+
+    x_label : str, optional
+    	A label to add to the x axis (title) of the plot
     """
-    # Place them all in a subplot
-    n_samples = len(data)
-    ver_size = n_samples // samples_per_row
-    ver_size = ver_size + 1 if n_samples % samples_per_row else ver_size
-    
-    hor_size = (samples_per_row 
-                if (ver_size > 1 or n_samples == samples_per_row) 
-                else n_samples % samples_per_row)
-    # Create the subplot axes
-    _, axn = plt.subplots(ver_size, hor_size, sharey=sharey, sharex=sharex,
-                          squeeze=False, gridspec_kw=gridspec_kw)
+    n_samples, stack, size, dims = data.shape
+    # Check if another dataset was passed
+    hor = stack if data2 is None else stack + data2.shape[1]
+    # Place everything in subplots
+    fig, axn = plt.subplots(n_samples, hor, sharey=sharey, sharex=sharex,
+                            squeeze=squeeze, gridspec_kw=gridspec_kw)
+    if x_label is not None:
+        fig.suptitle(x_label)
 
     # Create a titles generator
     if titles is not None:
@@ -71,40 +81,57 @@ def heatmap(data, vmin=0, vmax=2, cbar=False, linewidths=1, square=True,
     heatmaps = []
 
     # Loop through and generate the plots
-    gen_data = iter(data)
-    for i in range(ver_size):
-        try:
-            for j in range(hor_size):
-                array = next(gen_data)
-                shape = array.shape
-                if len(shape) == 3 and shape[0] == 1:
-                    array = array.reshape(shape[1:])
-                heatmaps.append(sns.heatmap(
-                    array, vmin=vmin, vmax=vmax, cbar=cbar,
-                    linewidths=linewidths, square=square, ax=axn[i,j], *args,
-                    **kwargs))
-                axn[i,j].set_title(next(titles))
-        except StopIteration:
-            break
+    gen_data = iter(data) if data2 is None else zip(data, data2)
+    
+    for i, sample in enumerate(gen_data):
+        if data2 is None:
+            stacks = [stack for stack in sample]
+        else:
+            stacks = [stack for data in sample for stack in data]
+            
+        for j, stack in enumerate(stacks):
+            if len(stack.shape) == 3 and stack.shape[0] == 1:
+                stack = stack.reshape(stack.shape[1:])
+        
+            heatmaps.append(sns.heatmap(
+                stack, vmin=vmin, vmax=vmax, cbar=cbar, xticklabels=False,
+                yticklabels=False,
+                linewidths=linewidths, square=square, ax=axn[i,j], *args,
+                **kwargs))
+            axn[i,j].set_title(next(titles))
+            
+            if j is 0:
+                axn[i,j].set_ylabel(i, rotation=0)
+    
+    # Common Labels
+    if y_label is not None:
+        fig.text(0.05, 0.5, y_label, va='center', rotation='vertical')
+    
     return heatmaps
 
 def visualize_combigen(n_pairs=1, *args, **kwargs):
-    """Plot N x and y pairs of the combigen task
+    """Plot `n_pairs` of `x` and `y` from the combigen task
 
     Parameters
     ----------
     n_pairs : int, optional
-    	The number of X, y pairs to visualize"""
+    	The number of X, y pairs to visualize
+    """
     heatmaps = []
-    # Visulize a few combinations of x and y
-    for _ in range(n_pairs):
-        # Generate a signle y
-        example_y = cg.generate_labels(n_samples=1, *args, **kwargs)
-        # Generate a single x from the y
-        example_x = cg.inverse_transform(example_y)
-        heatmaps.append(heatmap([example_y, example_x[0]],
-                                gridspec_kw={'width_ratios': [2, 5]},
-                                sharex=False,
-                                titles=['y', 'X']))
-    return heatmaps
-        
+    # Generate a signle y
+    example_y = cg.generate_labels(n_samples=n_pairs, *args, **kwargs)
+    # Generate a single x from the y
+    example_x = cg.inverse_transform(example_y)
+    
+    _, stack, size, dim = example_y.shape
+    # Hack
+    titles = [a+str(i) for a in ['y','x'] for i in range(4)] + \
+             ['']*(n_pairs-1)*stack*2
+    gridspec_kw={'width_ratios': [dim]*stack + [size]*stack}
+    
+    heatmaps.append(heatmap(example_y, example_x,
+                            gridspec_kw=gridspec_kw,
+                            sharex=False,
+                            titles=titles,
+                            x_label='y and X Pairs'))
+    return heatmaps            
