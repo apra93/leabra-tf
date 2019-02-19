@@ -8,11 +8,6 @@ the various release milestones.
 0.0 Release
 -----------
 
-- Create a documentation page that will automatically add new notebooks as they
-  are created.
-- Create a new README that details how to go about the repo, and move components
-  (like this release schedule) to their own pages in the documentation.
-- Implement the task described in O'Reilly's paper.
 - Establish a baseline using other canonical deep networks (DNs).
 - Establish a baseline on the task using ``leabra7``.
 - Compare against results shown in O'Reilly's paper.
@@ -31,6 +26,15 @@ the various release milestones.
 - Mass-parameter search on the TPUs to compare with leabra.
 - Revaluate different versioning packages and write down reasoning for the
   choice.
+
+**Completed**
+
+- Create a documentation page that will automatically add new notebooks as they
+  are created.
+- Implement the task described in O'Reilly's paper.
+- Create a new README that details how to go about the repo, and move components
+  (like this release schedule) to their own pages in the documentation.
+
 
 1.0 Release
 -----------
