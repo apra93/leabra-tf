@@ -38,7 +38,7 @@ def generate_labels(n_samples=1, size=5, dims=2):
     
     # Zero out a random selection of indices
     raw_labels[sample_indices, arg_zero, dim_indices] = 0
-    return raw_labels        
+    return raw_labels
 
 def inverse_transform_single_sample(y):
     """Turns the inputted nxn array into the nx2 array
@@ -57,7 +57,7 @@ def inverse_transform_single_sample(y):
     n = len(y)
     # Create a horizontal array and a vertical array according to y
     horizontal, vertical = np.tile(y, n).reshape(n, n, 2).T
-    return (horizontal.T + vertical).astype(bool)
+    return (horizontal.T + vertical).astype(bool).astype(np.float32)
 
 @make_input_3d
 def inverse_transform(Y, *args, **kwargs):
