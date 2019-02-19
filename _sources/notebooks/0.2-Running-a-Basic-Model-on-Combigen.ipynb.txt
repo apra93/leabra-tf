@@ -32,7 +32,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Mon Feb 18 2019 20:32:44 \n",
+      "Tue Feb 19 2019 02:07:35 \n",
       "\n",
       "CPython 3.6.8\n",
       "IPython 7.2.0\n",
@@ -49,7 +49,7 @@
       "processor  : x86_64\n",
       "CPU cores  : 4\n",
       "interpreter: 64bit\n",
-      "Git hash   : 9e066d8690c6a5afc03915dc3eaf756cda317f85\n",
+      "Git hash   : 27ae5caa9a4ed17be9b760b1ad28b7f3d90a5892\n",
       "Git branch : resnet\n"
      ]
     }
@@ -121,6 +121,7 @@
    "source": [
     "# Standard library imports\n",
     "import logging\n",
+    "from functools import reduce\n",
     "\n",
     "# Third party\n",
     "import matplotlib.pyplot as plt\n",
@@ -138,19 +139,21 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
+   "execution_count": 33,
    "metadata": {},
    "outputs": [],
    "source": [
     "# Task script\n",
     "%aimport leabratf.tasks.combinatorics.combigen\n",
-    "import leabratf.tasks.combinatorics.combigen as cbg\n",
+    "import leabratf.tasks.combinatorics.combigen as cg\n",
     "# Visualization for the task\n",
     "%aimport leabratf.visualization.combigen_heatmap\n",
-    "import leabratf.visualization.combigen_heatmap as cbhm\n",
+    "import leabratf.visualization.combigen_heatmap as cgh\n",
     "# Utility functions\n",
     "%aimport leabratf.utils\n",
-    "from leabratf.utils import setup_logging"
+    "from leabratf.utils import setup_logging\n",
+    "%aimport leabratf.constants\n",
+    "from leabratf import constants"
    ]
   },
   {
@@ -187,7 +190,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
+   "execution_count": 8,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -210,32 +213,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 8,
+   "execution_count": 9,
    "metadata": {},
    "outputs": [
     {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "2019-02-18 20:32:51 apra-xps13 leabratf.utils[3514] WARNING First argument passed is not of type `np.ndarray`. Skipping reshape operation.\n",
-      "2019-02-18 20:32:51 apra-xps13 leabratf.utils[3514] WARNING First argument passed is not of type `np.ndarray`. Skipping reshape operation.\n"
-     ]
-    },
-    {
      "data": {
-      "image/png": "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\n",
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAXwAAAEKCAYAAAARnO4WAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADl0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uIDMuMC4yLCBodHRwOi8vbWF0cGxvdGxpYi5vcmcvOIA7rQAAHApJREFUeJzt3WlUFGfWB/B/g6CAHJUoxmXcUDQKIuIC7hI0LlHjzpxEz4yaMIOiB0VcE9EER9QZCRjRJILjkokrKKLRREcjxnGNE8fBJRh0XIJR1AitoE29H3LSb0ClC7qqq7qf/+8cP3R1Vz33saovD9W3LwZJkiQQEZHDc9I6ACIisg0mfCIiQTDhExEJggmfiEgQTPhERIJgwiciEgQTPgkrOTkZ/fr10zqMCrVu3Ro7d+7UOgxyEEz4RC9QUFCA7t27Y9myZWW2P3z4EH369MHChQtfuO+OHTvQunVr879u3bohIiICFy9erFQM2dnZGDBgQJXiJyqPCZ/oBby8vBAfH4/U1FScOHHCvD0uLg5ubm6YNWtWhfs7OzsjOzsb2dnZ+Oijj3D37l1MnDgRDx8+lB1DvXr1UL169Rc+X1JSIvtYREz4ZBPbt29Hp06d8OjRozLbV65cidDQULzoC9/nz5/HpEmTEBISgsDAQIwcORJff/11mdeEhobiww8/xAcffIAuXbqgW7duSEhIgMlkMr+mpKQECxYsQFBQEDp37owFCxbISpZ9+vTBmDFjMGvWLDx8+BBZWVnYt28fli9fjho1aljcv169eqhXrx4CAwMxZ84c/PTTTzh79iwAIDMzE6NHj0ZQUBC6du2Kd955Bz/88EOZ/cvf0mndujXWr1+PGTNmICgoCDExMQCA1atX49VXX4Wfnx+Cg4MxceJEPH782GJ8JBYmfLKJwYMHw2Aw4IsvvjBvKy0txY4dOzB69GgYDIbn7ldYWIjBgwdjw4YN2LFjB3r06IHIyMhnEuPGjRvh7e2NLVu2YP78+fj73/+OjIwM8/PLly/H/v37kZCQgM8//xzu7u7YtGmTrNhnz54NV1dXzJw5E3FxcYiKikK7du0q/X/w6w+Ip0+fAvjlh1BkZCTS09ORlpYGJycnREREWPxB9NFHH6FDhw5IT09HdHQ09u/fj48//hjz5s3D/v37kZaWhp49e1Y6PhKARGQj77//vhQeHm5+/PXXX0tt27aV8vPzK3WcIUOGSKtWrTI/7tu3rxQREVHmNRMmTJCio6MlSZKkoqIiyc/PT9q8eXOZ1wwfPlwKCwuTNWZ2drbk6+srjRw5UjKZTBZfv337dumVV14xP757964UEREhdezYUbpz585z97l3757k6+srnTp1yrzN19dXysjIKPN4zpw5ZfZLS0uT+vfvL5WUlMiaC4mrmtY/cEgcY8eOxeuvv47vv/8eLVu2xNatW9G7d294e3u/cJ+CggIkJSXhX//6F+7cuQOTyYTi4mLcvHmzzOteeeWVMo/r16+P69evAwCuXbuGkpISBAYGlnlNUFAQDh06JCv2zZs3w93dHVevXsXt27fx8ssvW9zHZDKZxzQajWjRogWSkpLw0ksvAQBycnKwcuVK5OTk4N69e+b9bt68iaCgoBcet3379mUeDxw4EOvXr0ffvn3Ro0cPBAcHIywsDDVr1pQ1NxIHb+mQzbRq1QpBQUHYunUr7t69i4MHD2Ls2LEV7jN79mycPn0aM2fOxKZNm5CRkYE2bdrgyZMnZV7n4uJS5rHBYHjmc4EX3TayZMeOHTh48CA2bNiAFi1aYM6cOS/8zOG3nJ2dkZGRgZ07d+L06dPYu3cvunfvDgB49OgRJkyYAIPBgMWLF2Pbtm3Ytm0bDAbDM3Mrz83Nrczj+vXr44svvsDixYvh5eWFlJQUDBgwALdu3arSfMlxMeGTTY0dOxYZGRnYvHkz6tata/Fe88mTJ/H73/8er776Klq3bo169eqZV+5yNWnSBC4uLjhz5kyZ7d9++63Ffa9fv44PPvgA06ZNg5+fH5YuXYqzZ89i48aNssZu2rQpmjRp8sxqOzc3FwUFBYiOjkZwcDB8fHzw4MEDWT9InsfV1RW9evVCbGwsMjMz8fjxY3z11VdVOhY5LiZ8sqlfa8pXrVqFUaNGwcmp4kuwefPmyMzMxMWLF5GTk4Pp06eXqb6Rw93dHeHh4UhMTMSBAwdw5coVLF26FFeuXKlwv9LSUsTGxqJt27aYOHEigF8S+KxZs7B8+XKL+1ekYcOGcHV1xYYNG3Dt2jUcO3YM8fHxVfotZOvWrdiyZQsuXLiAGzduYNeuXSgqKkLLli2rHB85JiZ8sqnq1atj2LBhMJlMGDVqlMXX/+Uvf4EkSRg9ejQmT56Mnj17wt/fv9LjxsTEICwsDLGxsRg9ejQePnyIN998s8J9Pv74Y1y8eBEJCQllfjCFh4cjODgYsbGx5oqbyvLy8sKyZcvwzTffYPDgwUhISMCsWbMs/gB8nlq1amHHjh0YN24cBg0ahHXr1mHRokUICQmpUmzkuAxSVX+HJKqiadOmobi4GKtXr9Y6FCKhsEqHbObBgwc4deoUvvrqK6SmpmodDpFwmPDJZoYPH4579+5h0qRJ6Nq1q9bhEAnHYe7hl5SUYM6cOejYsSO6d++OtLQ01cbas2cPwsPDERAQgHHjxqk2zq8SEhLQv39/BAYGYsCAAWW+Qaq0pUuXonfv3ujYsSP69u2LlJQUxY598OBBfPvtt4iOjlbkeLY851qy9fWmFVte51pS8z1micOs8JOTk3H16lX885//xJ07dzB+/Hj4+PigV69eio9Vu3ZtjB8/HleuXMHx48cVP355bm5uSElJQfPmzXHu3DlMmjQJTZo0QceOHRUfa9SoUZgyZQrc3d2Rn5+PCRMmwMfHB/3791d8LGvZ8pxrydbXm1ZseZ1rScv3mF2t8D/99FNERUWV2fb+++8jPj4eGRkZiIyMRK1ateDj44PRo0cjPT1dlbG6deuGQYMGoX79+lU+fmXGmzp1Knx8fODk5ISAgAAEBQWZG3ApPVaLFi3g7u5u3u7k5ISrV69WeSxrXbt2DV26dMH58+cBAPn5+ejatSuOHz+u+DnXUkXzVON600pF81T6OtdSRfPU9D2mZV+HysrPz5cCAgKkBw8eSJIkSU+ePJGCg4Olc+fOSb6+vtJPP/1kfu3evXul119/XZWxfrVlyxbprbfeqvIYlR1PkiTp0aNHUvfu3aXDhw+rNtaaNWukDh06SL6+vlJoaKh069atKo+lhM2bN0sDBgyQjEajNGHCBGnJkiXS/fv3FT/nWnvePH9LyetNS5bmKUnKXOdaq2ieWr3H7GqF7+3tjU6dOpk7Lh45cgR16tQx9ybx9PQ0v9bT0xNFRUWKj+Xn52fFDKwfb8GCBWjdurVV3RAtjfXOO+/gzJkzSE9Px7BhwzTvyTJmzBg0bdoUY8aMwe3btxEdHQ2j0QhA2XOutefN0xHJmacS17nWKpqnVu8xu0r4wC+VHrt27QIA7Nq1C8OGDTP/elRYWGh+XWFhITw8PBQfS02WxktISMDly5fx4YcfVrkvjNyxDAYD2rZtixo1aiA5OdmqsZQwZswYXLp0CePGjYOrq6tq51xr5efpqCqap5LXudYqmqcW7zG7S/hhYWG4ePEiLl26hEOHDmHIkCGoVasW6tWrhwsXLphfd+HCBau/Wv68sdRU0XhJSUk4cuQI1q5dq8hqQO7cnj59imvXrlk9njWKioqwePFijBo1CsnJybh//75q51xLz5unI6ponkpf51qSez5t+R6zu4RfvXp1vPbaa5gxYwb8/f3RsGFDAMAbb7yBlJQUPHjwALm5udi6dSuGDx+uyli/tuh9+vQpSktLUVxcbLHDoTXjrVmzBrt370Zqairq1Klj9TgvGqu0tBSff/65uYnXd999h88++0zzr+jHx8ejXbt2iI+PR58+fbBgwQIA6pxzLb1onmpdb1p50TzVuM619Lx5av4es8knBQo7efKk5OvrK23bts28rbi4WJo9e7YUGBgohYSESKmpqaqNtX37dsnX17fMv1mzZqk2nq+vr9SuXTupQ4cO5n8pKSmKj2UymaQJEyZInTt3ljp06CD1799fSklJkUpLS60eq6q+/PJLqUePHtK9e/ckSZKkwsJCKSwsTNq5c6dq51wLFc1TzevN1iqap1rXuRYqmqeW7zG77KVz8+ZNDBw4EEePHlX91z5bjmXr8Ww9NyLSlt3d0iktLUVaWhoGDRqkepKy5Vi2Hs/WcyMi7dnVN22NRiO6d++Ohg0b4tNPP3WYsWw9nq3nRkT6YJe3dIiIqPLs7pYOERFVDRM+EZEg7Ooe/qnGbzx3e6frv7RRreba6JnnnpbcqPJ4FR3vec9ZM56l49lybpb+n61l6fjPe76i55TaV2nWnFNrrnV7mqea/0dKU/Oc2CrXcIVPRCQIJnwiIkEw4RMRCYIJn4hIEEz4RESC4BeviIgEobsV/v379zF58mR06NABffv2RWZmptYhERE5BN3V4S9atAguLi44evQocnJyEBERgTZt2qBVq1asw1doLKDienWl5yZn7N+Ozzp81uHbYx2+PVy3ulrhG41G7N+/H9OmTYOHhwc6deqE0NBQ7Ny5U+vQiIjsnq4Sfl5eHpycnNC8eXPztjZt2uD777/XMCoiIsegq4RvNBrh6elZZpunpyeKioo0ioiIyHHoKuG7u7ujsLCwzLbCwkJ4eHhoFBERkePQVVmm0WhEly5dsHv3bjRr1gwAEBsbC29vb8TExGgbHBGRndPdCr9fv35ISkqC0WjE6dOnceDAAQwbNkzr0IiI7J6uVvjAL3X4c+fOxTfffIPatWtjxowZGDJkCADHbiGsp7JMtcvdtCrjU7vctDyWZbIsU29lmbqrw69duzZWrVqldRhERA5HV7d0iIhIPUz4RESCYMInIhIEEz4RkSB0V6VDRETq4AqfiEgQuivLrIieatWVrul25NbPcsa2NL491uE7Qt22HJyn9d+NsNV1yxU+EZEgmPCJiATBhE9EJAgmfCIiQbAsk4hIEFzhExEJwq7KMm1dumjLkjBrytOqQsvyRZbxcZ6OOE+WZRIRkW4w4RMRCYIJn4hIEEz4RESCYMInIhIE6/CJiATBFT4RkSCY8ImIBMGET0QkCCZ8IiJBMOETEQmCCZ+ISBBM+EREgmDCJyIShEO1R7ZlC2GlW7NaaoHK9siO107XmlhteW1aolXbYFvP09L7wpr3VEXXAtsjExFRpTHhExEJggmfiEgQTPhERIJgwiciEgTbIxMRCUJ3K/yNGzdixIgR8PPzw+zZs7UOh4jIYeiuDt/b2xuRkZE4cuQIiouLyzxnTc1uVdiyBtjWc7NV3a/csX87Puvw7as+nefTfuapu4Tfv39/AMC5c+eQn5+vcTRERI5Dd7d0iIhIHUz4RESCYMInIhKEbssyV6xYgfz8fCxZskTrUIiIHILuPrR9+vQpTCYTSktLYTKZUFxcDGdnZ1SrprtQiYjsiu5W+MnJyVi5cmWZbVOmTEFUVJRV7UmrwpHbI+u5LNOaNrNatn0uj2WZjtUemWWZKoiKikJUVJTWYRARORx+aEtEJAgmfCIiQTDhExEJggmfiEgQuqvSISIidXCFT0QkCN2VZVZET+2Rla7p1tPc1K5vdoR6ZjlYh+9Y51PN74DY6nsxXOETEQmCCZ+ISBBM+EREgmDCJyISBMsyiYgEwRU+EZEgWJZZAbZHfn4s1hKljI9lmWyPrLfrlit8IiJBMOETEQmCCZ+ISBBM+EREgmDCJyISBOvwiYgEwRU+EZEgmPCJiATBhE9EJAgmfCIiQchO+Lt370Zubi4A4MqVK3jzzTcxfvx48zYiItI32Qk/MTERtWrVAgAsXboU7du3R+fOnbFw4ULVgiMiIuXIbp5WUFCAunXrori4GKdPn0ZSUhKqVauG4OBgNeMjIiKFyE74Xl5euHr1Ki5dugR/f3+4urri0aNHYBk/EZF9kJ3wIyMjMWLECDg7O2PFihUAgGPHjqFNmzaqBVeerVsIW/NX6CvLmvapSo1nD+2RLcVmy3NmiTWxqvl/pDRHaBsshyPMU3bCHzFiBAYOHAgAcHNzAwAEBATgb3/7W6UHJSIi26tUWebjx4+xb98+fPLJJwCAp0+fwmQyqRIYEREpS3bCP3HiBAYMGIDMzEysWrUKAHD16lXExcWpFRsRESlIdsJfvHgxEhMTsXbtWlSr9sudoICAAHz33XeqBUdERMqRnfBv3LiBkJAQAIDBYAAAuLi48JYOEZGdkN0eOTw8HJMnT0bPnj3RpUsXnDhxAtnZ2VizZg02bNigdpxERGQl2Qn/7NmziIiIQJ8+fbB371688cYbOHjwIFatWoX27dsrEkxJSQni4uJw7Ngx3L9/H02bNkV0dDR69+6tyPGJiERWqT+Akp+fj127duHmzZto0KABhg4dipdfflmxYIxGI9auXYvhw4ejYcOGOHz4MKZPn47MzEw0btzY5rXqrMMvSw91+HqpZ5aDdfiOdT4dYZ6y6/ABoH79+nj77bcrPYhc7u7uiIqKMj/u27cvGjdujPPnz6Nx48aqjUtEJIIKE/7MmTPNH9BWZOnSpYoF9Ft37txBXl4eWrZsqcrxiYhEUmHCb9q0qa3ieMaTJ08QExOD4cOHw8fHR7M4iIgcRYUJf8qUKbaKo4zS0lLExsbCxcUF7777riYxEBE5mkp9aHvs2DFkZWXh9u3b8Pb2xuDBg821+UqRJAlz587F9evX8cknn6BGjRqKHp+ISFSyv3iVlpaG6dOno1atWujduzdq166NGTNmIDU1VdGAFixYgNzcXKxevZrJnohIQbJX+D179sTatWvh6+tr3nb58mX88Y9/RHZ2tiLB3LhxA6GhoXB1dTW3bwCAhQsXYujQoVaVuVWFLUvCHLn1c3mitEd2hDI+OdSMVU/nU81rT5dlmeU/xP3d734nq4pHrkaNGuHixYuKHY+IiP6f7Fs6UVFRmDt3LvLy8vD48WP88MMPePfddzF16lSUlpaa/xERkT7JXuG/9957AICsrCwYDAbznzbMzMzEe++9B0mSYDAYkJOTo06kRERkFdkJ/8CBA2rGQUREKpOd8Bs1ev6HDkREZB9kV+k8fPgQ69evR05ODoxGY5nnlC7NJCIi5cle4U+bNg0mkwn9+vVD9erV1YyJiIhUIDvhnz17FsePH4eLi4ua8VTI1nX41rSvVWKs345nz3MrT5Q6fLZHZh2+3urwZZdlBgUFITc3t9IDEBGRPshe4S9ZsgRvv/02AgIC8NJLL5V5Tqsma0REJJ/shL9ixQr8+OOPaNy4MQoLC83blfymLRERqUd2ws/KysK+ffvg7e2tZjxERKQS2WWZQ4cOxbp16+Dl5aV2TEREpALZCX/t2rX48ssv8dZbbz1zD1/pnvhERKQ82Qk/NDT0+QcwGGzWdsGaEq6qsGVJmCO3fpYztqXx7bFtMMsyHass0xGuW9n38A8ePFjpgxMRkX7IrsMnIiL7JnuFX1hYiOTkZJw8eRL37t3Db+8EHTp0SI3YiIhIQbJX+HFxcfjvf/+LyMhI3L9/H/Pnz0eDBg3whz/8QcXwiIhIKbJX+EePHsWePXtQp04dODs7IywsDP7+/vjTn/7EpE9EZAdkV+l07doVR48eRbVq1dCrVy/s3r0bNWvWRKdOnXDmzBm14yQiIivJXuG3adMGJ0+eREhICIKCgrBw4UJ4eHigWbNmKoZHRERKkb3C/9///gdJktCkSRMUFBTgr3/9K4xGIyZPnoyWLVuqHScREVnJ4gr/P//5D1xdXeHr6wsAKCgoQHx8PC5duoTAwEA0aNBA9SCJiMh6Fqt0Fi9ejDt37pgfz5s3D3l5eQgPD8fly5exbNkyVQMkIiJlWLyl07VrVxw5cgSurq74+eef0a1bN2RmZqJ58+a4desWwsPDcfjwYVvFS0REVWRxhW8ymcx/1vDs2bOoW7cumjdvDgBo0KABfv75Z3UjJCIiRVhM+C1btsTevXsBAHv27CnTGTM/Px+enp7qRUdERIqxeEvn1KlT+POf/wyDwQAnJyd89tlnaNGiBQAgLS0N//73v5GYmGiTYImIqOpklWUWFhYiLy8PzZo1Q82aNc3br1y5Ag8PD9SvX1/VIH/lyO2RrWmfqtR4tmqv6whtZuVQsz2yNfsqTZTz6QjzlPXFq5o1a8LPz++Z7b+u9ImISP/YHpmISBBM+EREgmDCJyISBBM+EZEgZDdPIyIi+6a7FX5MTAx69OiBjh074rXXXsPWrVu1DomIyCHoboV/+fJlNG3aFK6ursjNzcX48eOxZs0a+Pn5WaxrVrpW3ZHr8LWs47bmPOqlnlkO1uHbT326HFpdt0rmGt2t8Fu1agVXV1cAgMFggMFgwLVr1zSOiojI/sn+i1e2FBcXh/T0dDx+/Bht27ZF7969tQ6JiMju6W6FD/yS8M+cOYNNmzahX79+5hU/ERFVnS4TPgA4OzujU6dO+PHHH/GPf/xD63CIiOye7j60LW/evHlwc3PD/PnztQ6FiMiu6WqFf/fuXWRlZaGoqAgmkwlHjhxBVlYWgoODtQ6NiMju6WqFX1BQgKlTp+LChQsoLS1Fo0aNMG7cOIwZMwaAdWVRVWHL0jdbt37WstyNZZksy7TH8+kI89RVlY6Xlxc2btyodRhERA5JV7d0iIhIPUz4RESCYMInIhIEEz4RkSB0VaVDRETq4QqfiEgQuirLtERPLYTtvT2ylvXNjlDPLAfr8B3rfDrCPLnCJyISBBM+EZEgmPCJiATBhE9EJAiWZRIRCYIrfCIiQbAss5LjqVUSpqfWz0qXnJbnCOVtcnCelmNVs1W20rRq663k+5ErfCIiQTDhExEJggmfiEgQTPhERIJgwiciEgTr8ImIBMEVPhGRIJjwiYgEwYRPRCQIJnwiIkEw4RMRCYIJn4hIEEz4RESCYMInIhKEQ7VHrqjlb1VUdDxbt0e257mVx7bBlq9Xa/ZVu711eda0Dban9siOcD65wiciEgQTPhGRIJjwiYgEwYRPRCQIJnwiIkGwPTIRkSB0u8LPy8uDv78/YmJitA6FiMgh6LYOf9GiRfD39y+zzdZ1+NbUD1eWNfXISo1nqzpu1uE71jxZh886fKtkZWXB09MTISEhWodCROQwdJfwCwsLkZSUhNmzZ2sdChGRQ9Fdwk9MTMTIkSPRoEEDrUMhInIourqHn5OTg2PHjiE9PV3rUIiIHI6uyjLXrVuHxMREeHh4AACMRiNMJhN8fHz4Q4CIyEq6SviPHj1CYWGh+XFqaipu3LiBuLg4eHl5aRgZEZH909UtHTc3N7i5uZkfu7u7w9XV1Zzsbd1C2JYlYSK1R7ZmrmruqzSWZbIsU29lmbpK+OVFRUVpHQIRkcPQXZUOERGpgwmfiEgQTPhERIJgwiciEoSuyjKJiEg9XOETEQlC12WZ5empDt/e2yPbcm7lsQ6fdfiOWIdvD+eTK3wiIkEw4RMRCYIJn4hIEEz4RESCYFkmEZEguMInIhIEyzIrOZ5aJX4syxSvLNMe2unKwbJMlmUSEZHOMOETEQmCCZ+ISBBM+EREgmDCJyISBOvwiYgEwRU+EZEgmPCJiATBhE9EJAgmfCIiQTDhExEJggmfiEgQTPhERIJgwiciEgQTPhGRIJjwiYgEwYRPRCQIJnwiIkEw4RMRCeL/AMjeJoDLjsKrAAAAAElFTkSuQmCC\n",
       "text/plain": [
-       "<Figure size 432x288 with 2 Axes>"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "image/png": "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\n",
-      "text/plain": [
-       "<Figure size 432x288 with 2 Axes>"
+       "<Figure size 432x288 with 40 Axes>"
       ]
      },
      "metadata": {},
@@ -243,7 +228,7 @@
     }
    ],
    "source": [
-    "cbhm.visualize_combigen(2)\n",
+    "cgh.visualize_combigen(5)\n",
     "plt.show()"
    ]
   },
@@ -267,7 +252,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
+   "execution_count": 82,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -278,22 +263,25 @@
     "\n",
     "hyper_params = pdict()\n",
     "\n",
-    "# Task parameters - see the 0.1 for the experimental design\n",
+    "# Task parameters - see nb 0.1-0.1.2 for the experimental design\n",
+    "hyper_params.combigen_stack = 4\n",
     "hyper_params.combigen_dims = 2\n",
     "hyper_params.combigen_size = 5\n",
     "# Stack number is currently not implemented, but will be for future analyses\n",
     "# hyper_params.combigen_stack = 4\n",
-    "hyper_params.n_train = 100\n",
-    "hyper_params.n_test = 10000\n",
+    "hyper_params.n_train = 500\n",
+    "hyper_params.n_test = 500\n",
     "\n",
     "# Network parameters - see paper description\n",
     "hyper_params.layer_size = 100\n",
-    "hyper_params.output_size = hyper_params[['combigen_size', 'combigen_dims']]\n",
+    "hyper_params.output_size = hyper_params[['combigen_stack', 'combigen_size', 'combigen_dims']]\n",
+    "hyper_params.output_units = reduce(lambda x,y: x*y, hyper_params.output_size)\n",
+    "hyper_params.activation = tf.nn.sigmoid\n",
     "\n",
     "# Training parameters\n",
-    "hyper_params.learning_rate = 0.001\n",
+    "hyper_params.learning_rate = 0.00003\n",
     "hyper_params.batch_size = 1 \n",
-    "hyper_params.epochs = 100\n",
+    "hyper_params.epochs = 10\n",
     "\n",
     "# Experiment Parameters\n",
     "hyper_params.save_weights = True\n",
@@ -306,63 +294,38 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Let's put together the dataset object that will be fed into the model. First generate the master list of data to be used for training and testing."
+    "Let's put together an `input_fn` that will return a `dataset` object containing the features and labels."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Shape y: (10100, 5, 2) \n",
-      "Shape X: (10100, 5, 5)\n"
-     ]
-    }
-   ],
-   "source": [
-    "y = cbg.generate_labels(\n",
-    "    n_samples = hyper_params.n_train + hyper_params.n_test,\n",
-    "    size = hyper_params['combigen_size'],\n",
-    "    dims = hyper_params['combigen_dims'])\n",
-    "X = cbg.inverse_transform(y)\n",
-    "# Quick sanity check\n",
-    "assert X.shape[0] == y.shape[0]\n",
-    "\n",
-    "# Lets print some quick info\n",
-    "print('Shape y: {0} \\nShape X: {1}'.format(y.shape, X.shape))"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "And then let's put it in a `dataset` object."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 83,
    "metadata": {},
    "outputs": [],
    "source": [
     "# Define the input fn\n",
     "def input_fn(mode, params):\n",
-    "    n_samples = params.n_train if mode==tf.estimator.ModeKeys.EVAL else params.n_test\n",
+    "    n_samples = params['n_train'] if mode==tf.estimator.ModeKeys.EVAL else params['n_test']\n",
     "    \n",
-    "    y = cbg.generate_labels(n_samples=n_samples,\n",
-    "                            size=params['combigen_size'],\n",
-    "                            dims=params['combigen_dims'])\n",
-    "    X = cbg.inverse_transform(y)\n",
-    "    # Quick sanity check\n",
-    "    assert X.shape[0] == y.shape[0]\n",
+    "    y = cg.generate_labels(n_samples=n_samples,\n",
+    "                           stack=params['combigen_stack'],\n",
+    "                           size=params['combigen_size'],\n",
+    "                           dims=params['combigen_dims'])\n",
+    "    X = cg.inverse_transform(y)\n",
+    "    \n",
+    "    # Quick sanity checks\n",
+    "    assert X.shape[0] == y.shape[0] # Number of samples\n",
+    "    assert X.shape[1] == y.shape[1] # Stack\n",
+    "    assert X.shape[2] == y.shape[2] # Size\n",
+    "    assert X.shape[3] == y.shape[2] # Size\n",
     "\n",
     "    dataset = tf.data.Dataset.from_tensor_slices((X, y))\n",
     "    dataset = dataset.batch(params['batch_size'])\n",
-    "    return dataset"
+    "    dataset = dataset.repeat(params['epochs'])\n",
+    "    iterator = dataset.make_one_shot_iterator()\n",
+    "    \n",
+    "    X, y = iterator.get_next()\n",
+    "    return X, y"
    ]
   },
   {
@@ -374,22 +337,33 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 84,
    "metadata": {},
    "outputs": [],
    "source": [
     "def create_model_obp(input_tensor, mode, hyper_params):\n",
     "    \"\"\"Function that generates the the O'Reily backpropagation model.\"\"\"\n",
     "    model = pdict()\n",
-    "    with tf.variable_scope(\"OBPDenseNet\") as scope:\n",
-    "        # Reuse the weights if we're evaling\n",
-    "        if mode == tf.estimator.ModeKeys.EVAL:\n",
-    "            scope.reuse_variables()\n",
+    "#      with tf.variable_scope(\"OBPDenseNet\") as scope:\n",
+    "#         # Reuse the weights if we're evaling\n",
+    "#         if mode == tf.estimator.ModeKeys.EVAL:\n",
+    "#             scope.reuse_variables()\n",
+    "        #import ipdb; ipdb.set_trace()\n",
     "        # Reshape the data accordingly\n",
-    "        x = tf.reshape(tensor=input_tensor, shape=[-1, *hyper_params['output_size']], name='input')\n",
     "        # Single hidden layer\n",
-    "        model.logits = tf.layers.dense(x, units=hyper_params['layer_size'])\n",
-    "        model.probs = tf.nn.softmax(logits=model.logits, name='probs')\n",
+    "    \n",
+    "    x = tf.layers.dense(input_tensor, \n",
+    "                        units=hyper_params['layer_size'], \n",
+    "                        activation=hyper_params['activation'],\n",
+    "                        name='Dense1',\n",
+    "                        trainable=True)\n",
+    "    # Output layer\n",
+    "    model.logits = tf.layers.dense(x, \n",
+    "                                   units=hyper_params['output_units'],\n",
+    "                                   activation=None,\n",
+    "                                   name='Linear1',\n",
+    "                                   trainable=True)\n",
+    "    model.probs = tf.nn.softmax(logits=model.logits, name='probs')\n",
     "    return model"
    ]
   },
@@ -402,7 +376,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 85,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -410,7 +384,7 @@
     "    \"\"\"Function that returns the loss of a model on the labels.\"\"\"\n",
     "    metrics = pdict()\n",
     "    \n",
-    "    y = tf.reshape(labels, [-1, *hyper_params['output_size']], name='labels')\n",
+    "    y = tf.reshape(labels, [-1, hyper_params['output_units']], name='labels')\n",
     "    loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(\n",
     "        logits=model.logits,\n",
     "        labels=y,\n",
@@ -431,7 +405,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 86,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -444,14 +418,16 @@
     "    # Create the loss operation\n",
     "    loss, metrics = create_loss(model, labels, mode, params)\n",
     "    if mode == tf.estimator.ModeKeys.EVAL:\n",
-    "        return tf.estimator.EstimatorSpec(mode, loss=loss, eval_metric_ops=metrics)\n",
+    "        return tf.estimator.EstimatorSpec(mode, loss=loss) #, eval_metric_ops=metrics)\n",
     "    \n",
     "    # Define the optimizer\n",
     "    if mode == tf.estimator.ModeKeys.TRAIN:\n",
     "        with tf.variable_scope(\"optimizer\"):\n",
-    "            # Define a training operation\n",
-    "            train_op = tf.train.GradientDescentOptimizer(\n",
-    "                learning_rate=params['learning_rate']).minimize(loss)\n",
+    "#             # Define a training operation\n",
+    "#             train_op = tf.train.AdamOptimizer(0.01)\n",
+    "#             train_op = tf.train.GradientDescentOptimizer(\n",
+    "#                 learning_rate=params['learning_rate']).minimize(loss, global_step=tf.train.get_global_step())\n",
+    "            train_op = tf.train.AdamOptimizer(0.001).minimize(loss, global_step=tf.train.get_global_step())\n",
     "            return tf.estimator.EstimatorSpec(mode, loss=loss, train_op=train_op)\n",
     "    \n",
     "    raise RuntimeError('Invalid mode entered, {})'.format(mode))"
@@ -459,49 +435,40 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": 87,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def variable_summaries(var):\n",
+    "    \"\"\"Attach a lot of summaries to a Tensor (for TensorBoard visualization).\"\"\"\n",
+    "    with tf.name_scope('summaries'):\n",
+    "        mean = tf.reduce_mean(var)\n",
+    "        tf.summary.scalar('mean', mean)\n",
+    "#         with tf.name_scope('stddev'):\n",
+    "#             stddev = tf.sqrt(tf.reduce_mean(tf.square(var - mean)))\n",
+    "#         tf.summary.scalar('stddev', stddev)\n",
+    "        tf.summary.scalar('max', tf.reduce_max(var))\n",
+    "        tf.summary.scalar('min', tf.reduce_min(var))\n",
+    "        tf.summary.histogram('histogram', var)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "INFO:tensorflow:Using default config.\n"
+      "INFO:tensorflow:Using config: {'_model_dir': '/home/apra/work/projects/leabra-tf/models', '_tf_random_seed': None, '_save_summary_steps': 100, '_save_checkpoints_steps': None, '_save_checkpoints_secs': 600, '_session_config': None, '_keep_checkpoint_max': 5, '_keep_checkpoint_every_n_hours': 10000, '_log_step_count_steps': 100, '_train_distribute': None, '_device_fn': None, '_service': None, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7fc17dbbe438>, '_task_type': 'worker', '_task_id': 0, '_global_id_in_cluster': 0, '_master': '', '_evaluation_master': '', '_is_chief': True, '_num_ps_replicas': 0, '_num_worker_replicas': 1}\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Using default config.\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "WARNING:tensorflow:Using temporary folder as model directory: /tmp/tmpduqp2a1d\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] WARNING Using temporary folder as model directory: /tmp/tmpduqp2a1d\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "INFO:tensorflow:Using config: {'_model_dir': '/tmp/tmpduqp2a1d', '_tf_random_seed': None, '_save_summary_steps': 100, '_save_checkpoints_steps': None, '_save_checkpoints_secs': 600, '_session_config': None, '_keep_checkpoint_max': 5, '_keep_checkpoint_every_n_hours': 10000, '_log_step_count_steps': 100, '_train_distribute': None, '_device_fn': None, '_service': None, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7ff2a85b9080>, '_task_type': 'worker', '_task_id': 0, '_global_id_in_cluster': 0, '_master': '', '_evaluation_master': '', '_is_chief': True, '_num_ps_replicas': 0, '_num_worker_replicas': 1}\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Using config: {'_model_dir': '/tmp/tmpduqp2a1d', '_tf_random_seed': None, '_save_summary_steps': 100, '_save_checkpoints_steps': None, '_save_checkpoints_secs': 600, '_session_config': None, '_keep_checkpoint_max': 5, '_keep_checkpoint_every_n_hours': 10000, '_log_step_count_steps': 100, '_train_distribute': None, '_device_fn': None, '_service': None, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7ff2a85b9080>, '_task_type': 'worker', '_task_id': 0, '_global_id_in_cluster': 0, '_master': '', '_evaluation_master': '', '_is_chief': True, '_num_ps_replicas': 0, '_num_worker_replicas': 1}\n"
+      "2019-02-19 02:35:32 apra-xps13 tensorflow[18447] INFO Using config: {'_model_dir': '/home/apra/work/projects/leabra-tf/models', '_tf_random_seed': None, '_save_summary_steps': 100, '_save_checkpoints_steps': None, '_save_checkpoints_secs': 600, '_session_config': None, '_keep_checkpoint_max': 5, '_keep_checkpoint_every_n_hours': 10000, '_log_step_count_steps': 100, '_train_distribute': None, '_device_fn': None, '_service': None, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7fc17dbbe438>, '_task_type': 'worker', '_task_id': 0, '_global_id_in_cluster': 0, '_master': '', '_evaluation_master': '', '_is_chief': True, '_num_ps_replicas': 0, '_num_worker_replicas': 1}\n"
      ]
     },
     {
@@ -515,7 +482,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Running training and evaluation locally (non-distributed).\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Running training and evaluation locally (non-distributed).\n"
      ]
     },
     {
@@ -529,7 +496,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Start train and evaluate loop. The evaluate will happen after every checkpoint. Checkpoint frequency is determined based on RunConfig arguments: save_checkpoints_steps None or save_checkpoints_secs 600.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Start train and evaluate loop. The evaluate will happen after every checkpoint. Checkpoint frequency is determined based on RunConfig arguments: save_checkpoints_steps None or save_checkpoints_secs 600.\n"
      ]
     },
     {
@@ -543,7 +510,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Calling model_fn.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Calling model_fn.\n"
      ]
     },
     {
@@ -557,7 +524,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Done calling model_fn.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Done calling model_fn.\n"
      ]
     },
     {
@@ -571,7 +538,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Create CheckpointSaverHook.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Create CheckpointSaverHook.\n"
      ]
     },
     {
@@ -585,7 +552,21 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Graph was finalized.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Graph was finalized.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Restoring parameters from /home/apra/work/projects/leabra-tf/models/model.ckpt-10000\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Restoring parameters from /home/apra/work/projects/leabra-tf/models/model.ckpt-10000\n"
      ]
     },
     {
@@ -599,7 +580,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Running local_init_op.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Running local_init_op.\n"
      ]
     },
     {
@@ -613,130 +594,1745 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:34 apra-xps13 tensorflow[3514] INFO Done running local_init_op.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Done running local_init_op.\n"
      ]
     },
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "INFO:tensorflow:Saving checkpoints for 0 into /tmp/tmpduqp2a1d/model.ckpt.\n"
+      "INFO:tensorflow:Saving checkpoints for 10000 into /home/apra/work/projects/leabra-tf/models/model.ckpt.\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2019-02-18 20:39:35 apra-xps13 tensorflow[3514] INFO Saving checkpoints for 0 into /tmp/tmpduqp2a1d/model.ckpt.\n"
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO Saving checkpoints for 10000 into /home/apra/work/projects/leabra-tf/models/model.ckpt.\n"
      ]
     },
     {
-     "ename": "InvalidArgumentError",
-     "evalue": "Input to reshape is a tensor with 25 values, but the requested shape requires a multiple of 10\n\t [[Node: OBPDenseNet/input = Reshape[T=DT_FLOAT, Tshape=DT_INT32, _device=\"/job:localhost/replica:0/task:0/device:CPU:0\"](IteratorGetNext, labels/shape)]]\n\nCaused by op 'OBPDenseNet/input', defined at:\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/runpy.py\", line 193, in _run_module_as_main\n    \"__main__\", mod_spec)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/runpy.py\", line 85, in _run_code\n    exec(code, run_globals)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel_launcher.py\", line 16, in <module>\n    app.launch_new_instance()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/traitlets/config/application.py\", line 658, in launch_instance\n    app.start()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelapp.py\", line 505, in start\n    self.io_loop.start()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/platform/asyncio.py\", line 132, in start\n    self.asyncio_loop.run_forever()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/asyncio/base_events.py\", line 438, in run_forever\n    self._run_once()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/asyncio/base_events.py\", line 1451, in _run_once\n    handle._run()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/asyncio/events.py\", line 145, in _run\n    self._callback(*self._args)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/ioloop.py\", line 758, in _run_callback\n    ret = callback()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/stack_context.py\", line 300, in null_wrapper\n    return fn(*args, **kwargs)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 1233, in inner\n    self.run()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 1147, in run\n    yielded = self.gen.send(value)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelbase.py\", line 357, in process_one\n    yield gen.maybe_future(dispatch(*args))\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 326, in wrapper\n    yielded = next(result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelbase.py\", line 267, in dispatch_shell\n    yield gen.maybe_future(handler(stream, idents, msg))\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 326, in wrapper\n    yielded = next(result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelbase.py\", line 534, in execute_request\n    user_expressions, allow_stdin,\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 326, in wrapper\n    yielded = next(result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/ipkernel.py\", line 294, in do_execute\n    res = shell.run_cell(code, store_history=store_history, silent=silent)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/zmqshell.py\", line 536, in run_cell\n    return super(ZMQInteractiveShell, self).run_cell(*args, **kwargs)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 2819, in run_cell\n    raw_cell, store_history, silent, shell_futures)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 2845, in _run_cell\n    return runner(coro)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/async_helpers.py\", line 67, in _pseudo_sync_runner\n    coro.send(None)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 3020, in run_cell_async\n    interactivity=interactivity, compiler=compiler, result=result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 3191, in run_ast_nodes\n    if (yield from self.run_code(code, result)):\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 3267, in run_code\n    exec(code_obj, self.user_global_ns, self.user_ns)\n  File \"<ipython-input-20-2c2e39843215>\", line 8, in <module>\n    tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\", line 451, in train_and_evaluate\n    return executor.run()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\", line 590, in run\n    return self.run_local()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\", line 691, in run_local\n    saving_listeners=saving_listeners)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 376, in train\n    loss = self._train_model(input_fn, hooks, saving_listeners)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 1145, in _train_model\n    return self._train_model_default(input_fn, hooks, saving_listeners)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 1170, in _train_model_default\n    features, labels, model_fn_lib.ModeKeys.TRAIN, self.config)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 1133, in _call_model_fn\n    model_fn_results = self._model_fn(features=features, **kwargs)\n  File \"<ipython-input-17-b3f96322f167>\", line 3, in model_fn\n    model = create_model_obp(features, mode, params)\n  File \"<ipython-input-12-8c80f3711f2b>\", line 9, in create_model_obp\n    x = tf.reshape(tensor=input_tensor, shape=[-1, *hyper_params['output_size']], name='input')\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/ops/gen_array_ops.py\", line 6199, in reshape\n    \"Reshape\", tensor=tensor, shape=shape, name=name)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py\", line 787, in _apply_op_helper\n    op_def=op_def)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/util/deprecation.py\", line 454, in new_func\n    return func(*args, **kwargs)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/framework/ops.py\", line 3155, in create_op\n    op_def=op_def)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/framework/ops.py\", line 1717, in __init__\n    self._traceback = tf_stack.extract_stack()\n\nInvalidArgumentError (see above for traceback): Input to reshape is a tensor with 25 values, but the requested shape requires a multiple of 10\n\t [[Node: OBPDenseNet/input = Reshape[T=DT_FLOAT, Tshape=DT_INT32, _device=\"/job:localhost/replica:0/task:0/device:CPU:0\"](IteratorGetNext, labels/shape)]]\n",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mInvalidArgumentError\u001b[0m                      Traceback (most recent call last)",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/client/session.py\u001b[0m in \u001b[0;36m_do_call\u001b[0;34m(self, fn, *args)\u001b[0m\n\u001b[1;32m   1277\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1278\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mfn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1279\u001b[0m     \u001b[0;32mexcept\u001b[0m \u001b[0merrors\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mOpError\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/client/session.py\u001b[0m in \u001b[0;36m_run_fn\u001b[0;34m(feed_dict, fetch_list, target_list, options, run_metadata)\u001b[0m\n\u001b[1;32m   1262\u001b[0m       return self._call_tf_sessionrun(\n\u001b[0;32m-> 1263\u001b[0;31m           options, feed_dict, fetch_list, target_list, run_metadata)\n\u001b[0m\u001b[1;32m   1264\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/client/session.py\u001b[0m in \u001b[0;36m_call_tf_sessionrun\u001b[0;34m(self, options, feed_dict, fetch_list, target_list, run_metadata)\u001b[0m\n\u001b[1;32m   1349\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_session\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0moptions\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfeed_dict\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfetch_list\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtarget_list\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1350\u001b[0;31m         run_metadata)\n\u001b[0m\u001b[1;32m   1351\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;31mInvalidArgumentError\u001b[0m: Input to reshape is a tensor with 25 values, but the requested shape requires a multiple of 10\n\t [[Node: OBPDenseNet/input = Reshape[T=DT_FLOAT, Tshape=DT_INT32, _device=\"/job:localhost/replica:0/task:0/device:CPU:0\"](IteratorGetNext, labels/shape)]]",
-      "\nDuring handling of the above exception, another exception occurred:\n",
-      "\u001b[0;31mInvalidArgumentError\u001b[0m                      Traceback (most recent call last)",
-      "\u001b[0;32m<ipython-input-20-2c2e39843215>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      6\u001b[0m \u001b[0meval_spec\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mestimator\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mEvalSpec\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mlambda\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mestimator\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mModeKeys\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mEVAL\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhyper_params\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      7\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 8\u001b[0;31m \u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mestimator\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtrain_and_evaluate\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mestimator\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtrain_spec\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0meval_spec\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\u001b[0m in \u001b[0;36mtrain_and_evaluate\u001b[0;34m(estimator, train_spec, eval_spec)\u001b[0m\n\u001b[1;32m    449\u001b[0m         '(with task id 0).  Given task id {}'.format(config.task_id))\n\u001b[1;32m    450\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 451\u001b[0;31m   \u001b[0;32mreturn\u001b[0m \u001b[0mexecutor\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrun\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    452\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    453\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m    588\u001b[0m         config.task_type != run_config_lib.TaskType.EVALUATOR):\n\u001b[1;32m    589\u001b[0m       \u001b[0mlogging\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0minfo\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'Running training and evaluation locally (non-distributed).'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 590\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrun_local\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    591\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    592\u001b[0m     \u001b[0;31m# Distributed case.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\u001b[0m in \u001b[0;36mrun_local\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m    689\u001b[0m         \u001b[0mmax_steps\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_train_spec\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mmax_steps\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    690\u001b[0m         \u001b[0mhooks\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mtrain_hooks\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 691\u001b[0;31m         saving_listeners=saving_listeners)\n\u001b[0m\u001b[1;32m    692\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    693\u001b[0m     eval_result = listener_for_eval.eval_result or _EvalResult(\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36mtrain\u001b[0;34m(self, input_fn, hooks, steps, max_steps, saving_listeners)\u001b[0m\n\u001b[1;32m    374\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    375\u001b[0m       \u001b[0msaving_listeners\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_check_listeners_type\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 376\u001b[0;31m       \u001b[0mloss\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_train_model\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    377\u001b[0m       \u001b[0mlogging\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0minfo\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'Loss for final step: %s.'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mloss\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    378\u001b[0m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36m_train_model\u001b[0;34m(self, input_fn, hooks, saving_listeners)\u001b[0m\n\u001b[1;32m   1143\u001b[0m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_train_model_distributed\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1144\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1145\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_train_model_default\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1146\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1147\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0m_train_model_default\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36m_train_model_default\u001b[0;34m(self, input_fn, hooks, saving_listeners)\u001b[0m\n\u001b[1;32m   1171\u001b[0m       return self._train_with_estimator_spec(estimator_spec, worker_hooks,\n\u001b[1;32m   1172\u001b[0m                                              \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mglobal_step_tensor\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1173\u001b[0;31m                                              saving_listeners)\n\u001b[0m\u001b[1;32m   1174\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1175\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0m_train_model_distributed\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36m_train_with_estimator_spec\u001b[0;34m(self, estimator_spec, worker_hooks, hooks, global_step_tensor, saving_listeners)\u001b[0m\n\u001b[1;32m   1449\u001b[0m       \u001b[0mloss\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1450\u001b[0m       \u001b[0;32mwhile\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0mmon_sess\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshould_stop\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1451\u001b[0;31m         \u001b[0m_\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mloss\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mmon_sess\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrun\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mestimator_spec\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtrain_op\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mestimator_spec\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mloss\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1452\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mloss\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1453\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/training/monitored_session.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self, fetches, feed_dict, options, run_metadata)\u001b[0m\n\u001b[1;32m    581\u001b[0m                           \u001b[0mfeed_dict\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mfeed_dict\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    582\u001b[0m                           \u001b[0moptions\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0moptions\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 583\u001b[0;31m                           run_metadata=run_metadata)\n\u001b[0m\u001b[1;32m    584\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    585\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0mrun_step_fn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mstep_fn\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/training/monitored_session.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self, fetches, feed_dict, options, run_metadata)\u001b[0m\n\u001b[1;32m   1057\u001b[0m                               \u001b[0mfeed_dict\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mfeed_dict\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1058\u001b[0m                               \u001b[0moptions\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0moptions\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1059\u001b[0;31m                               run_metadata=run_metadata)\n\u001b[0m\u001b[1;32m   1060\u001b[0m       \u001b[0;32mexcept\u001b[0m \u001b[0m_PREEMPTION_ERRORS\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1061\u001b[0m         logging.info('An error was raised. This may be due to a preemption in '\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/training/monitored_session.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self, *args, **kwargs)\u001b[0m\n\u001b[1;32m   1148\u001b[0m         \u001b[0;32mraise\u001b[0m \u001b[0msix\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mreraise\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0moriginal_exc_info\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1149\u001b[0m       \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1150\u001b[0;31m         \u001b[0;32mraise\u001b[0m \u001b[0msix\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mreraise\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0moriginal_exc_info\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1151\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1152\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/six.py\u001b[0m in \u001b[0;36mreraise\u001b[0;34m(tp, value, tb)\u001b[0m\n\u001b[1;32m    691\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mvalue\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__traceback__\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0mtb\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    692\u001b[0m                 \u001b[0;32mraise\u001b[0m \u001b[0mvalue\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mwith_traceback\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtb\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 693\u001b[0;31m             \u001b[0;32mraise\u001b[0m \u001b[0mvalue\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    694\u001b[0m         \u001b[0;32mfinally\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    695\u001b[0m             \u001b[0mvalue\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/training/monitored_session.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self, *args, **kwargs)\u001b[0m\n\u001b[1;32m   1133\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0mrun\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1134\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1135\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_sess\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrun\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1136\u001b[0m     \u001b[0;32mexcept\u001b[0m \u001b[0m_PREEMPTION_ERRORS\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1137\u001b[0m       \u001b[0;32mraise\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/training/monitored_session.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self, fetches, feed_dict, options, run_metadata)\u001b[0m\n\u001b[1;32m   1205\u001b[0m                                   \u001b[0mfeed_dict\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mfeed_dict\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1206\u001b[0m                                   \u001b[0moptions\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0moptions\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1207\u001b[0;31m                                   run_metadata=run_metadata)\n\u001b[0m\u001b[1;32m   1208\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1209\u001b[0m     \u001b[0;32mfor\u001b[0m \u001b[0mhook\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_hooks\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/training/monitored_session.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self, *args, **kwargs)\u001b[0m\n\u001b[1;32m    985\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    986\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0mrun\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 987\u001b[0;31m     \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_sess\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrun\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    988\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    989\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0mrun_step_fn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mstep_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mraw_session\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrun_with_hooks\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/client/session.py\u001b[0m in \u001b[0;36mrun\u001b[0;34m(self, fetches, feed_dict, options, run_metadata)\u001b[0m\n\u001b[1;32m    875\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    876\u001b[0m       result = self._run(None, fetches, feed_dict, options_ptr,\n\u001b[0;32m--> 877\u001b[0;31m                          run_metadata_ptr)\n\u001b[0m\u001b[1;32m    878\u001b[0m       \u001b[0;32mif\u001b[0m \u001b[0mrun_metadata\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    879\u001b[0m         \u001b[0mproto_data\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtf_session\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mTF_GetBuffer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mrun_metadata_ptr\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/client/session.py\u001b[0m in \u001b[0;36m_run\u001b[0;34m(self, handle, fetches, feed_dict, options, run_metadata)\u001b[0m\n\u001b[1;32m   1098\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0mfinal_fetches\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0mfinal_targets\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0;34m(\u001b[0m\u001b[0mhandle\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mfeed_dict_tensor\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1099\u001b[0m       results = self._do_run(handle, final_targets, final_fetches,\n\u001b[0;32m-> 1100\u001b[0;31m                              feed_dict_tensor, options, run_metadata)\n\u001b[0m\u001b[1;32m   1101\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1102\u001b[0m       \u001b[0mresults\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/client/session.py\u001b[0m in \u001b[0;36m_do_run\u001b[0;34m(self, handle, target_list, fetch_list, feed_dict, options, run_metadata)\u001b[0m\n\u001b[1;32m   1270\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0mhandle\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1271\u001b[0m       return self._do_call(_run_fn, feeds, fetches, targets, options,\n\u001b[0;32m-> 1272\u001b[0;31m                            run_metadata)\n\u001b[0m\u001b[1;32m   1273\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1274\u001b[0m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_do_call\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0m_prun_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhandle\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfeeds\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfetches\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/client/session.py\u001b[0m in \u001b[0;36m_do_call\u001b[0;34m(self, fn, *args)\u001b[0m\n\u001b[1;32m   1289\u001b[0m         \u001b[0;32mexcept\u001b[0m \u001b[0mKeyError\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1290\u001b[0m           \u001b[0;32mpass\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1291\u001b[0;31m       \u001b[0;32mraise\u001b[0m \u001b[0mtype\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mnode_def\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mop\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmessage\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1292\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1293\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0m_extend_graph\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;31mInvalidArgumentError\u001b[0m: Input to reshape is a tensor with 25 values, but the requested shape requires a multiple of 10\n\t [[Node: OBPDenseNet/input = Reshape[T=DT_FLOAT, Tshape=DT_INT32, _device=\"/job:localhost/replica:0/task:0/device:CPU:0\"](IteratorGetNext, labels/shape)]]\n\nCaused by op 'OBPDenseNet/input', defined at:\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/runpy.py\", line 193, in _run_module_as_main\n    \"__main__\", mod_spec)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/runpy.py\", line 85, in _run_code\n    exec(code, run_globals)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel_launcher.py\", line 16, in <module>\n    app.launch_new_instance()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/traitlets/config/application.py\", line 658, in launch_instance\n    app.start()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelapp.py\", line 505, in start\n    self.io_loop.start()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/platform/asyncio.py\", line 132, in start\n    self.asyncio_loop.run_forever()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/asyncio/base_events.py\", line 438, in run_forever\n    self._run_once()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/asyncio/base_events.py\", line 1451, in _run_once\n    handle._run()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/asyncio/events.py\", line 145, in _run\n    self._callback(*self._args)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/ioloop.py\", line 758, in _run_callback\n    ret = callback()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/stack_context.py\", line 300, in null_wrapper\n    return fn(*args, **kwargs)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 1233, in inner\n    self.run()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 1147, in run\n    yielded = self.gen.send(value)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelbase.py\", line 357, in process_one\n    yield gen.maybe_future(dispatch(*args))\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 326, in wrapper\n    yielded = next(result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelbase.py\", line 267, in dispatch_shell\n    yield gen.maybe_future(handler(stream, idents, msg))\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 326, in wrapper\n    yielded = next(result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/kernelbase.py\", line 534, in execute_request\n    user_expressions, allow_stdin,\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tornado/gen.py\", line 326, in wrapper\n    yielded = next(result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/ipkernel.py\", line 294, in do_execute\n    res = shell.run_cell(code, store_history=store_history, silent=silent)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/ipykernel/zmqshell.py\", line 536, in run_cell\n    return super(ZMQInteractiveShell, self).run_cell(*args, **kwargs)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 2819, in run_cell\n    raw_cell, store_history, silent, shell_futures)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 2845, in _run_cell\n    return runner(coro)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/async_helpers.py\", line 67, in _pseudo_sync_runner\n    coro.send(None)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 3020, in run_cell_async\n    interactivity=interactivity, compiler=compiler, result=result)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 3191, in run_ast_nodes\n    if (yield from self.run_code(code, result)):\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/IPython/core/interactiveshell.py\", line 3267, in run_code\n    exec(code_obj, self.user_global_ns, self.user_ns)\n  File \"<ipython-input-20-2c2e39843215>\", line 8, in <module>\n    tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\", line 451, in train_and_evaluate\n    return executor.run()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\", line 590, in run\n    return self.run_local()\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/training.py\", line 691, in run_local\n    saving_listeners=saving_listeners)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 376, in train\n    loss = self._train_model(input_fn, hooks, saving_listeners)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 1145, in _train_model\n    return self._train_model_default(input_fn, hooks, saving_listeners)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 1170, in _train_model_default\n    features, labels, model_fn_lib.ModeKeys.TRAIN, self.config)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\", line 1133, in _call_model_fn\n    model_fn_results = self._model_fn(features=features, **kwargs)\n  File \"<ipython-input-17-b3f96322f167>\", line 3, in model_fn\n    model = create_model_obp(features, mode, params)\n  File \"<ipython-input-12-8c80f3711f2b>\", line 9, in create_model_obp\n    x = tf.reshape(tensor=input_tensor, shape=[-1, *hyper_params['output_size']], name='input')\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/ops/gen_array_ops.py\", line 6199, in reshape\n    \"Reshape\", tensor=tensor, shape=shape, name=name)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py\", line 787, in _apply_op_helper\n    op_def=op_def)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/util/deprecation.py\", line 454, in new_func\n    return func(*args, **kwargs)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/framework/ops.py\", line 3155, in create_op\n    op_def=op_def)\n  File \"/home/apra/miniconda3/envs/leabratf/lib/python3.6/site-packages/tensorflow/python/framework/ops.py\", line 1717, in __init__\n    self._traceback = tf_stack.extract_stack()\n\nInvalidArgumentError (see above for traceback): Input to reshape is a tensor with 25 values, but the requested shape requires a multiple of 10\n\t [[Node: OBPDenseNet/input = Reshape[T=DT_FLOAT, Tshape=DT_INT32, _device=\"/job:localhost/replica:0/task:0/device:CPU:0\"](IteratorGetNext, labels/shape)]]\n"
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 72.63191, step = 10001\n"
      ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO loss = 72.63191, step = 10001\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1028.29\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO global_step/sec: 1028.29\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 66.91044, step = 10101 (0.101 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:33 apra-xps13 tensorflow[18447] INFO loss = 66.91044, step = 10101 (0.101 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 547.634\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 547.634\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 91.52677, step = 10201 (0.186 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 91.52677, step = 10201 (0.186 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1024.72\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 1024.72\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 88.40373, step = 10301 (0.096 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 88.40373, step = 10301 (0.096 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1110.35\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 1110.35\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 47.151287, step = 10401 (0.086 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 47.151287, step = 10401 (0.086 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1194.69\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 1194.69\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 73.49492, step = 10501 (0.085 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 73.49492, step = 10501 (0.085 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 621.598\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 621.598\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 66.86064, step = 10601 (0.164 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 66.86064, step = 10601 (0.164 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 613.79\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 613.79\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 84.27954, step = 10701 (0.159 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 84.27954, step = 10701 (0.159 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1127.1\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 1127.1\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 85.750694, step = 10801 (0.089 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 85.750694, step = 10801 (0.089 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 798.764\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 798.764\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 48.59095, step = 10901 (0.126 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO loss = 48.59095, step = 10901 (0.126 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1263.6\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:34 apra-xps13 tensorflow[18447] INFO global_step/sec: 1263.6\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 76.39931, step = 11001 (0.081 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 76.39931, step = 11001 (0.081 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1458.24\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 1458.24\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 66.46165, step = 11101 (0.066 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 66.46165, step = 11101 (0.066 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1180.26\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 1180.26\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 82.807755, step = 11201 (0.085 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 82.807755, step = 11201 (0.085 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 577.214\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 577.214\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 85.64424, step = 11301 (0.177 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 85.64424, step = 11301 (0.177 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 784.403\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 784.403\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 49.340878, step = 11401 (0.124 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 49.340878, step = 11401 (0.124 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1068.29\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 1068.29\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 77.241714, step = 11501 (0.094 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 77.241714, step = 11501 (0.094 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 928.155\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 928.155\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 65.44937, step = 11601 (0.107 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 65.44937, step = 11601 (0.107 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1420.46\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 1420.46\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 82.06217, step = 11701 (0.073 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 82.06217, step = 11701 (0.073 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1057.33\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 1057.33\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 85.59954, step = 11801 (0.092 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 85.59954, step = 11801 (0.092 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1097.58\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 1097.58\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 49.98336, step = 11901 (0.091 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 49.98336, step = 11901 (0.091 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1318.18\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO global_step/sec: 1318.18\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 77.86101, step = 12001 (0.075 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:35 apra-xps13 tensorflow[18447] INFO loss = 77.86101, step = 12001 (0.075 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1378.65\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1378.65\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 64.44015, step = 12101 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 64.44015, step = 12101 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1395.18\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1395.18\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 81.81076, step = 12201 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 81.81076, step = 12201 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1106.2\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1106.2\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 85.635666, step = 12301 (0.092 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 85.635666, step = 12301 (0.092 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1355.32\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1355.32\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 50.551826, step = 12401 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 50.551826, step = 12401 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1396.57\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1396.57\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 78.44942, step = 12501 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 78.44942, step = 12501 (0.072 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1516.04\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1516.04\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 63.61695, step = 12601 (0.070 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 63.61695, step = 12601 (0.070 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1159.03\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1159.03\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 81.850395, step = 12701 (0.082 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 81.850395, step = 12701 (0.082 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1563.15\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1563.15\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 85.7495, step = 12801 (0.064 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 85.7495, step = 12801 (0.064 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1263.3\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1263.3\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 51.073723, step = 12901 (0.079 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 51.073723, step = 12901 (0.079 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1429.27\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1429.27\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 79.0294, step = 13001 (0.070 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 79.0294, step = 13001 (0.070 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1532.91\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1532.91\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 63.119194, step = 13101 (0.066 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 63.119194, step = 13101 (0.066 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1522.22\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1522.22\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 82.009384, step = 13201 (0.065 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 82.009384, step = 13201 (0.065 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1465.84\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO global_step/sec: 1465.84\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 85.896835, step = 13301 (0.068 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:36 apra-xps13 tensorflow[18447] INFO loss = 85.896835, step = 13301 (0.068 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1310.56\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1310.56\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 51.56066, step = 13401 (0.077 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 51.56066, step = 13401 (0.077 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1440.41\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1440.41\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 79.59552, step = 13501 (0.073 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 79.59552, step = 13501 (0.073 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1139.23\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1139.23\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 62.883293, step = 13601 (0.084 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 62.883293, step = 13601 (0.084 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1475.6\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1475.6\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 82.16679, step = 13701 (0.068 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 82.16679, step = 13701 (0.068 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1455.83\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1455.83\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 86.050064, step = 13801 (0.074 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 86.050064, step = 13801 (0.074 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1112.66\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1112.66\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 52.01457, step = 13901 (0.091 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 52.01457, step = 13901 (0.091 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1136.26\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1136.26\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 80.12685, step = 14001 (0.082 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 80.12685, step = 14001 (0.082 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1464.31\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1464.31\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 62.771843, step = 14101 (0.068 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 62.771843, step = 14101 (0.068 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1153.3\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 1153.3\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 82.29246, step = 14201 (0.087 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 82.29246, step = 14201 (0.087 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 540.76\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 540.76\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 86.20349, step = 14301 (0.190 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 86.20349, step = 14301 (0.190 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 742.707\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO global_step/sec: 742.707\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 52.434776, step = 14401 (0.130 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:37 apra-xps13 tensorflow[18447] INFO loss = 52.434776, step = 14401 (0.130 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1141.65\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO global_step/sec: 1141.65\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 80.62163, step = 14501 (0.088 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO loss = 80.62163, step = 14501 (0.088 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1167.11\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO global_step/sec: 1167.11\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 62.70218, step = 14601 (0.086 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO loss = 62.70218, step = 14601 (0.086 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1349.3\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO global_step/sec: 1349.3\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 82.40403, step = 14701 (0.074 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO loss = 82.40403, step = 14701 (0.074 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 1117.17\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO global_step/sec: 1117.17\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 86.35297, step = 14801 (0.100 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO loss = 86.35297, step = 14801 (0.100 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:global_step/sec: 675.61\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO global_step/sec: 675.61\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:loss = 52.83718, step = 14901 (0.139 sec)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO loss = 52.83718, step = 14901 (0.139 sec)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Saving checkpoints for 15000 into /home/apra/work/projects/leabra-tf/models/model.ckpt.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Saving checkpoints for 15000 into /home/apra/work/projects/leabra-tf/models/model.ckpt.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Calling model_fn.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Calling model_fn.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Done calling model_fn.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Done calling model_fn.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Starting evaluation at 2019-02-19-07:35:38\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Starting evaluation at 2019-02-19-07:35:38\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Graph was finalized.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Graph was finalized.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Restoring parameters from /home/apra/work/projects/leabra-tf/models/model.ckpt-15000\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Restoring parameters from /home/apra/work/projects/leabra-tf/models/model.ckpt-15000\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Running local_init_op.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Running local_init_op.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Done running local_init_op.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:38 apra-xps13 tensorflow[18447] INFO Done running local_init_op.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [10/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [10/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [20/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [20/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [30/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [30/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [40/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [40/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [50/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [50/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [60/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [60/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [70/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [70/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [80/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [80/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [90/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [90/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Evaluation [100/100]\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Evaluation [100/100]\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Finished evaluation at 2019-02-19-07:35:39\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Finished evaluation at 2019-02-19-07:35:39\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Saving dict for global step 15000: global_step = 15000, loss = 75.44577\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Saving dict for global step 15000: global_step = 15000, loss = 75.44577\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Saving 'checkpoint_path' summary for global step 15000: /home/apra/work/projects/leabra-tf/models/model.ckpt-15000\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Saving 'checkpoint_path' summary for global step 15000: /home/apra/work/projects/leabra-tf/models/model.ckpt-15000\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Loss for final step: 72.04926.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-02-19 02:35:39 apra-xps13 tensorflow[18447] INFO Loss for final step: 72.04926.\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "({'loss': 75.44577, 'global_step': 15000}, [])"
+      ]
+     },
+     "execution_count": 88,
+     "metadata": {},
+     "output_type": "execute_result"
     }
    ],
    "source": [
+    "global_step = tf.Variable(0)\n",
     "\n",
-    "config = tf.estimator.RunConfig()\n",
-    "estimator = tf.estimator.Estimator(model_fn, params=hyper_params)\n",
+    "model_dir = constants.DIR_MODELS\n",
     "\n",
+    "config = tf.estimator.RunConfig(model_dir=model_dir)\n",
+    "\n",
+    "estimator = tf.estimator.Estimator(model_fn, params=hyper_params, config=config)\n",
     "train_spec = tf.estimator.TrainSpec(input_fn=lambda:input_fn(tf.estimator.ModeKeys.TRAIN, hyper_params))\n",
     "eval_spec = tf.estimator.EvalSpec(input_fn=lambda:input_fn(tf.estimator.ModeKeys.EVAL, hyper_params))\n",
     "\n",
+    "for var in tf.trainable_variables():\n",
+    "    variable_summaries(var)\n",
+    "merged_summary = tf.summary.merge_all()\n",
+    "\n",
     "tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "hyper_params.output_size"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "hyper_params.output_size"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "\n",
-    "So let's just confirm that `tensorflow` is happy with the function."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   },
   {
    "cell_type": "markdown",
