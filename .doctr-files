@@ -18,7 +18,6 @@
 ./_sources/combinatorics.rst.txt
 ./_sources/commands.rst.txt
 ./_sources/data.rst.txt
-./_sources/features.rst.txt
 ./_sources/getting-started.rst.txt
 ./_sources/index.rst.txt
 ./_sources/models.rst.txt
@@ -88,7 +87,6 @@
 ./combinatorics.html
 ./commands.html
 ./data.html
-./features.html
 ./genindex.html
 ./getting-started.html
 ./index.html
