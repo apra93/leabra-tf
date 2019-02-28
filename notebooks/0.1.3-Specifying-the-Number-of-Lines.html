@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.1.3 Specifying the Number of Lines &mdash; Leabra Tensorflow 0+untagged.64.g028f02e documentation</title>
+  <title>0.1.3 Specifying the Number of Lines &mdash; Leabra Tensorflow 0+untagged.65.g1a72cfa documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.64.g028f02e
+                0+untagged.65.g1a72cfa
               </div>
             
           
@@ -102,16 +102,17 @@
 <li class="toctree-l1"><a class="reference internal" href="0.1.1-Combigen-All-True-Bug-Fix.html">0.1.1 Combigen All-True Bug Fix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.1.2-Combigen-Stacks.html">0.1.2 Combigen Stacks</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">0.1.3 Specifying the Number of Lines</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Imports">Imports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Initial-Setup">Initial Setup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Combigen-with-Random-Numbers-of-Lines">Combigen with Random Numbers of Lines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Reworking-the-Implementation">Reworking the Implementation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Ensuring-the-Statistics-are-Correct">Ensuring the Statistics are Correct</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Ensuring-the-Number-of-Lines-is-Always-Correct">Ensuring the Number of Lines is Always Correct</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Handling-Non-Conforming-Arguments">Handling Non-Conforming Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Boilerplate-Code">Boilerplate Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#Combigen-with-Random-Numbers-of-Lines">Combigen with Random Numbers of Lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Reworking-the-Implementation">Reworking the Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Ensuring-the-Statistics-are-Correct">Ensuring the Statistics are Correct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Ensuring-the-Number-of-Lines-is-Always-Correct">Ensuring the Number of Lines is Always Correct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Handling-Non-Conforming-Arguments">Handling Non-Conforming Arguments</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="0.2-Running-a-Basic-Model-on-Combigen.html">0.2 Running a Basic Model on Combigen</a></li>
@@ -404,8 +405,11 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="0.1.3-Specifying-the-Number-of-Lines">
 <h1>0.1.3 Specifying the Number of Lines<a class="headerlink" href="#0.1.3-Specifying-the-Number-of-Lines" title="Permalink to this headline">¶</a></h1>
 <p>Michael pointed out that in the true task only has one lines on each axis, so this should be a controllable parameter.</p>
+<div class="section" id="Boilerplate-Code">
+<h2>Boilerplate Code<a class="headerlink" href="#Boilerplate-Code" title="Permalink to this headline">¶</a></h2>
+<p>Code</p>
 <div class="section" id="Jupyter-Extensions">
-<h2>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h2>
+<h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
 <p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -471,7 +475,7 @@ Git branch : master
 </div>
 </div>
 <div class="section" id="Imports">
-<h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h2>
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -512,7 +516,7 @@ Git branch : master
 </div>
 </div>
 <div class="section" id="Initial-Setup">
-<h2>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h2>
+<h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -537,8 +541,10 @@ Git branch : master
 </pre></div>
 </div>
 </div>
+</div>
+</div>
 <div class="section" id="Combigen-with-Random-Numbers-of-Lines">
-<h3>Combigen with Random Numbers of Lines<a class="headerlink" href="#Combigen-with-Random-Numbers-of-Lines" title="Permalink to this headline">¶</a></h3>
+<h2>Combigen with Random Numbers of Lines<a class="headerlink" href="#Combigen-with-Random-Numbers-of-Lines" title="Permalink to this headline">¶</a></h2>
 <p>As it stands, the number of lines in the resulting <code class="docutils literal notranslate"><span class="pre">y</span></code> is randomly determined. Below is what the labels, <code class="docutils literal notranslate"><span class="pre">y</span></code>, look like and the resulting inputs, <code class="docutils literal notranslate"><span class="pre">x</span></code>, would look like.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -554,7 +560,7 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_19_0.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_19_0.png" />
+<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_20_0.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_20_0.png" />
 </div>
 </div>
 <p>As shown above, there are a random number of lines in the resulting <code class="docutils literal notranslate"><span class="pre">x</span></code> inputs which should be made controllable. And just to be clear on where the function stands, below is the implemenation as of now.</p>
@@ -583,7 +589,7 @@ Git branch : master
 </div>
 </div>
 <div class="section" id="Reworking-the-Implementation">
-<h3>Reworking the Implementation<a class="headerlink" href="#Reworking-the-Implementation" title="Permalink to this headline">¶</a></h3>
+<h2>Reworking the Implementation<a class="headerlink" href="#Reworking-the-Implementation" title="Permalink to this headline">¶</a></h2>
 <p>So now let’s rework the implementation to parametrize the desired number of lines for wach axis.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[189]:
@@ -626,7 +632,7 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_25_0.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_25_0.png" />
+<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_26_0.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_26_0.png" />
 </div>
 </div>
 <p>And now let’s see for differnet numbers of lines.</p>
@@ -645,33 +651,33 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_0.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_0.png" />
+<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_0.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_1.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_1.png" />
+<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_1.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_2.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_2.png" />
+<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_2.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_2.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_3.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_27_3.png" />
+<img alt="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_3.png" src="../_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_3.png" />
 </div>
 </div>
 </div>
 <div class="section" id="Ensuring-the-Statistics-are-Correct">
-<h3>Ensuring the Statistics are Correct<a class="headerlink" href="#Ensuring-the-Statistics-are-Correct" title="Permalink to this headline">¶</a></h3>
+<h2>Ensuring the Statistics are Correct<a class="headerlink" href="#Ensuring-the-Statistics-are-Correct" title="Permalink to this headline">¶</a></h2>
 <p>I was a little worried about the fequrency of getting certain indices over others, so let’s just quickly try to ensure that the values are being set according to the expected statistics.</p>
 <p>A quick way is to create labels with 1 <code class="docutils literal notranslate"><span class="pre">n_sample</span></code> and <code class="docutils literal notranslate"><span class="pre">stack</span></code>, but <code class="docutils literal notranslate"><span class="pre">N</span></code> numbers of <code class="docutils literal notranslate"><span class="pre">dims</span></code>, which we can then use to compute a sum accross the <code class="docutils literal notranslate"><span class="pre">dims</span></code> axis. What we expect to see is as <code class="docutils literal notranslate"><span class="pre">N</span></code> gets large, the sums all become increasingly similar.</p>
 <div class="nbinput docutils container">
@@ -704,7 +710,7 @@ Git branch : master
 <p>As expected they are all quite similar and do not vary much.</p>
 </div>
 <div class="section" id="Ensuring-the-Number-of-Lines-is-Always-Correct">
-<h3>Ensuring the Number of Lines is Always Correct<a class="headerlink" href="#Ensuring-the-Number-of-Lines-is-Always-Correct" title="Permalink to this headline">¶</a></h3>
+<h2>Ensuring the Number of Lines is Always Correct<a class="headerlink" href="#Ensuring-the-Number-of-Lines-is-Always-Correct" title="Permalink to this headline">¶</a></h2>
 <p>A more obvious test is to make sure that we are always getting the desired number of lines. So below loops through all combinations of lines and asserts that they sum to the correct number.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[268]:
@@ -736,7 +742,7 @@ Passed!
 </div>
 </div>
 <div class="section" id="Handling-Non-Conforming-Arguments">
-<h3>Handling Non-Conforming Arguments<a class="headerlink" href="#Handling-Non-Conforming-Arguments" title="Permalink to this headline">¶</a></h3>
+<h2>Handling Non-Conforming Arguments<a class="headerlink" href="#Handling-Non-Conforming-Arguments" title="Permalink to this headline">¶</a></h2>
 <p>The last modification that we should make is to ensure that the provided inputs are checked for some easy mistakes before trying to use them.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[274]:
@@ -806,7 +812,6 @@ Passed!
 Passed 1!
 Passed 2!
 </pre></div></div>
-</div>
 </div>
 </div>
 </div>
