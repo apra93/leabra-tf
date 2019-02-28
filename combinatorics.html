@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.62.gab4d8c0 documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.64.g028f02e documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.62.gab4d8c0
+                0+untagged.64.g028f02e
               </div>
             
           
@@ -250,7 +250,7 @@ models.</li>
 <h2>Combigen Functions<a class="headerlink" href="#combigen-functions" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.combigen.generate_labels">
-<code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">generate_labels</code><span class="sig-paren">(</span><em>n_samples=1</em>, <em>stack=4</em>, <em>size=5</em>, <em>dims=2</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.generate_labels" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">generate_labels</code><span class="sig-paren">(</span><em>n_samples=1, stack=4, size=5, dims=2, n_lines=[1, 1]</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.generate_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an array of labels to construct the data from.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -261,13 +261,19 @@ models.</li>
 <li><strong>stack</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of labels per stack.</li>
 <li><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the nxn matrix to use for the task.</li>
 <li><strong>dims</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of dimensions for the task.</li>
+<li><strong>n_lines</strong> (<em>list</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – Number of lines to have on each axis. If an int is provided, then it is
+used for each axis.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>labels</strong> – The resulting task labels.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">np.ndarray (n_samples x size x dims)</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">np.ndarray (n_samples x size x dims)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If <cite>dims</cite> does not match the number of lines provided (assuming more
+than one number was provided for it)</p>
 </td>
 </tr>
 </tbody>
