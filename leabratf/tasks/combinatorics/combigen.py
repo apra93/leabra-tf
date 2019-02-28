@@ -4,11 +4,11 @@ import logging
 
 import numpy as np
 
-from leabratf.utils import make_input_3d
+from leabratf.utils import as_list
 
 logger = logging.getLogger(__file__)
 
-def generate_labels(n_samples=1, stack=4, size=5, dims=2):
+def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=[1,1]):
     """Returns an array of labels to construct the data from.
 
     Parameters
@@ -30,19 +30,31 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2):
     labels : np.ndarray (n_samples x size x dims)
     	The resulting task labels.
     """
-    # Generate baseline labels
-    raw_labels = np.random.choice(2, (n_samples, stack, size, dims), replace=True)
-    # Random selection of indices to zero out
-    arg_zero = np.random.choice(size, (n_samples*dims*stack), replace=True)
-    # Alternating indices to loop through the dims of the labels
-    dim_indices = np.tile(range(dims), stack*n_samples)
-    # Repeating indices to loop through the samples
-    sample_indices = np.repeat(range(n_samples), dims*stack)
-    # Stack indices
-    stack_indices = np.repeat(np.tile(range(stack), n_samples), dims)
+    # Ensure this is a list
+    n_lines = as_list(n_lines)
+    # If one number is passed in for n_lines and there is more than 1 dim, then assume that
+    # they should both be set to the value of n_lines.
+    if len(n_lines) == 1 and dims != 1:
+        n_lines *= dims
+    # Ensure dims and `len(n_lines)` is the same
+    if dims != len(n_lines):
+        raise ValueError('Value for dims must match len(n_lines)')
     
-    # Zero out a random selection of indices
-    raw_labels[sample_indices, stack_indices, arg_zero, dim_indices] = 0
+    # Generate a zero array to fill with 1s
+    raw_labels = np.zeros((n_samples, stack, size, dims))
+
+    # Create a list of length `dims` that contains arrays with the indices which to set
+    # the value to 1. Each array is of shape `n_samples` by `stack` by `n_line[i]`
+    # where `i` is the line index.
+    arg_ones = [np.array([np.random.choice(range(size), line, replace=False)
+                          for _ in range(n_samples*stack)])
+                .reshape((n_samples,stack,line))
+                for line in n_lines]
+
+    # Use the index arrays created above to set the desired indices of the zero-array to
+    # be 1 for each dim in dims.
+    for dim, arg_one in enumerate(arg_ones):
+        np.put_along_axis(raw_labels[:,:,:,dim], arg_one, values=1, axis=2)
     return raw_labels    
 
 def inverse_transform_single_sample(y):
