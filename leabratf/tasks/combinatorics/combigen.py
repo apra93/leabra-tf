@@ -25,15 +25,25 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=[1,1]):
     dims : int, optional
     	Number of dimensions for the task.
 
+    n_lines : list or int, optional
+    	Number of lines to have on each axis. If an int is provided, then it is
+    	used for each axis.
+    
     Returns
     -------
     labels : np.ndarray (n_samples x size x dims)
     	The resulting task labels.
+
+    Raises
+    ------
+    ValueError
+    	If `dims` does not match the number of lines provided (assuming more
+    	than one number was provided for it)
     """
     # Ensure this is a list
     n_lines = as_list(n_lines)
-    # If one number is passed in for n_lines and there is more than 1 dim, then assume that
-    # they should both be set to the value of n_lines.
+    # If one number is passed in for n_lines and there is more than 1 dim, then
+    # assume that they should both be set to the value of n_lines.
     if len(n_lines) == 1 and dims != 1:
         n_lines *= dims
     # Ensure dims and `len(n_lines)` is the same
@@ -43,16 +53,16 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=[1,1]):
     # Generate a zero array to fill with 1s
     raw_labels = np.zeros((n_samples, stack, size, dims))
 
-    # Create a list of length `dims` that contains arrays with the indices which to set
-    # the value to 1. Each array is of shape `n_samples` by `stack` by `n_line[i]`
-    # where `i` is the line index.
+    # Create a list of length `dims` that contains arrays with the indices which
+    # to set the value to 1. Each array is of shape `n_samples` by `stack` by
+    # `n_line[i]` where `i` is the line index.
     arg_ones = [np.array([np.random.choice(range(size), line, replace=False)
                           for _ in range(n_samples*stack)])
                 .reshape((n_samples,stack,line))
                 for line in n_lines]
 
-    # Use the index arrays created above to set the desired indices of the zero-array to
-    # be 1 for each dim in dims.
+    # Use the index arrays created above to set the desired indices of the
+    # zero-array to be 1 for each dim in dims.
     for dim, arg_one in enumerate(arg_ones):
         np.put_along_axis(raw_labels[:,:,:,dim], arg_one, values=1, axis=2)
     return raw_labels    

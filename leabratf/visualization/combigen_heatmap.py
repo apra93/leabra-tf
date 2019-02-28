@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import leabratf.tasks.combinatorics.combigen as cg
-from leabratf.utils import make_input_3d
 
 logger = logging.getLogger(__name__)
 
