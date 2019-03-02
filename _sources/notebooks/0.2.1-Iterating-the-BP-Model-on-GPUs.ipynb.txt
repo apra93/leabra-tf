@@ -41,7 +41,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Thu Feb 28 2019 20:07:43 \n",
+      "Sat Mar 02 2019 15:56:16 \n",
       "\n",
       "CPython 3.6.8\n",
       "IPython 7.3.0\n",
@@ -58,7 +58,7 @@
       "processor  : x86_64\n",
       "CPU cores  : 12\n",
       "interpreter: 64bit\n",
-      "Git hash   : b59d3b884a4f321df27caf85d58892d152bcadd9\n",
+      "Git hash   : 662e2602393aaa79ac524177b09b8d653437faa3\n",
       "Git branch : master\n"
      ]
     }
@@ -124,7 +124,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 127,
+   "execution_count": 8,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -138,9 +138,7 @@
     "import seaborn as sns\n",
     "import tensorflow as tf\n",
     "from tensorflow.keras import models, layers, initializers, optimizers\n",
-    "from keras_tqdm import TQDMNotebookCallback\n",
-    "from tqdm import tqdm\n",
-    "from IPython.core.display import HTML"
+    "from tqdm import tqdm"
    ]
   },
   {
@@ -185,7 +183,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 53,
+   "execution_count": 6,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -212,48 +210,6 @@
     "setup_logging()\n",
     "# Define a logger object\n",
     "logger = logging.getLogger()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Fix a display problem with `TQDMNotebookCallback` where the inner progress bar moves downward as every epoch completes."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 8,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/html": [
-       "\n",
-       "    <style>\n",
-       "        .p-Widget.jp-OutputPrompt.jp-OutputArea-prompt:empty {\n",
-       "              padding: 0;\n",
-       "              border: 0;\n",
-       "        }\n",
-       "    </style>\n"
-      ],
-      "text/plain": [
-       "<IPython.core.display.HTML object>"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "display(HTML(\"\"\"\n",
-    "    <style>\n",
-    "        .p-Widget.jp-OutputPrompt.jp-OutputArea-prompt:empty {\n",
-    "              padding: 0;\n",
-    "              border: 0;\n",
-    "        }\n",
-    "    </style>\n",
-    "\"\"\"))"
    ]
   },
   {
@@ -453,7 +409,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 39,
+   "execution_count": 9,
    "metadata": {},
    "outputs": [
     {
@@ -587,6 +543,8 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "### Training Curves\n",
+    "\n",
     "Let's plot how the model did on each epoch."
    ]
   },
@@ -619,6 +577,8 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "### Example Outputs\n",
+    "\n",
     "Finally, let's see exactly how the model is doing on the task for several examples. In the graphs below, first four columns are the expected labels, while the right four are the predicted labels."
    ]
   },
@@ -844,6 +804,8 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "### Example Outputs\n",
+    "\n",
     "Seems similar so far, let's see what the outputs look like."
    ]
   },
@@ -896,6 +858,8 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "### Training Curves\n",
+    "\n",
     "That is impressively different result for just changing the optimizer. It's clear that an inappropriate loss function is being used since the relevant metrics are reading very similarly to the previous model.\n",
     "\n",
     "To really drive the point home, let's plot the history of metrics across epochs."
@@ -948,7 +912,7 @@
    "source": [
     "### Binary Cross-Entropy\n",
     "\n",
-    "Next to categorical cross entropy is binary cross entropy."
+    "Binary cross entropy is most likely the best one to try first since it is best suited for muli-label classification problem."
    ]
   },
   {
@@ -1025,6 +989,8 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "#### Example Outputs \n",
+    "\n",
     "Surely we can do better than last time."
    ]
   },
@@ -1080,6 +1046,8 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "#### Training Curves\n",
+    "\n",
     "It's somewhat unclear, but perhaps the loss and accuracy will be more telling."
    ]
   },
@@ -1112,18 +1080,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Definitely an interesting plot but it's still unclear what next steps should be taken besides increasing the number of training samples or epochs."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "### More Epochs Binary Cross-Entropy\n",
-    "\n",
-    "Next to categorical cross entropy is binary cross entropy."
+    "From this it seems that the model is quickly learning to zero out its responses since every element except one will have zero on each axis. However even as the model approaches the maximum number of epochs, the loss and validation loss continue to drop indicating that the model still has more to learn. Let's see what happens if we increase the number of epochs. "
    ]
   },
   {
@@ -1209,6 +1166,8 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "#### Graphs\n",
+    "\n",
     "Let's see what this would look like."
    ]
   },
@@ -1283,13 +1242,6 @@
    "source": [
     "Although this is definitely an interesting loss and accuracy plot."
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   }
  ],
  "metadata": {

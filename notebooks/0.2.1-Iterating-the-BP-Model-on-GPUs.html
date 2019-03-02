@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.2.1 Iterating the BP Model on GPUs &mdash; Leabra Tensorflow 0+untagged.65.g662e260 documentation</title>
+  <title>0.2.1 Iterating the BP Model on GPUs &mdash; Leabra Tensorflow 0+untagged.65.g11c0fe6 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0+untagged.65.g662e260
+                0+untagged.65.g11c0fe6
               </div>
             
           
@@ -112,13 +112,26 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#GPU-Availability-on-X7">GPU Availability on X7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#O'Reily-Backpropagation-Model">O’Reily Backpropagation Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Training-Curves">Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Example-Outputs">Example Outputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Custom-Callbacks">Custom Callbacks</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Stochastic-Gradient-Descent">Stochastic Gradient Descent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Stochastic-Gradient-Descent">Stochastic Gradient Descent</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Example-Outputs">Example Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Training-Curves">Training Curves</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#Classification-Loss-Functions">Classification Loss Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Binary-Cross-Entropy">Binary Cross-Entropy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Categorical-Cross-Entropy---Not-Appropriate">Categorical Cross-Entropy - Not Appropriate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Binary-Cross-Entropy">Binary Cross-Entropy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Example-Outputs">Example Outputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Training-Curves">Training Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Categorical-Cross-Entropy---Not-Appropriate">Categorical Cross-Entropy - Not Appropriate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Graphs">Graphs</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -435,7 +448,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Thu Feb 28 2019 20:07:43
+Sat Mar 02 2019 15:56:16
 
 CPython 3.6.8
 IPython 7.3.0
@@ -452,7 +465,7 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 12
 interpreter: 64bit
-Git hash   : b59d3b884a4f321df27caf85d58892d152bcadd9
+Git hash   : 662e2602393aaa79ac524177b09b8d653437faa3
 Git branch : master
 </pre></div></div>
 </div>
@@ -486,7 +499,7 @@ Git branch : master
 <h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[127]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -500,9 +513,7 @@ Git branch : master
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">initializers</span><span class="p">,</span> <span class="n">optimizers</span>
-<span class="kn">from</span> <span class="nn">keras_tqdm</span> <span class="k">import</span> <span class="n">TQDMNotebookCallback</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">HTML</span>
 </pre></div>
 </div>
 </div>
@@ -531,7 +542,7 @@ Git branch : master
 <h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -554,34 +565,6 @@ Git branch : master
 </pre></div>
 </div>
 </div>
-<p>Fix a display problem with <code class="docutils literal notranslate"><span class="pre">TQDMNotebookCallback</span></code> where the inner progress bar moves downward as every epoch completes.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    &lt;style&gt;</span>
-<span class="s2">        .p-Widget.jp-OutputPrompt.jp-OutputArea-prompt:empty {</span>
-<span class="s2">              padding: 0;</span>
-<span class="s2">              border: 0;</span>
-<span class="s2">        }</span>
-<span class="s2">    &lt;/style&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<style>
-    .p-Widget.jp-OutputPrompt.jp-OutputArea-prompt:empty {
-          padding: 0;
-          border: 0;
-    }
-</style></div>
-</div>
 </div>
 <div class="section" id="The-Combigen-Task">
 <h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
@@ -600,7 +583,7 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_22_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_22_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_20_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_20_0.png" />
 </div>
 </div>
 </div>
@@ -747,7 +730,7 @@ physical_device_desc: &#34;device: 2, name: GeForce GTX TITAN X, pci bus id: 000
 <h2>O’Reily Backpropagation Model<a class="headerlink" href="#O'Reily-Backpropagation-Model" title="Permalink to this headline">¶</a></h2>
 <p>Let’s start with defining the set dataset we used in nb-0.2.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -866,6 +849,8 @@ CPU times: user 5min 45s, sys: 39.5 s, total: 6min 25s
 Wall time: 3min 16s
 </pre></div></div>
 </div>
+<div class="section" id="Training-Curves">
+<h3>Training Curves<a class="headerlink" href="#Training-Curves" title="Permalink to this headline">¶</a></h3>
 <p>Let’s plot how the model did on each epoch.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[121]:
@@ -885,9 +870,12 @@ Wall time: 3min 16s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_33_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_33_0.png" />
 </div>
 </div>
+</div>
+<div class="section" id="Example-Outputs">
+<h3>Example Outputs<a class="headerlink" href="#Example-Outputs" title="Permalink to this headline">¶</a></h3>
 <p>Finally, let’s see exactly how the model is doing on the task for several examples. In the graphs below, first four columns are the expected labels, while the right four are the predicted labels.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
@@ -907,21 +895,22 @@ Wall time: 3min 16s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_37_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_37_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_37_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_37_1.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_37_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_37_2.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_35_2.png" />
+</div>
 </div>
 </div>
 <div class="section" id="Custom-Callbacks">
@@ -1074,6 +1063,8 @@ CPU times: user 5min 23s, sys: 39.7 s, total: 6min 2s
 Wall time: 2min 56s
 </pre></div></div>
 </div>
+<div class="section" id="Example-Outputs">
+<h3>Example Outputs<a class="headerlink" href="#Example-Outputs" title="Permalink to this headline">¶</a></h3>
 <p>Seems similar so far, let’s see what the outputs look like.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[128]:
@@ -1093,23 +1084,26 @@ Wall time: 2min 56s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_45_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_45_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_1.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_45_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_45_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_2.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_45_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_45_2.png" />
 </div>
 </div>
+</div>
+<div class="section" id="Training-Curves">
+<h3>Training Curves<a class="headerlink" href="#Training-Curves" title="Permalink to this headline">¶</a></h3>
 <p>That is impressively different result for just changing the optimizer. It’s clear that an inappropriate loss function is being used since the relevant metrics are reading very similarly to the previous model.</p>
 <p>To really drive the point home, let’s plot the history of metrics across epochs.</p>
 <div class="nbinput docutils container">
@@ -1130,17 +1124,18 @@ Wall time: 2min 56s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_49_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_49_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_47_0.png" />
 </div>
 </div>
 <p>We can clearly see an improvement as a function of the number of epochs, but the problem is more fundamental than a lack of training.</p>
+</div>
 </div>
 <div class="section" id="Classification-Loss-Functions">
 <h2>Classification Loss Functions<a class="headerlink" href="#Classification-Loss-Functions" title="Permalink to this headline">¶</a></h2>
 <p>The loss function used thus far has been the mean squared error, which works great for regression problems but not so much for classification-type problems. Let’s try a few others to see how they perform.</p>
 <div class="section" id="Binary-Cross-Entropy">
 <h3>Binary Cross-Entropy<a class="headerlink" href="#Binary-Cross-Entropy" title="Permalink to this headline">¶</a></h3>
-<p>Next to categorical cross entropy is binary cross entropy.</p>
+<p>Binary cross entropy is most likely the best one to try first since it is best suited for muli-label classification problem.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[149]:
 </pre></div>
@@ -1211,6 +1206,8 @@ CPU times: user 6min 24s, sys: 41.2 s, total: 7min 5s
 Wall time: 3min 47s
 </pre></div></div>
 </div>
+<div class="section" id="Example-Outputs">
+<h4>Example Outputs<a class="headerlink" href="#Example-Outputs" title="Permalink to this headline">¶</a></h4>
 <p>Surely we can do better than last time.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[151]:
@@ -1233,23 +1230,26 @@ Wall time: 3min 47s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_54_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_54_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_1.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_54_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_54_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_2.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_54_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_54_2.png" />
 </div>
 </div>
+</div>
+<div class="section" id="Training-Curves">
+<h4>Training Curves<a class="headerlink" href="#Training-Curves" title="Permalink to this headline">¶</a></h4>
 <p>It’s somewhat unclear, but perhaps the loss and accuracy will be more telling.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[152]:
@@ -1269,20 +1269,10 @@ Wall time: 3min 47s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_58_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_58_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_56_0.png" />
 </div>
 </div>
-<p>Definitely an interesting plot but it’s still unclear what next steps should be taken besides increasing the number of training samples or epochs.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1">### More Epochs Binary Cross-Entropy</span>
-
-<span class="n">Next</span> <span class="n">to</span> <span class="n">categorical</span> <span class="n">cross</span> <span class="n">entropy</span> <span class="ow">is</span> <span class="n">binary</span> <span class="n">cross</span> <span class="n">entropy</span><span class="o">.</span>
-</pre></div>
-</div>
+<p>From this it seems that the model is quickly learning to zero out its responses since every element except one will have zero on each axis. However even as the model approaches the maximum number of epochs, the loss and validation loss continue to drop indicating that the model still has more to learn. Let’s see what happens if we increase the number of epochs.</p>
 </div>
 </div>
 <div class="section" id="Categorical-Cross-Entropy---Not-Appropriate">
@@ -1358,6 +1348,8 @@ CPU times: user 6min 3s, sys: 40.6 s, total: 6min 44s
 Wall time: 3min 20s
 </pre></div></div>
 </div>
+<div class="section" id="Graphs">
+<h4>Graphs<a class="headerlink" href="#Graphs" title="Permalink to this headline">¶</a></h4>
 <p>Let’s see what this would look like.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[143]:
@@ -1372,21 +1364,21 @@ Wall time: 3min 20s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_65_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_65_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_65_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_65_1.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_65_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_65_2.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_2.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1407,18 +1399,10 @@ Wall time: 3min 20s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_66_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_66_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_63_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_63_0.png" />
 </div>
 </div>
 <p>Although this is definitely an interesting loss and accuracy plot.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
 </div>
 </div>
 </div>
