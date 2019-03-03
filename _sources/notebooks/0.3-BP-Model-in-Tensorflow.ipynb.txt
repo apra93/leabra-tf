@@ -226,16 +226,16 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 21,
    "metadata": {},
    "outputs": [],
    "source": [
-    "## Number of slots in a training set\n",
+    "# Number of slots in a training set\n",
     "STACK = 4\n",
-    "## Size of each axis in the input array\n",
+    "# Size of each axis in the input array\n",
     "SIZE = 5\n",
-    "## Number of axes to use per slot\n",
-    "DIMS = 2 "
+    "# Number of axes to use per slot\n",
+    "DIMS = 2"
    ]
   },
   {
@@ -247,17 +247,17 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": 22,
    "metadata": {},
    "outputs": [],
    "source": [
-    "## Number of epochs to train for\n",
+    "# Number of epochs to train for\n",
     "EPOCHS = 500\n",
-    "## Number of samples in the training set\n",
+    "# Number of samples in the training set\n",
     "N_TRAIN= 100\n",
-    "## Number of samples in the validation set\n",
+    "# Number of samples in the validation set\n",
     "N_VAL = 50\n",
-    "## Number of samples in the testing set\n",
+    "# Number of samples in the testing set\n",
     "N_TEST = 500"
    ]
   },
@@ -270,7 +270,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": 23,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -283,6 +283,31 @@
     "# Testing data\n",
     "Y_TEST = cg.generate_labels(n_samples=N_TEST, stack=STACK, size=SIZE, dims=DIMS)\n",
     "X_TEST = cg.inverse_transform(Y_TEST)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Network Parameters"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Learning rate\n",
+    "ALPHA = 0.01\n",
+    "# Batch size\n",
+    "BATCH_SIZE = 1\n",
+    "# Number of parameters in the inputs\n",
+    "N_INPUTS = STACK * SIZE ** DIMS\n",
+    "# Number of hidden units\n",
+    "N_HIDDEN_1 = 100\n",
+    "# Number of parameters in the labels\n",
+    "N_OUTPUTS = STACK * SIZE * DIMS"
    ]
   },
   {
@@ -353,11 +378,14 @@
     "\n",
     "With the main difference between models tested in nb-0.2.1 being the loss functions. The two most interesting models had the following training curves:\n",
     "\n",
-    "**Binary cross-entropy loss with stochastic gradient descent\n",
+    "**Binary cross-entropy loss with stochastic gradient descent**\n",
+    "\n",
     "\n",
     "![BCE_SGD](images/nb0.2.1_bce_sgd_5000_epochs.png)\n",
     "\n",
-    "**Mean-squared-error loss with stochastic gradient descent\n",
+    "\n",
+    "**Mean-squared-error loss with stochastic gradient descent**\n",
+    "\n",
     "\n",
     "![MSE_SGD](images/nb0.2.1_mse_sgd_5000_epochs.png)\n",
     "\n",
@@ -369,10 +397,222 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Tensorflow Implementaion\n",
+    "## Tensorflow Estimator\n",
     "\n",
-    "Using the results of the keras implementation as the benchmark for this model, let's rewrite the model in pure tensorflow."
+    "Using the results of the keras implementation as the benchmark for this model, let's rewrite the model using the estimator API and pure tensorflow. Let's start by defining the weights and associated biases."
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Layer weights\n",
+    "weights = {\n",
+    "    'h1': tf.Variable(tf.random_normal([N_INPUTS, N_HIDDEN_1])),\n",
+    "    'out': tf.Variable(tf.random_normal([N_HIDDEN_1, N_OUTPUTS]))\n",
+    "}\n",
+    "# Layer biases\n",
+    "biases = {\n",
+    "    'b1': tf.Variable(tf.random_normal([N_HIDDEN_1])),\n",
+    "    'out': tf.Variable(tf.random_normal([N_OUTPUTS]))\n",
+    "}\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Input_fn"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Training input fn\n",
+    "input_fn_train = tf.estimator.inputs.numpy_input_fn(\n",
+    "    x={'inputs': X_TRAIN}, y=Y_TRAIN, batch_size=BATCH_SIZE, \n",
+    "    num_epochs=EPOCHS, shuffle=True)\n",
+    "\n",
+    "# Testing input fn\n",
+    "input_fn_test = tf.estimator.inputs.numpy_input_fn(\n",
+    "    x={'inputs': X_TEST}, y=Y_TEST, batch_size=BATCH_SIZE, shuffle=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### O'Reilly Model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def oreilly_model(inputs):\n",
+    "    # Grab the data from the data dict\n",
+    "    x = inputs['inputs']\n",
+    "    # Reshape for hidden layer\n",
+    "    x = tf.reshape(x, shape=[-1, N_INPUTS])\n",
+    "    # Single hidden layer\n",
+    "    x = tf.sigmoid(x * weights['h1'] + biases['b1'])\n",
+    "    # Output layer\n",
+    "    x = tf.sigmoid(x * weights['out'] + biases['out'])\n",
+    "    # Reshape for labels\n",
+    "    return tf.reshape(x, shape=[-1, STACK, SIZE, DIMS])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def oreilly_model_fn(features, labels, mode):\n",
+    "    # Build the model\n",
+    "    logits = oreilly_model(features)\n",
+    "    \n",
+    "    # If prediction mode, early return\n",
+    "    if mode == tf.estimator.ModeKeys.PREDICT:\n",
+    "        return tf.estimator.EstimatorSpec(mode, predictions=logits)\n",
+    "        \n",
+    "    # Define loss and optimizer\n",
+    "    loss_op = tf.reduce_mean(tf.nn.cross_entropy_with_logits_v2(\n",
+    "        logits=logits, labels=labels))\n",
+    "    optimizer = tf.train.GradientDescentOptimizer(learning_rate=ALPHA)\n",
+    "    train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())\n",
+    "    \n",
+    "    # Evaluate the accuracy of the model\n",
+    "    accuracy_op = tf.metrics.accuracy(labels=labels, predictions=logits)\n",
+    "    \n",
+    "    # TF Estimators requires to return a EstimatorSpec, that specify\n",
+    "    # the different ops for training, evaluating, ...\n",
+    "    estim_specs = tf.estimator.EstimatorSpec(\n",
+    "      mode=mode,\n",
+    "      predictions=logits,\n",
+    "      loss=loss_op,\n",
+    "      train_op=train_op,\n",
+    "      eval_metric_ops={'accuracy': acc_op})\n",
+    "\n",
+    "    return estim_specs"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Using default config.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-03-02 21:21:15 x7 tensorflow[15191] INFO Using default config.\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "WARNING:tensorflow:Using temporary folder as model directory: /tmp/tmpay1l9_0b\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-03-02 21:21:15 x7 tensorflow[15191] WARNING Using temporary folder as model directory: /tmp/tmpay1l9_0b\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Using config: {'_model_dir': '/tmp/tmpay1l9_0b', '_tf_random_seed': None, '_save_summary_steps': 100, '_save_checkpoints_steps': None, '_save_checkpoints_secs': 600, '_session_config': allow_soft_placement: true\n",
+      "graph_options {\n",
+      "  rewrite_options {\n",
+      "    meta_optimizer_iterations: ONE\n",
+      "  }\n",
+      "}\n",
+      ", '_keep_checkpoint_max': 5, '_keep_checkpoint_every_n_hours': 10000, '_log_step_count_steps': 100, '_train_distribute': None, '_device_fn': None, '_protocol': None, '_eval_distribute': None, '_experimental_distribute': None, '_service': None, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7f2d2a3b3240>, '_task_type': 'worker', '_task_id': 0, '_global_id_in_cluster': 0, '_master': '', '_evaluation_master': '', '_is_chief': True, '_num_ps_replicas': 0, '_num_worker_replicas': 1}\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-03-02 21:21:15 x7 tensorflow[15191] INFO Using config: {'_model_dir': '/tmp/tmpay1l9_0b', '_tf_random_seed': None, '_save_summary_steps': 100, '_save_checkpoints_steps': None, '_save_checkpoints_secs': 600, '_session_config': allow_soft_placement: true\n",
+      "graph_options {\n",
+      "  rewrite_options {\n",
+      "    meta_optimizer_iterations: ONE\n",
+      "  }\n",
+      "}\n",
+      ", '_keep_checkpoint_max': 5, '_keep_checkpoint_every_n_hours': 10000, '_log_step_count_steps': 100, '_train_distribute': None, '_device_fn': None, '_protocol': None, '_eval_distribute': None, '_experimental_distribute': None, '_service': None, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7f2d2a3b3240>, '_task_type': 'worker', '_task_id': 0, '_global_id_in_cluster': 0, '_master': '', '_evaluation_master': '', '_is_chief': True, '_num_ps_replicas': 0, '_num_worker_replicas': 1}\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "INFO:tensorflow:Calling model_fn.\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-03-02 21:21:16 x7 tensorflow[15191] INFO Calling model_fn.\n"
+     ]
+    },
+    {
+     "ename": "ValueError",
+     "evalue": "Tensor(\"Variable_8:0\", shape=(100, 100), dtype=float32_ref) must be from the same graph as Tensor(\"Reshape:0\", shape=(?, 100), dtype=float32).",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-56-2b17bda61a2b>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      3\u001b[0m     \u001b[0msess\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrun\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mglobal_variables_initializer\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      4\u001b[0m     \u001b[0mmodel\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mestimator\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mEstimator\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0moreilly_model_fn\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 5\u001b[0;31m     \u001b[0mmodel\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtrain\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn_train\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36mtrain\u001b[0;34m(self, input_fn, hooks, steps, max_steps, saving_listeners)\u001b[0m\n\u001b[1;32m    352\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    353\u001b[0m       \u001b[0msaving_listeners\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_check_listeners_type\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 354\u001b[0;31m       \u001b[0mloss\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_train_model\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    355\u001b[0m       \u001b[0mlogging\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0minfo\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'Loss for final step: %s.'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mloss\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    356\u001b[0m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36m_train_model\u001b[0;34m(self, input_fn, hooks, saving_listeners)\u001b[0m\n\u001b[1;32m   1205\u001b[0m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_train_model_distributed\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1206\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1207\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_train_model_default\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1208\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1209\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0m_train_model_default\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0minput_fn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mhooks\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0msaving_listeners\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36m_train_model_default\u001b[0;34m(self, input_fn, hooks, saving_listeners)\u001b[0m\n\u001b[1;32m   1235\u001b[0m       \u001b[0mworker_hooks\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mextend\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0minput_hooks\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1236\u001b[0m       estimator_spec = self._call_model_fn(\n\u001b[0;32m-> 1237\u001b[0;31m           features, labels, model_fn_lib.ModeKeys.TRAIN, self.config)\n\u001b[0m\u001b[1;32m   1238\u001b[0m       \u001b[0mglobal_step_tensor\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtraining_util\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget_global_step\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mg\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1239\u001b[0m       return self._train_with_estimator_spec(estimator_spec, worker_hooks,\n",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/estimator/estimator.py\u001b[0m in \u001b[0;36m_call_model_fn\u001b[0;34m(self, features, labels, mode, config)\u001b[0m\n\u001b[1;32m   1193\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1194\u001b[0m     \u001b[0mlogging\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0minfo\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'Calling model_fn.'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1195\u001b[0;31m     \u001b[0mmodel_fn_results\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_model_fn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfeatures\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mfeatures\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1196\u001b[0m     \u001b[0mlogging\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0minfo\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'Done calling model_fn.'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1197\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m<ipython-input-51-1d7316551755>\u001b[0m in \u001b[0;36moreilly_model_fn\u001b[0;34m(features, labels, mode)\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mdef\u001b[0m \u001b[0moreilly_model_fn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfeatures\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mlabels\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmode\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      2\u001b[0m     \u001b[0;31m# Build the model\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 3\u001b[0;31m     \u001b[0mlogits\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0moreilly_model\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfeatures\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      4\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m     \u001b[0;31m# If prediction mode, early return\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m<ipython-input-50-10abf5cb9ca4>\u001b[0m in \u001b[0;36moreilly_model\u001b[0;34m(inputs)\u001b[0m\n\u001b[1;32m      5\u001b[0m     \u001b[0mx\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mreshape\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mshape\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m-\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mN_INPUTS\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      6\u001b[0m     \u001b[0;31m# Single hidden layer\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 7\u001b[0;31m     \u001b[0mx\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msigmoid\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m \u001b[0;34m*\u001b[0m \u001b[0mweights\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'h1'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0mbiases\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'b1'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      8\u001b[0m     \u001b[0;31m# Output layer\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      9\u001b[0m     \u001b[0mx\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msigmoid\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m \u001b[0;34m*\u001b[0m \u001b[0mweights\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'out'\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0mbiases\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m'out'\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py\u001b[0m in \u001b[0;36mbinary_op_wrapper\u001b[0;34m(x, y)\u001b[0m\n\u001b[1;32m    862\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    863\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0mbinary_op_wrapper\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0my\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 864\u001b[0;31m     \u001b[0;32mwith\u001b[0m \u001b[0mops\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mname_scope\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mop_name\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0my\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0mname\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    865\u001b[0m       \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mops\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mTensor\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0my\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mops\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mTensor\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    866\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mfunc\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0my\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mname\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mname\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/framework/ops.py\u001b[0m in \u001b[0;36m__enter__\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m   6021\u001b[0m       \u001b[0;32mif\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_values\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   6022\u001b[0m         \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_values\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 6023\u001b[0;31m       \u001b[0mg\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_get_graph_from_inputs\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_values\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   6024\u001b[0m       \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_g_manager\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mg\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mas_default\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   6025\u001b[0m       \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_g_manager\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__enter__\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/framework/ops.py\u001b[0m in \u001b[0;36m_get_graph_from_inputs\u001b[0;34m(op_input_list, graph)\u001b[0m\n\u001b[1;32m   5662\u001b[0m         \u001b[0mgraph\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mgraph_element\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mgraph\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   5663\u001b[0m       \u001b[0;32melif\u001b[0m \u001b[0moriginal_graph_element\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 5664\u001b[0;31m         \u001b[0m_assert_same_graph\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0moriginal_graph_element\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mgraph_element\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   5665\u001b[0m       \u001b[0;32melif\u001b[0m \u001b[0mgraph_element\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mgraph\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0mgraph\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   5666\u001b[0m         \u001b[0;32mraise\u001b[0m \u001b[0mValueError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"%s is not from the passed-in graph.\"\u001b[0m \u001b[0;34m%\u001b[0m \u001b[0mgraph_element\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/framework/ops.py\u001b[0m in \u001b[0;36m_assert_same_graph\u001b[0;34m(original_item, item)\u001b[0m\n\u001b[1;32m   5598\u001b[0m   \u001b[0;32mif\u001b[0m \u001b[0moriginal_item\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mgraph\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0mitem\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mgraph\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   5599\u001b[0m     raise ValueError(\"%s must be from the same graph as %s.\" % (item,\n\u001b[0;32m-> 5600\u001b[0;31m                                                                 original_item))\n\u001b[0m\u001b[1;32m   5601\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   5602\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mValueError\u001b[0m: Tensor(\"Variable_8:0\", shape=(100, 100), dtype=float32_ref) must be from the same graph as Tensor(\"Reshape:0\", shape=(?, 100), dtype=float32)."
+     ]
+    }
+   ],
+   "source": [
+    "# Build the Estimator\n",
+    "with tf.Session() as sess:\n",
+    "    sess.run(tf.global_variables_initializer())\n",
+    "    model = tf.estimator.Estimator(oreilly_model_fn)\n",
+    "    model.train(input_fn_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
   },
   {
    "cell_type": "code",
