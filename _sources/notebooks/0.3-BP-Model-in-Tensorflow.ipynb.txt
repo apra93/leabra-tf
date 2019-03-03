@@ -1,0 +1,414 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 0.3 BP Model in Tensorflow"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Boilerplate\n",
+    "\n",
+    "The following subsections are largely boilerplate code, so skip around as needed."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Jupyter Extensions"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Load [watermark](https://github.com/rasbt/watermark) to see the state of the machine and environment that's running the notebook. To make sense of the options, take a look at the [usage](https://github.com/rasbt/watermark#usage) section of the readme."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Sat Mar 02 2019 18:12:22 \n",
+      "\n",
+      "CPython 3.6.8\n",
+      "IPython 7.3.0\n",
+      "\n",
+      "numpy 1.15.4\n",
+      "matplotlib 3.0.3\n",
+      "seaborn 0.9.0\n",
+      "tensorflow 1.12.0\n",
+      "\n",
+      "compiler   : GCC 7.3.0\n",
+      "system     : Linux\n",
+      "release    : 4.4.0-130-generic\n",
+      "machine    : x86_64\n",
+      "processor  : x86_64\n",
+      "CPU cores  : 12\n",
+      "interpreter: 64bit\n",
+      "Git hash   : 11c0fe6156b95fbfbeeec73dd402459d8a852947\n",
+      "Git branch : master\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Load `watermark` extension\n",
+    "%load_ext watermark\n",
+    "# Display the status of the machine and packages. Add more as necessary.\n",
+    "%watermark -v -n -m -g -b -t -p numpy,matplotlib,seaborn,tensorflow"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Load [autoreload](https://ipython.org/ipython-doc/3/config/extensions/autoreload.html) which will always reload modules marked with `%aimport`.\n",
+    "\n",
+    "This behavior can be inverted by running `autoreload 2` which will set everything to be auto-reloaded *except* for modules marked with `%aimport`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load `autoreload` extension\n",
+    "%load_ext autoreload\n",
+    "# Set autoreload behavior\n",
+    "%autoreload 1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Load `matplotlib` in one of the more `jupyter`-friendly [rich-output modes](https://ipython.readthedocs.io/en/stable/interactive/plotting.html). Some options (that may or may not have worked) are `inline`, `notebook`, and `gtk`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Set the matplotlib mode\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Imports"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Static imports that shouldn't necessarily change throughout the notebook."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Standard library imports\n",
+    "import logging\n",
+    "from functools import reduce\n",
+    "\n",
+    "# Third party\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import seaborn as sns\n",
+    "import tensorflow as tf\n",
+    "from tensorflow.keras import models, layers, initializers, optimizers\n",
+    "from tqdm import tqdm"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Task script\n",
+    "%aimport leabratf.tasks.combinatorics.combigen\n",
+    "import leabratf.tasks.combinatorics.combigen as cg\n",
+    "# Visualization for the task\n",
+    "%aimport leabratf.visualization.combigen_heatmap\n",
+    "import leabratf.visualization.combigen_heatmap as cgh\n",
+    "# Utility functions\n",
+    "%aimport leabratf.utils\n",
+    "from leabratf.utils import setup_logging\n",
+    "%aimport leabratf.constants\n",
+    "from leabratf import constants"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Initial Setup"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Set [seaborn defaults](https://seaborn.pydata.org/generated/seaborn.set.html) for matplotlib."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sns.set()\n",
+    "sns.set_context(\"notebook\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the `logs` directory.\n",
+    "\n",
+    "See `logging.yml` for the exact logging configuration."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Run base logger setup\n",
+    "setup_logging()\n",
+    "# Define a logger object\n",
+    "logger = logging.getLogger()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Global Variables"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Combigen Task Variables"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "## Number of slots in a training set\n",
+    "STACK = 4\n",
+    "## Size of each axis in the input array\n",
+    "SIZE = 5\n",
+    "## Number of axes to use per slot\n",
+    "DIMS = 2 "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Data Parameters"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "## Number of epochs to train for\n",
+    "EPOCHS = 500\n",
+    "## Number of samples in the training set\n",
+    "N_TRAIN= 100\n",
+    "## Number of samples in the validation set\n",
+    "N_VAL = 50\n",
+    "## Number of samples in the testing set\n",
+    "N_TEST = 500"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Datasets"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Training Data\n",
+    "Y_TRAIN = cg.generate_labels(n_samples=N_TRAIN, stack=STACK, size=SIZE, dims=DIMS)\n",
+    "X_TRAIN = cg.inverse_transform(Y_TRAIN)\n",
+    "# Validation Data\n",
+    "Y_VAL = cg.generate_labels(n_samples=N_VAL, stack=STACK, size=SIZE, dims=DIMS)\n",
+    "X_VAL = cg.inverse_transform(Y_VAL)\n",
+    "# Testing data\n",
+    "Y_TEST = cg.generate_labels(n_samples=N_TEST, stack=STACK, size=SIZE, dims=DIMS)\n",
+    "X_TEST = cg.inverse_transform(Y_TEST)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Background\n",
+    "\n",
+    "This section goes over some of the background information for the notebook using results from previous notebooks. Skip around as needed."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The Combigen Task\n",
+    "\n",
+    "Quickly remind ourselves what the task looks like before diving in."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 40 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "cgh.visualize_combigen(5)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Keras Implementation\n",
+    "\n",
+    "In nb-0.2.x, the O'Reilly BP model was implemented in keras with the code having this general structure:\n",
+    "\n",
+    "```\n",
+    "def bp_model_bce(hidden_units=100, stack=STACK, size=SIZE, dims=DIMS):\n",
+    "    \"\"\"Builds and returns the model\"\"\"\n",
+    "    model = models.Sequential()\n",
+    "    model.add(layers.Reshape((stack*size*size,), name='Initial_reshape'))\n",
+    "    # Single hidden layer\n",
+    "    model.add(layers.Dense(hidden_units, activation='sigmoid', name='Hidden_Layer'))\n",
+    "    # Output layer\n",
+    "    model.add(layers.Dense(stack*size*dims, activation='sigmoid', name='Output_Layer'))\n",
+    "    # Reshape to match the labels\n",
+    "    model.add(layers.Reshape((stack, size, dims), name='Output_reshape'))\n",
+    "    \n",
+    "    # Loss and optimizer to use, along with metrics to track\n",
+    "    model.compile(optimizer=optimizers.SGD(lr=0.01), \n",
+    "                  loss='binary_crossentropy', \n",
+    "                  metrics=['accuracy'])\n",
+    "    return model\n",
+    "```\n",
+    "\n",
+    "With the main difference between models tested in nb-0.2.1 being the loss functions. The two most interesting models had the following training curves:\n",
+    "\n",
+    "**Binary cross-entropy loss with stochastic gradient descent\n",
+    "\n",
+    "![BCE_SGD](images/nb0.2.1_bce_sgd_5000_epochs.png)\n",
+    "\n",
+    "**Mean-squared-error loss with stochastic gradient descent\n",
+    "\n",
+    "![MSE_SGD](images/nb0.2.1_mse_sgd_5000_epochs.png)\n",
+    "\n",
+    "\n",
+    "Some things to note are that the models were trained to 10 times the number of epochs as O'Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model's performance would have looked like."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Tensorflow Implementaion\n",
+    "\n",
+    "Using the results of the keras implementation as the benchmark for this model, let's rewrite the model in pure tensorflow."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

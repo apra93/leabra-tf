@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.2.1 Iterating the BP Model on GPUs &mdash; Leabra Tensorflow 0+untagged.64.g3de9f7e documentation</title>
+  <title>0.2.1 Iterating the BP Model on GPUs &mdash; Leabra Tensorflow 0+untagged.64.g609c52a documentation</title>
   
 
   
@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="0.3 BP Model in Tensorflow" href="0.3-BP-Model-in-Tensorflow.html" />
     <link rel="prev" title="0.2 Running a Basic Model on Combigen" href="0.2-Running-a-Basic-Model-on-Combigen.html" /> 
 
   
@@ -57,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.64.g3de9f7e
+                0+untagged.64.g609c52a
               </div>
             
           
@@ -112,30 +113,46 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#GPU-Availability-on-X7">GPU Availability on X7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#O'Reily-Backpropagation-Model">O’Reily Backpropagation Model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Training-Curves">Training Curves</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Example-Outputs">Example Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#BP-Training-Curves">BP Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#BP-Example-Outputs">BP Example Outputs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Custom-Callbacks">Custom Callbacks</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Stochastic-Gradient-Descent">Stochastic Gradient Descent</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Example-Outputs">Example Outputs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Training-Curves">Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#SGD-Example-Outputs">SGD Example Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#SGD-Training-Curves">SGD Training Curves</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Classification-Loss-Functions">Classification Loss Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Binary-Cross-Entropy">Binary Cross-Entropy</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Example-Outputs">Example Outputs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Training-Curves">Training Curves</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#BCE-Example-Outputs">BCE Example Outputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#BCE-Training-Curves">BCE Training Curves</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#Binary-Cross-Entropy-with-More-Epochs">Binary Cross-Entropy with More Epochs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#BCE+E-Example-Outputs">BCE+E Example Outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#BCE+E-Training-Curves">BCE+E Training Curves</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Categorical-Cross-Entropy---Not-Appropriate">Categorical Cross-Entropy - Not Appropriate</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Graphs">Graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#CCE-Graphs">CCE Graphs</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#Revisiting-MSE">Revisiting MSE</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#MSE+E-Example-Outputs">MSE+E Example Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MSE+E-Training-Curves">MSE+E Training Curves</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#RMSE">RMSE</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#RMSE+E-Example-Outputs">RMSE+E Example Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#RMSE+E-Training-Curves">RMSE+E Training Curves</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
 </ul>
 
             
@@ -849,8 +866,8 @@ CPU times: user 5min 45s, sys: 39.5 s, total: 6min 25s
 Wall time: 3min 16s
 </pre></div></div>
 </div>
-<div class="section" id="Training-Curves">
-<h3>Training Curves<a class="headerlink" href="#Training-Curves" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="BP-Training-Curves">
+<h3>BP Training Curves<a class="headerlink" href="#BP-Training-Curves" title="Permalink to this headline">¶</a></h3>
 <p>Let’s plot how the model did on each epoch.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[121]:
@@ -874,8 +891,8 @@ Wall time: 3min 16s
 </div>
 </div>
 </div>
-<div class="section" id="Example-Outputs">
-<h3>Example Outputs<a class="headerlink" href="#Example-Outputs" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="BP-Example-Outputs">
+<h3>BP Example Outputs<a class="headerlink" href="#BP-Example-Outputs" title="Permalink to this headline">¶</a></h3>
 <p>Finally, let’s see exactly how the model is doing on the task for several examples. In the graphs below, first four columns are the expected labels, while the right four are the predicted labels.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
@@ -918,7 +935,7 @@ Wall time: 3min 16s
 <p>A quick aside - an issue when working on nb-0.2 was that there was no sensible way to view the model’s progress as it trained. By default it printed to the console at the start of every epoch, which quickly got unwieldly and resulted in me setting <code class="docutils literal notranslate"><span class="pre">verbose</span></code> to 0.</p>
 <p>The easiest way to improve the readability of the model as it trains is to create a keras callback that makes prints a sensible amount of times.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[118]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -978,7 +995,7 @@ Begining epoch 9/10...
 <h2>Stochastic Gradient Descent<a class="headerlink" href="#Stochastic-Gradient-Descent" title="Permalink to this headline">¶</a></h2>
 <p>The O’Reilly paper explicitly says that no adaptive learning rates were used, just a static value of 0.01. So let’s make the change to the model and see how it performs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[125]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1063,8 +1080,8 @@ CPU times: user 5min 23s, sys: 39.7 s, total: 6min 2s
 Wall time: 2min 56s
 </pre></div></div>
 </div>
-<div class="section" id="Example-Outputs">
-<h3>Example Outputs<a class="headerlink" href="#Example-Outputs" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="SGD-Example-Outputs">
+<h3>SGD Example Outputs<a class="headerlink" href="#SGD-Example-Outputs" title="Permalink to this headline">¶</a></h3>
 <p>Seems similar so far, let’s see what the outputs look like.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[128]:
@@ -1102,8 +1119,8 @@ Wall time: 2min 56s
 </div>
 </div>
 </div>
-<div class="section" id="Training-Curves">
-<h3>Training Curves<a class="headerlink" href="#Training-Curves" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="SGD-Training-Curves">
+<h3>SGD Training Curves<a class="headerlink" href="#SGD-Training-Curves" title="Permalink to this headline">¶</a></h3>
 <p>That is impressively different result for just changing the optimizer. It’s clear that an inappropriate loss function is being used since the relevant metrics are reading very similarly to the previous model.</p>
 <p>To really drive the point home, let’s plot the history of metrics across epochs.</p>
 <div class="nbinput docutils container">
@@ -1137,7 +1154,7 @@ Wall time: 2min 56s
 <h3>Binary Cross-Entropy<a class="headerlink" href="#Binary-Cross-Entropy" title="Permalink to this headline">¶</a></h3>
 <p>Binary cross entropy is most likely the best one to try first since it is best suited for muli-label classification problem.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[149]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1206,8 +1223,8 @@ CPU times: user 6min 24s, sys: 41.2 s, total: 7min 5s
 Wall time: 3min 47s
 </pre></div></div>
 </div>
-<div class="section" id="Example-Outputs">
-<h4>Example Outputs<a class="headerlink" href="#Example-Outputs" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="BCE-Example-Outputs">
+<h4>BCE Example Outputs<a class="headerlink" href="#BCE-Example-Outputs" title="Permalink to this headline">¶</a></h4>
 <p>Surely we can do better than last time.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[151]:
@@ -1248,8 +1265,8 @@ Wall time: 3min 47s
 </div>
 </div>
 </div>
-<div class="section" id="Training-Curves">
-<h4>Training Curves<a class="headerlink" href="#Training-Curves" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="BCE-Training-Curves">
+<h4>BCE Training Curves<a class="headerlink" href="#BCE-Training-Curves" title="Permalink to this headline">¶</a></h4>
 <p>It’s somewhat unclear, but perhaps the loss and accuracy will be more telling.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[152]:
@@ -1275,9 +1292,127 @@ Wall time: 3min 47s
 <p>From this it seems that the model is quickly learning to zero out its responses since every element except one will have zero on each axis. However even as the model approaches the maximum number of epochs, the loss and validation loss continue to drop indicating that the model still has more to learn. Let’s see what happens if we increase the number of epochs.</p>
 </div>
 </div>
+<div class="section" id="Binary-Cross-Entropy-with-More-Epochs">
+<h3>Binary Cross-Entropy with More Epochs<a class="headerlink" href="#Binary-Cross-Entropy-with-More-Epochs" title="Permalink to this headline">¶</a></h3>
+<p>The model above was run in a different session than when this section was being put together so we can’t just reuse the same model above and unfortunately have to start the training from scratch.</p>
+<p>This time around, let’s train it using ten times as many epochs as in the paper to see how the model does.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="c1"># Time the execution of the cell</span>
+
+<span class="c1"># Define the bce model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">bp_model_bce</span><span class="p">()</span>
+<span class="c1"># Train for EPOCHS epochs</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training...&#39;</span><span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_x</span><span class="p">,</span> <span class="n">training_y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">validation_x</span><span class="p">,</span> <span class="n">validation_y</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">OnlyNUpdates</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished!&#39;</span><span class="p">)</span>
+
+<span class="c1"># Score the resulting model</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">testing_x</span><span class="p">,</span> <span class="n">testing_y</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loss and accuracy:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Training...
+Beginning epoch 1/5000...
+Beginning epoch 501/5000...
+Beginning epoch 1001/5000...
+Beginning epoch 1501/5000...
+Beginning epoch 2001/5000...
+Beginning epoch 2501/5000...
+Beginning epoch 3001/5000...
+Beginning epoch 3501/5000...
+Beginning epoch 4001/5000...
+Beginning epoch 4501/5000...
+Finished!
+500/500 [==============================] - 1s 1ms/step
+Loss and accuracy: [0.09560047355294228, 0.9661000059843063]
+CPU times: user 58min 17s, sys: 6min 28s, total: 1h 4min 46s
+Wall time: 32min 42s
+</pre></div></div>
+</div>
+<div class="section" id="BCE+E-Example-Outputs">
+<h4>BCE+E Example Outputs<a class="headerlink" href="#BCE+E-Example-Outputs" title="Permalink to this headline">¶</a></h4>
+<p>Perhaps the model will start outputting values besides zero?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_61_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_61_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_61_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_61_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_61_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_61_2.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="BCE+E-Training-Curves">
+<h3>BCE+E Training Curves<a class="headerlink" href="#BCE+E-Training-Curves" title="Permalink to this headline">¶</a></h3>
+<p>Unsurprisingly better, so let’s now look at how it did during learning. Let’s turn this into a function.</p>
+<p>In the resulting graph, since we are now plotting more than 500 epochs, I added a dotted line to show where epoch 500 is.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training History&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">EPOCHS</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;500 Epochs&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_63_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_63_0.png" />
+</div>
+</div>
+<p>Incredibly, it seems that the model has still not begun overfitting the data as indicated by the increasing validation accuracy even at epoch 5000.</p>
+</div>
 <div class="section" id="Categorical-Cross-Entropy---Not-Appropriate">
 <h3>Categorical Cross-Entropy - Not Appropriate<a class="headerlink" href="#Categorical-Cross-Entropy---Not-Appropriate" title="Permalink to this headline">¶</a></h3>
-<p>A common multiclass loss function is categorical cross-entropy. This is also not appropriate for this task because it expects there to be one index that corresponds to the true label of the sample.</p>
+<p>This loss function is not appropriate for this task because it expects there to be one index that corresponds to the true label of the sample. More succinctly, CCE is made for multi-class classification problems and not multi-label ones. However it will be kept in as a form of a control.</p>
+<p>A common multiclass loss function is categorical cross-entropy.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[141]:
 </pre></div>
@@ -1348,8 +1483,8 @@ CPU times: user 6min 3s, sys: 40.6 s, total: 6min 44s
 Wall time: 3min 20s
 </pre></div></div>
 </div>
-<div class="section" id="Graphs">
-<h4>Graphs<a class="headerlink" href="#Graphs" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="CCE-Graphs">
+<h4>CCE Graphs<a class="headerlink" href="#CCE-Graphs" title="Permalink to this headline">¶</a></h4>
 <p>Let’s see what this would look like.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[143]:
@@ -1364,21 +1499,21 @@ Wall time: 3min 20s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_69_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_69_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_1.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_69_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_69_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_62_2.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_69_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_69_2.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1399,10 +1534,249 @@ Wall time: 3min 20s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_63_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_63_0.png" />
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_70_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_70_0.png" />
 </div>
 </div>
-<p>Although this is definitely an interesting loss and accuracy plot.</p>
+</div>
+</div>
+</div>
+<div class="section" id="Revisiting-MSE">
+<h2>Revisiting MSE<a class="headerlink" href="#Revisiting-MSE" title="Permalink to this headline">¶</a></h2>
+<p>Seeing the results for training the BCE model up to 5000 epochs left me curious about the training curves for using MSE as the loss when taken out that far. So, let’s run it to find out how it does.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="c1"># Time the execution of the cell</span>
+
+<span class="c1"># Define the sgd model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">bp_model_sgd</span><span class="p">()</span>
+<span class="c1"># Train for EPOCHS epochs</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training...&#39;</span><span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_x</span><span class="p">,</span> <span class="n">training_y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">validation_x</span><span class="p">,</span> <span class="n">validation_y</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">OnlyNUpdates</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished!&#39;</span><span class="p">)</span>
+
+<span class="c1"># Score the resulting model</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">testing_x</span><span class="p">,</span> <span class="n">testing_y</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loss and accuracy:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Training...
+Beginning epoch 1/5000...
+Beginning epoch 501/5000...
+Beginning epoch 1001/5000...
+Beginning epoch 1501/5000...
+Beginning epoch 2001/5000...
+Beginning epoch 2501/5000...
+Beginning epoch 3001/5000...
+Beginning epoch 3501/5000...
+Beginning epoch 4001/5000...
+Beginning epoch 4501/5000...
+Finished!
+500/500 [==============================] - 1s 1ms/step
+Loss and accuracy: [0.03562701074499637, 0.6650999978780746]
+CPU times: user 49min 22s, sys: 6min 12s, total: 55min 35s
+Wall time: 25min 23s
+</pre></div></div>
+</div>
+<div class="section" id="MSE+E-Example-Outputs">
+<h3>MSE+E Example Outputs<a class="headerlink" href="#MSE+E-Example-Outputs" title="Permalink to this headline">¶</a></h3>
+<p>And now let’s see the outputs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_74_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_74_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_74_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_74_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_74_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_74_2.png" />
+</div>
+</div>
+<p>Looks pretty good. How about the training curves?</p>
+</div>
+<div class="section" id="MSE+E-Training-Curves">
+<h3>MSE+E Training Curves<a class="headerlink" href="#MSE+E-Training-Curves" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_77_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_77_0.png" />
+</div>
+</div>
+<p>It seems that the task is about maximally learned by around epoch 1000.</p>
+</div>
+</div>
+<div class="section" id="RMSE">
+<h2>RMSE<a class="headerlink" href="#RMSE" title="Permalink to this headline">¶</a></h2>
+<p>Just out of curiousity, I wanted to see what using the root mean squared error would look like. Turns out it isn’t an available keras loss function which is a little suspicious but let’s roll with it.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">keras</span> <span class="k">import</span> <span class="n">backend</span> <span class="k">as</span> <span class="n">K</span>
+
+<span class="k">def</span> <span class="nf">root_mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">K</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">K</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">K</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">y_true</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">bp_model_rmse</span><span class="p">(</span><span class="n">hidden_units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds and returns the model&quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">((</span><span class="n">stack</span><span class="o">*</span><span class="n">size</span><span class="o">*</span><span class="n">size</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Initial_reshape&#39;</span><span class="p">))</span>
+    <span class="c1"># Single hidden layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">hidden_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Hidden_Layer&#39;</span><span class="p">))</span>
+    <span class="c1"># Output layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">stack</span><span class="o">*</span><span class="n">size</span><span class="o">*</span><span class="n">dims</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Output_Layer&#39;</span><span class="p">))</span>
+    <span class="c1"># Reshape to match the labels</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dims</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Output_reshape&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Loss and optimizer to use, along with metrics to track</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span>
+                  <span class="n">loss</span><span class="o">=</span><span class="n">root_mean_squared_error</span><span class="p">,</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="c1"># Time the execution of the cell</span>
+
+<span class="c1"># Define the sgd model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">bp_model_rmse</span><span class="p">()</span>
+<span class="c1"># Train for EPOCHS epochs</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training...&#39;</span><span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_x</span><span class="p">,</span> <span class="n">training_y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">validation_x</span><span class="p">,</span> <span class="n">validation_y</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">OnlyNUpdates</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished!&#39;</span><span class="p">)</span>
+
+<span class="c1"># Score the resulting model</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">testing_x</span><span class="p">,</span> <span class="n">testing_y</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loss and accuracy:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Training...
+Beginning epoch 1/5000...
+Beginning epoch 501/5000...
+Beginning epoch 1001/5000...
+Beginning epoch 1501/5000...
+Beginning epoch 2001/5000...
+Beginning epoch 2501/5000...
+Beginning epoch 3001/5000...
+Beginning epoch 3501/5000...
+Beginning epoch 4001/5000...
+Beginning epoch 4501/5000...
+Finished!
+500/500 [==============================] - 1s 1ms/step
+Loss and accuracy: [0.2660680593252182, 0.5025000018179416]
+CPU times: user 52min 56s, sys: 6min 6s, total: 59min 3s
+Wall time: 27min 43s
+</pre></div></div>
+</div>
+<div class="section" id="RMSE+E-Example-Outputs">
+<h3>RMSE+E Example Outputs<a class="headerlink" href="#RMSE+E-Example-Outputs" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">visualize_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_83_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_83_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_83_1.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_83_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_83_2.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_83_2.png" />
+</div>
+</div>
+<p>Interesting - the model seems to have failed to learn the task!</p>
+</div>
+<div class="section" id="RMSE+E-Training-Curves">
+<h3>RMSE+E Training Curves<a class="headerlink" href="#RMSE+E-Training-Curves" title="Permalink to this headline">¶</a></h3>
+<p>I am a little surprised that the model did not learn the task at all</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_86_0.png" src="../_images/notebooks_0.2.1-Iterating-the-BP-Model-on-GPUs_86_0.png" />
+</div>
 </div>
 </div>
 </div>
@@ -1415,6 +1789,8 @@ Wall time: 3min 20s
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0.3-BP-Model-in-Tensorflow.html" class="btn btn-neutral float-right" title="0.3 BP Model in Tensorflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="0.2-Running-a-Basic-Model-on-Combigen.html" class="btn btn-neutral" title="0.2 Running a Basic Model on Combigen" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

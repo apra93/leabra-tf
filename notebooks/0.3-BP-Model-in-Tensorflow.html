@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.0 Leabra-tf Notebook Template &mdash; Leabra Tensorflow 0+untagged.64.g609c52a documentation</title>
+  <title>0.3 BP Model in Tensorflow &mdash; Leabra Tensorflow 0+untagged.64.g609c52a documentation</title>
   
 
   
@@ -28,8 +28,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="0.1 Implementing the Combinatorial Generalization Task" href="0.1-Designing-the-Combigen-Task.html" />
-    <link rel="prev" title="Utility Functions" href="../utils.html" /> 
+    <link rel="prev" title="0.2.1 Iterating the BP Model on GPUs" href="0.2.1-Iterating-the-BP-Model-on-GPUs.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,24 +96,34 @@
 </ul>
 <p class="caption"><span class="caption-text">Notebooks</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0.0 Leabra-tf Notebook Template</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Imports">Imports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Global-Definitions">Global Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Get-the-Data">Get the Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Preprocessing">Preprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Plotting">Plotting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Hints">Hints</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="0.0-Notebook-Template.html">0.0 Leabra-tf Notebook Template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.1-Designing-the-Combigen-Task.html">0.1 Implementing the Combinatorial Generalization Task</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.1.1-Combigen-All-True-Bug-Fix.html">0.1.1 Combigen All-True Bug Fix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.1.2-Combigen-Stacks.html">0.1.2 Combigen Stacks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.1.3-Specifying-the-Number-of-Lines.html">0.1.3 Specifying the Number of Lines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.2-Running-a-Basic-Model-on-Combigen.html">0.2 Running a Basic Model on Combigen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.2.1-Iterating-the-BP-Model-on-GPUs.html">0.2.1 Iterating the BP Model on GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.3 BP Model in Tensorflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Global-Variables">Global Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Combigen-Task-Variables">Combigen Task Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Data-Parameters">Data Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Datasets">Datasets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-Combigen-Task">The Combigen Task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Keras-Implementation">Keras Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Tensorflow-Implementaion">Tensorflow Implementaion</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -160,13 +169,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>0.0 Leabra-tf Notebook Template</li>
+      <li>0.3 BP Model in Tensorflow</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/0.0-Notebook-Template.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/0.3-BP-Model-in-Tensorflow.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -401,28 +410,56 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="0.0-Leabra-tf-Notebook-Template">
-<h1>0.0 Leabra-tf Notebook Template<a class="headerlink" href="#0.0-Leabra-tf-Notebook-Template" title="Permalink to this headline">¶</a></h1>
-<p>–<em>Set the notebook number, describe the background of the project, the nature of the data, and what analyses will be performed.</em>–</p>
+<div class="section" id="0.3-BP-Model-in-Tensorflow">
+<h1>0.3 BP Model in Tensorflow<a class="headerlink" href="#0.3-BP-Model-in-Tensorflow" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Boilerplate">
+<h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
+<p>The following subsections are largely boilerplate code, so skip around as needed.</p>
 <div class="section" id="Jupyter-Extensions">
-<h2>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h2>
+<h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
 <p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Load `watermark` extension</span>
 <span class="o">%</span><span class="k">load_ext</span> watermark
 <span class="c1"># Display the status of the machine and packages. Add more as necessary.</span>
-<span class="o">%</span><span class="k">watermark</span> -v -n -m -g -b -t -p numpy,pandas,matplotlib,seaborn
+<span class="o">%</span><span class="k">watermark</span> -v -n -m -g -b -t -p numpy,matplotlib,seaborn,tensorflow
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Sat Mar 02 2019 18:12:22
+
+CPython 3.6.8
+IPython 7.3.0
+
+numpy 1.15.4
+matplotlib 3.0.3
+seaborn 0.9.0
+tensorflow 1.12.0
+
+compiler   : GCC 7.3.0
+system     : Linux
+release    : 4.4.0-130-generic
+machine    : x86_64
+processor  : x86_64
+CPU cores  : 12
+interpreter: 64bit
+Git hash   : 11c0fe6156b95fbfbeeec73dd402459d8a852947
+Git branch : master
+</pre></div></div>
 </div>
 <p>Load <a class="reference external" href="https://ipython.org/ipython-doc/3/config/extensions/autoreload.html">autoreload</a> which will always reload modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <p>This behavior can be inverted by running <code class="docutils literal notranslate"><span class="pre">autoreload</span> <span class="pre">2</span></code> which will set everything to be auto-reloaded <em>except</em> for modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -435,7 +472,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Load <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in one of the more <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>-friendly <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/plotting.html">rich-output modes</a>. Some options (that may or may not have worked) are <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">notebook</span></code>, and <code class="docutils literal notranslate"><span class="pre">gtk</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -446,119 +483,198 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Imports">
-<h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h2>
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">reduce</span>
 
 <span class="c1"># Third party</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="c1"># tqdm.tqdm wraps generators and displays a progress bar:</span>
-<span class="c1">#   `for i in tqdm(range(10)): ...`</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">initializers</span><span class="p">,</span> <span class="n">optimizers</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 </pre></div>
 </div>
 </div>
 <p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Constants to be used throughout the package</span>
-<span class="o">%</span><span class="k">aimport</span> leabratf.constants
-<span class="c1"># Import the data subdirectories</span>
-<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_DATA_EXT</span><span class="p">,</span> <span class="n">DIR_DATA_INT</span><span class="p">,</span> <span class="n">DIR_DATA_PROC</span><span class="p">,</span> <span class="n">DIR_DATA_RAW</span>
+<span></span><span class="c1"># Task script</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.combigen
+<span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.combigen</span> <span class="k">as</span> <span class="nn">cg</span>
+<span class="c1"># Visualization for the task</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.visualization.combigen_heatmap
+<span class="kn">import</span> <span class="nn">leabratf.visualization.combigen_heatmap</span> <span class="k">as</span> <span class="nn">cgh</span>
 <span class="c1"># Utility functions</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.utils
 <span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.constants
+<span class="kn">from</span> <span class="nn">leabratf</span> <span class="k">import</span> <span class="n">constants</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Initial-Setup">
-<h2>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h2>
+<h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;notebook&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Run base logger setup</span>
 <span class="n">setup_logging</span><span class="p">()</span>
 <span class="c1"># Define a logger object</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;leabratf&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Global-Definitions">
-<h2>Global Definitions<a class="headerlink" href="#Global-Definitions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Global-Variables">
+<h3>Global Variables<a class="headerlink" href="#Global-Variables" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Combigen-Task-Variables">
+<h4>Combigen Task Variables<a class="headerlink" href="#Combigen-Task-Variables" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">## Number of slots in a training set</span>
+<span class="n">STACK</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="c1">## Size of each axis in the input array</span>
+<span class="n">SIZE</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1">## Number of axes to use per slot</span>
+<span class="n">DIMS</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Data-Parameters">
+<h4>Data Parameters<a class="headerlink" href="#Data-Parameters" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">## Number of epochs to train for</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="c1">## Number of samples in the training set</span>
+<span class="n">N_TRAIN</span><span class="o">=</span> <span class="mi">100</span>
+<span class="c1">## Number of samples in the validation set</span>
+<span class="n">N_VAL</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1">## Number of samples in the testing set</span>
+<span class="n">N_TEST</span> <span class="o">=</span> <span class="mi">500</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Datasets">
+<h4>Datasets<a class="headerlink" href="#Datasets" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Training Data</span>
+<span class="n">Y_TRAIN</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_TRAIN</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">)</span>
+<span class="n">X_TRAIN</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_TRAIN</span><span class="p">)</span>
+<span class="c1"># Validation Data</span>
+<span class="n">Y_VAL</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_VAL</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">)</span>
+<span class="n">X_VAL</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_VAL</span><span class="p">)</span>
+<span class="c1"># Testing data</span>
+<span class="n">Y_TEST</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_TEST</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">)</span>
+<span class="n">X_TEST</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_TEST</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Background">
+<h2>Background<a class="headerlink" href="#Background" title="Permalink to this headline">¶</a></h2>
+<p>This section goes over some of the background information for the notebook using results from previous notebooks. Skip around as needed.</p>
+<div class="section" id="The-Combigen-Task">
+<h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
+<p>Quickly remind ourselves what the task looks like before diving in.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cgh</span><span class="o">.</span><span class="n">visualize_combigen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_28_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_28_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Keras-Implementation">
+<h3>Keras Implementation<a class="headerlink" href="#Keras-Implementation" title="Permalink to this headline">¶</a></h3>
+<p>In nb-0.2.x, the O’Reilly BP model was implemented in keras with the code having this general structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bp_model_bce</span><span class="p">(</span><span class="n">hidden_units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds and returns the model&quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">((</span><span class="n">stack</span><span class="o">*</span><span class="n">size</span><span class="o">*</span><span class="n">size</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Initial_reshape&#39;</span><span class="p">))</span>
+    <span class="c1"># Single hidden layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">hidden_units</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Hidden_Layer&#39;</span><span class="p">))</span>
+    <span class="c1"># Output layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">stack</span><span class="o">*</span><span class="n">size</span><span class="o">*</span><span class="n">dims</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Output_Layer&#39;</span><span class="p">))</span>
+    <span class="c1"># Reshape to match the labels</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Reshape</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dims</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Output_reshape&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Loss and optimizer to use, along with metrics to track</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span>
+                  <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+<p>With the main difference between models tested in nb-0.2.1 being the loss functions. The two most interesting models had the following training curves:</p>
+<p>**Binary cross-entropy loss with stochastic gradient descent</p>
+<p><a href="#id1"><span class="problematic" id="id2">|BCE\_SGD|</span></a></p>
+<p>**Mean-squared-error loss with stochastic gradient descent</p>
+<p><a href="#id3"><span class="problematic" id="id4">|MSE\_SGD|</span></a></p>
+<p>Some things to note are that the models were trained to 10 times the number of epochs as O’Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model’s performance would have looked like.</p>
+</div>
+</div>
+<div class="section" id="Tensorflow-Implementaion">
+<h2>Tensorflow Implementaion<a class="headerlink" href="#Tensorflow-Implementaion" title="Permalink to this headline">¶</a></h2>
+<p>Using the results of the keras implementation as the benchmark for this model, let’s rewrite the model in pure tensorflow.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># data_str = &quot;&quot;                            # Data filename</span>
-<span class="c1"># data_path = DIR_DATA_RAW / data_str      # Full path to the data</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Get-the-Data">
-<h2>Get the Data<a class="headerlink" href="#Get-the-Data" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># data = pd.read_csv(str(data_path), delim_whitespace=False, index_col=0)</span>
-<span class="c1"># logger.info(&quot;Loaded dataset &#39;{0}&#39; from &#39;{1}&#39;&quot;.format(data_path.name, data_path.parent.name))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Preprocessing">
-<h2>Preprocessing<a class="headerlink" href="#Preprocessing" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># data_norm = (data - data.mean()) / data.std()</span>
-<span class="c1"># logger.info(&quot;Processed data &#39;{0}&#39;&quot;.format(data_path.stem))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Plotting">
-<h2>Plotting<a class="headerlink" href="#Plotting" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># [plt.plot(data_norm[i,:]) for i in range(len(data_norm))]</span>
-<span class="c1"># plt.show()</span>
+<span></span>
 </pre></div>
 </div>
 </div>
@@ -567,34 +683,10 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># ...</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># ...</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># ...</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Hints">
-<h2>Hints<a class="headerlink" href="#Hints" title="Permalink to this headline">¶</a></h2>
-<p>Various hints for working on <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">notebooks</span></code>. Should probably be removed when a notebook is completed.</p>
-<p>General stuff: - To make logging even lazier, set <code class="docutils literal notranslate"><span class="pre">print</span> <span class="pre">=</span> <span class="pre">logger.info</span></code>, and then <code class="docutils literal notranslate"><span class="pre">print</span></code> away! - The <code class="docutils literal notranslate"><span class="pre">!</span></code> can be used to run shell commands from within the notebook (ex. <code class="docutils literal notranslate"><span class="pre">!which</span> <span class="pre">conda</span></code>) - Use <code class="docutils literal notranslate"><span class="pre">assert</span></code> liberally - this isn’t a script and it’s very readable.</p>
-<p>Cheatsheets: - <a class="reference external" href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown</a></p>
 </div>
 </div>
 
@@ -606,10 +698,8 @@ div.rendered_html tbody tr:hover {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="0.1-Designing-the-Combigen-Task.html" class="btn btn-neutral float-right" title="0.1 Implementing the Combinatorial Generalization Task" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="../utils.html" class="btn btn-neutral" title="Utility Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="0.2.1-Iterating-the-BP-Model-on-GPUs.html" class="btn btn-neutral" title="0.2.1 Iterating the BP Model on GPUs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
