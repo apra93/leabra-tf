@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.3 BP Model in Tensorflow &mdash; Leabra Tensorflow 0+untagged.64.g4cb3667 documentation</title>
+  <title>0.3 BP Model in Tensorflow &mdash; Leabra Tensorflow 0+untagged.63.g9fba5a8 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0+untagged.64.g4cb3667
+                0+untagged.63.g9fba5a8
               </div>
             
           
@@ -131,8 +131,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#Metrics">Metrics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Training-the-Model">Training the Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Plotting-the-Training-Curves">Plotting the Training Curves</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Recreating-the-BCE+E-Training-Curves">Recreating the BCE+E Training Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Recreating-the-BCE+E-Training-Curves">Recreating the BCE+E Training Curves</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-Legend">The Legend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#500-Epochs">500 Epochs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#10-x-500-Epochs">10 x 500 Epochs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#50-x-500-Epochs">50 x 500 Epochs</a></li>
 </ul>
 </li>
 </ul>
@@ -711,8 +716,8 @@ Git branch : master
 </pre></div>
 </div>
 <p>With the main difference between models tested in nb-0.2.1 being the loss functions. The two most interesting models had the following training curves:</p>
-<p><a href="#id2"><span class="problematic" id="id3">|BCE\_SGD|</span></a></p>
-<p><a href="#id4"><span class="problematic" id="id5">|MSE\_SGD|</span></a></p>
+<p><a href="#id3"><span class="problematic" id="id4">|BCE\_SGD|</span></a></p>
+<p><a href="#id5"><span class="problematic" id="id6">|MSE\_SGD|</span></a></p>
 <p>Some things to note are that the models were trained to 10 times the number of epochs as O’Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model’s performance would have looked like.</p>
 </div>
 </div>
@@ -898,11 +903,14 @@ Git branch : master
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">new_session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># Try to close the globally defined session if it isn&#39;t already</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sess</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
             <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c1"># If it doesn&#39;t exist, then just pass</span>
     <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
         <span class="k">pass</span>
+    <span class="c1"># Return the new instance</span>
     <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -912,7 +920,7 @@ Git branch : master
 <h3>Training the Model<a class="headerlink" href="#Training-the-Model" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[499]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[509]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -934,9 +942,10 @@ Git branch : master
         <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span><span class="p">,</span> <span class="n">epoch_el_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="n">N_TRAIN</span><span class="p">])</span>
         <span class="c1"># Run the training steps</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TRAIN</span><span class="p">):</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">epoch_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">epoch_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy_op</span><span class="p">,</span> <span class="n">el_accuracy_op</span><span class="p">],</span>
                 <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">})</span>
+
         <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">el_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span><span class="p">,</span> <span class="n">epoch_el_acc</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># Calculate validation accuracy and loss</span>
@@ -1015,8 +1024,9 @@ Wall time: 7.89 s
 </pre></div></div>
 </div>
 </div>
-<div class="section" id="Plotting-the-Training-Curves">
-<h3>Plotting the Training Curves<a class="headerlink" href="#Plotting-the-Training-Curves" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="Recreating-the-BCE+E-Training-Curves">
+<h2>Recreating the BCE+E Training Curves<a class="headerlink" href="#Recreating-the-BCE+E-Training-Curves" title="Permalink to this headline">¶</a></h2>
 <p>Just like before, let’s plot the training curves using the metrics we obtained. To do this, let’s borrow the same function we had earlier but make a slight adjustment to it works for plain dictionaries.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[501]:
@@ -1036,12 +1046,96 @@ Wall time: 7.89 s
 </div>
 </div>
 <p>This function will now work for both keras history objects and dictionaries.</p>
+<div class="section" id="The-Legend">
+<h3>The Legend<a class="headerlink" href="#The-Legend" title="Permalink to this headline">¶</a></h3>
+<p>One quick thing to go over for the proceeding graphs is the legend. Below are the definitions for them:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">loss</span></code> - Loss for the training set for a particular epoch</li>
+<li><code class="docutils literal notranslate"><span class="pre">acc</span></code> - Accuracy as defined by O’Reilly for the training set for a particular epoch</li>
+<li><code class="docutils literal notranslate"><span class="pre">el_acc</span></code> - Element-wise accuracy between predictions and labels for the training set for that epoch</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_loss</span></code> - Loss for the validation set for a particular epoch</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_acc</span></code> - Accuracy as defined by O’Reilly for the validation for a particular epoch</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_el_acc</span></code> - Element-wise accuracy between predictions and labels for the validation set for a particular epoch</li>
+</ul>
 </div>
-<div class="section" id="Recreating-the-BCE+E-Training-Curves">
-<h3>Recreating the BCE+E Training Curves<a class="headerlink" href="#Recreating-the-BCE+E-Training-Curves" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="500-Epochs">
+<h3>500 Epochs<a class="headerlink" href="#500-Epochs" title="Permalink to this headline">¶</a></h3>
+<p>Start the plot for just 500 epochs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[527]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Completed epoch 1/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.7023       0.0000       0.5130
+    Validation:     0.6680       0.0000       0.5752
+
+Completed epoch 101/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4520       0.0000       0.7998
+    Validation:     0.4764       0.0000       0.7998
+
+Completed epoch 201/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4025       0.0000       0.8026
+    Validation:     0.4413       0.0000       0.8003
+
+Completed epoch 301/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.3497       0.0000       0.8245
+    Validation:     0.4038       0.0000       0.8076
+
+Completed epoch 401/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.3009       0.0000       0.8638
+    Validation:     0.3681       0.0000       0.8232
+
+Completed epoch 500/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.2599       0.0000       0.8980
+    Validation:     0.3371       0.0000       0.8413
+
+Optimization Finished!
+Testing Accuracy: 0.0
+CPU times: user 3min 9s, sys: 33.4 s, total: 3min 43s
+Wall time: 1min 17s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[528]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plot_history</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_62_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_62_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="10-x-500-Epochs">
+<h3>10 x 500 Epochs<a class="headerlink" href="#10-x-500-Epochs" title="Permalink to this headline">¶</a></h3>
 <p>Let’s recreate the same plot shown above for the O’Reilly model when running for ten times as many epochs.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[504]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[529]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1058,42 +1152,42 @@ Wall time: 7.89 s
 <div class="highlight"><pre>
 Completed epoch 1/5000. Metrics:
                      Loss       Accuracy   Elem Accuracy
-    Epoch:          0.7168       0.0000       0.5350
-    Validation:     0.6800       0.0000       0.5771
+    Epoch:          0.7112       0.0000       0.5335
+    Validation:     0.6719       0.0000       0.5820
 
 Completed epoch 1001/5000. Metrics:
                      Loss       Accuracy   Elem Accuracy
-    Epoch:          0.1357       0.4600       0.9801
-    Validation:     0.2340       0.0200       0.9082
+    Epoch:          0.1371       0.4000       0.9780
+    Validation:     0.2373       0.0200       0.9053
 
 Completed epoch 2001/5000. Metrics:
                      Loss       Accuracy   Elem Accuracy
-    Epoch:          0.0583       0.9800       0.9995
-    Validation:     0.1589       0.0800       0.9429
+    Epoch:          0.0590       0.9700       0.9993
+    Validation:     0.1594       0.1000       0.9404
 
 Completed epoch 3001/5000. Metrics:
                      Loss       Accuracy   Elem Accuracy
-    Epoch:          0.0341       1.0000       1.0000
-    Validation:     0.1295       0.0800       0.9521
+    Epoch:          0.0344       1.0000       1.0000
+    Validation:     0.1280       0.2000       0.9541
 
 Completed epoch 4001/5000. Metrics:
                      Loss       Accuracy   Elem Accuracy
     Epoch:          0.0234       1.0000       1.0000
-    Validation:     0.1138       0.1200       0.9590
+    Validation:     0.1112       0.2000       0.9614
 
 Completed epoch 5000/5000. Metrics:
                      Loss       Accuracy   Elem Accuracy
     Epoch:          0.0175       1.0000       1.0000
-    Validation:     0.1039       0.1600       0.9634
+    Validation:     0.1006       0.2400       0.9644
 
 Optimization Finished!
-Testing Accuracy: 0.236
-CPU times: user 31min 30s, sys: 5min 33s, total: 37min 3s
-Wall time: 12min 49s
+Testing Accuracy: 0.24
+CPU times: user 31min 38s, sys: 5min 29s, total: 37min 7s
+Wall time: 12min 52s
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[505]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[530]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1106,7 +1200,76 @@ Wall time: 12min 49s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_61_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_61_0.png" />
+<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_65_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_65_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="50-x-500-Epochs">
+<h3>50 x 500 Epochs<a class="headerlink" href="#50-x-500-Epochs" title="Permalink to this headline">¶</a></h3>
+<p>It looks as though the model is still continuing to learn as shown by the increasing validation accuracy and falling validation loss. So train it for even longer.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[512]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">metrics_1</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Completed epoch 1/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.7033       0.0000       0.5765
+    Validation:     0.6728       0.0000       0.5991
+
+Completed epoch 5001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0175       1.0000       1.0000
+    Validation:     0.1010       0.2000       0.9648
+
+Completed epoch 10001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0074       1.0000       1.0000
+    Validation:     0.0783       0.3000       0.9727
+
+Completed epoch 15001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0046       1.0000       1.0000
+    Validation:     0.0692       0.3401       0.9761
+
+Completed epoch 20001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0033       1.0000       1.0000
+    Validation:     0.0640       0.3401       0.9780
+
+Completed epoch 25000/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0604       0.3601       0.9785
+
+Optimization Finished!
+Testing Accuracy: 0.438
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[515]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plot_history</span><span class="p">(</span><span class="n">metrics_1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_68_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_68_0.png" />
 </div>
 </div>
 </div>
