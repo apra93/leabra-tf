@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.3 BP Model in Tensorflow &mdash; Leabra Tensorflow 0+untagged.64.gf1a970a documentation</title>
+  <title>0.3 BP Model in Tensorflow &mdash; Leabra Tensorflow 0+untagged.64.g4cb3667 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0+untagged.64.gf1a970a
+                0+untagged.64.g4cb3667
               </div>
             
           
@@ -123,13 +123,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#Keras-Implementation">Keras Implementation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Tensorflow-BP-Model">Tensorflow BP Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#The-Tensorflow-Pipeline">The Tensorflow Pipeline</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Variables">Variables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Datasets">Datasets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#O'Reilly-Model">O’Reilly Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#The-Loss-Function">The Loss Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Metrics">Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Training-the-Model">Training the Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Plotting-the-Training-Curves">Plotting the Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Recreating-the-BCE+E-Training-Curves">Recreating the BCE+E Training Curves</a></li>
 </ul>
 </li>
 </ul>
@@ -496,7 +499,7 @@ Git branch : master
 <h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[410]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -510,8 +513,6 @@ Git branch : master
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="k">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">initializers</span><span class="p">,</span> <span class="n">optimizers</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 </pre></div>
 </div>
 </div>
@@ -650,12 +651,14 @@ Git branch : master
 <div class="section" id="Training-Parameters">
 <h4>Training Parameters<a class="headerlink" href="#Training-Parameters" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[231]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[479]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Number of times to print an update</span>
 <span class="n">N_UPDATES</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1"># Which device to train on</span>
+<span class="n">TF_DEVICE</span> <span class="o">=</span> <span class="s1">&#39;/cpu:0&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -708,32 +711,45 @@ Git branch : master
 </pre></div>
 </div>
 <p>With the main difference between models tested in nb-0.2.1 being the loss functions. The two most interesting models had the following training curves:</p>
-<p><strong>Binary cross-entropy loss with stochastic gradient descent</strong></p>
 <p><a href="#id2"><span class="problematic" id="id3">|BCE\_SGD|</span></a></p>
-<p><strong>Mean-squared-error loss with stochastic gradient descent</strong></p>
 <p><a href="#id4"><span class="problematic" id="id5">|MSE\_SGD|</span></a></p>
 <p>Some things to note are that the models were trained to 10 times the number of epochs as O’Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model’s performance would have looked like.</p>
 </div>
 </div>
-<div class="section" id="Tensorflow-BP-Model">
-<h2>Tensorflow BP Model<a class="headerlink" href="#Tensorflow-BP-Model" title="Permalink to this headline">¶</a></h2>
-<p>Using the results of the keras implementation as the benchmark for this model, let’s rewrite the model using pure tensorflow. Let’s start by defining the weights and associated biases.</p>
+<div class="section" id="The-Tensorflow-Pipeline">
+<h2>The Tensorflow Pipeline<a class="headerlink" href="#The-Tensorflow-Pipeline" title="Permalink to this headline">¶</a></h2>
+<p>Using the results of the keras implementation as the benchmark for this model, let’s rewrite the model using pure tensorflow. Let’s start by resetting the graph and then defining the weights and associated biases.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[480]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Cleanup any residual nodes</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="Variables">
 <h3>Variables<a class="headerlink" href="#Variables" title="Permalink to this headline">¶</a></h3>
-<p>Straight forward section where we define the weights and biases as <code class="docutils literal notranslate"><span class="pre">tf.Variable</span></code>s. Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
+<p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
+<p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[296]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[481]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Weights and biases</span>
 <span class="n">weights</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">])),</span>
-    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">]))</span>
+    <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
 <span class="p">}</span>
 <span class="n">biases</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="n">N_HIDDEN_1</span><span class="p">])),</span>
-    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="n">N_OUTPUTS</span><span class="p">]))</span>
+    <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_OUTPUTS</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
 <span class="p">}</span>
 
 <span class="c1"># List for initialization operations</span>
@@ -747,7 +763,7 @@ Git branch : master
 <p>Now let’s use the <code class="docutils literal notranslate"><span class="pre">tf.data</span></code> API to wrap our task data.</p>
 <p>The first step of the setup is that each of the datasets (training, validation, and testing) are turned into their own <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> objects.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[288]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[482]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -765,7 +781,7 @@ Git branch : master
 </div>
 <p>Next, let’s define the iterators for each of the datasets, and then add their initializations to the <code class="docutils literal notranslate"><span class="pre">init_ops</span></code> list.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[289]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[483]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -785,7 +801,7 @@ Git branch : master
 <p>Rather than creating separate next elements for the model, the <code class="docutils literal notranslate"><span class="pre">tf.data</span></code> API has a string handler iterator so we can contextually switch the active <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> object, resulting in different values being used for <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
 <p>The way this is done is by defining a <code class="docutils literal notranslate"><span class="pre">tf.placeholder</span></code> variable, which is used first to create a string handler iterator, and later to hold the dataset-indicating string handle. The string handler iterator is what then changes the values of <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>, naturally also supplying them using the <code class="docutils literal notranslate"><span class="pre">get_next</span></code> method.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[291]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[484]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -795,6 +811,7 @@ Git branch : master
 <span class="n">iterator</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Iterator</span><span class="o">.</span><span class="n">from_string_handle</span><span class="p">(</span>
     <span class="n">handle</span><span class="p">,</span> <span class="n">dataset_train</span><span class="o">.</span><span class="n">output_types</span><span class="p">,</span>
     <span class="n">dataset_train</span><span class="o">.</span><span class="n">output_shapes</span><span class="p">)</span>
+
 <span class="c1"># x and y that will be used in the graph</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
 </pre></div>
@@ -806,7 +823,7 @@ Git branch : master
 <p>The architecture is the same as before, with one slight change. The output layer no longer has the sigmoid activation, but only because it is baked into the loss function <code class="docutils literal notranslate"><span class="pre">tf.nn.sigmoid_cross_entropy_with_logits</span></code>, which naturally takes in logits.</p>
 <p>Note that when instantiating the model, <code class="docutils literal notranslate"><span class="pre">x</span></code> is passed in as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[292]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[485]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -819,9 +836,6 @@ Git branch : master
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">])</span>
     <span class="c1"># Reshape for labels</span>
     <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">STACK</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">,</span> <span class="n">DIMS</span><span class="p">])</span>
-
-<span class="c1"># Build the model</span>
-<span class="n">logits</span> <span class="o">=</span> <span class="n">oreilly_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -830,20 +844,23 @@ Git branch : master
 <h3>The Loss Function<a class="headerlink" href="#The-Loss-Function" title="Permalink to this headline">¶</a></h3>
 <p>For the loss, we’ll use binary cross entropy with vanilla gradient descent.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[295]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[486]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Ensure y is cast to the same type as logits</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+    <span class="c1"># Build the model</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">oreilly_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Ensure y is cast to the same type as logits</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
-<span class="c1"># Define loss and optimizer</span>
-<span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
-    <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">)</span>
+    <span class="c1"># Define loss and optimizer</span>
+    <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
+        <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">)</span>
 
-<span class="c1"># train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())</span>
-<span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+    <span class="c1"># train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())</span>
+    <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -852,33 +869,59 @@ Git branch : master
 <h3>Metrics<a class="headerlink" href="#Metrics" title="Permalink to this headline">¶</a></h3>
 <p>The last few ops to define before training are the metrics. In particular, O’Reilly defines accuracy to be the fraction of samples where the model was on the correct side of 0.5 for all elements in the outputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[487]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Get the number of correct predictions</span>
-<span class="n">correct_pred</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)),</span> <span class="n">labels</span><span class="p">),</span>
-                             <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="c1"># Evaluate the accuracy of the model</span>
-<span class="n">accuracy_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_pred</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+    <span class="c1"># Define some intermediate nodes</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+    <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+    <span class="n">equal_labels_and_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rounded_predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="c1"># O&#39;Reilly Accuracy</span>
+    <span class="n">correct_pred</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">accuracy_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_pred</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+
+    <span class="c1"># Elemental Accuracy</span>
+    <span class="n">el_accuracy_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="New-Session-Function">
+<h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
+<p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[488]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">new_session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sess</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Training-the-Model">
 <h3>Training the Model<a class="headerlink" href="#Training-the-Model" title="Permalink to this headline">¶</a></h3>
-<p>Train the model for <code class="docutils literal notranslate"><span class="pre">EPOCHS</span></code> epochs, saving the relevant metrics along the way.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[283]:
+<p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[499]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-
-<span class="c1"># Start training</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+<span></span><span class="k">def</span> <span class="nf">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="c1"># Ensure this is an int</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
     <span class="c1"># Dict with the various metrics we care about</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:[]}</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;el_acc&#39;</span><span class="p">:[],</span>
+               <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">:[]}</span>
     <span class="c1"># Run the initialization ops</span>
     <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
     <span class="c1"># Define training and validation handlers</span>
@@ -887,32 +930,46 @@ Git branch : master
          <span class="n">val_iter</span><span class="o">.</span><span class="n">string_handle</span><span class="p">(),</span>
          <span class="n">test_iter</span><span class="o">.</span><span class="n">string_handle</span><span class="p">()])</span>
 
-    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
-        <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N_TRAIN</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N_TRAIN</span><span class="p">])</span>
-        <span class="c1"># Run the training step</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span><span class="p">,</span> <span class="n">epoch_el_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="n">N_TRAIN</span><span class="p">])</span>
+        <span class="c1"># Run the training steps</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TRAIN</span><span class="p">):</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">epoch_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy_op</span><span class="p">],</span>
-                                                       <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">})</span>
-        <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">epoch_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy_op</span><span class="p">,</span> <span class="n">el_accuracy_op</span><span class="p">],</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">})</span>
+        <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">el_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span><span class="p">,</span> <span class="n">epoch_el_acc</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># Calculate validation accuracy and loss</span>
-        <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy_op</span><span class="p">],</span>
-                                     <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">validation_handle</span><span class="p">})</span>
+        <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">val_el_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy_op</span><span class="p">,</span> <span class="n">el_accuracy_op</span><span class="p">],</span>
+                                                 <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">validation_handle</span><span class="p">})</span>
         <span class="c1"># Record</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="p">[</span><span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="p">[</span><span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">el_acc</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">val_el_acc</span><span class="p">]):</span>
             <span class="n">metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
         <span class="c1"># Selectively display the epoch number</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">EPOCHS</span> <span class="o">/</span> <span class="n">N_UPDATES</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">EPOCHS</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;Completed epoch </span><span class="si">{0}</span><span class="s1">/</span><span class="si">{1}</span><span class="s1">. Metrics:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;                     Loss       Accuracy</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;    Epoch:      </span><span class="si">{2:10.4f}</span><span class="s1">   </span><span class="si">{3:10.4f}</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;    Validation: </span><span class="si">{4:10.4f}</span><span class="s1">   </span><span class="si">{5:10.4f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                      <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">EPOCHS</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">epochs</span> <span class="o">/</span> <span class="n">N_UPDATES</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;Completed epoch </span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">. Metrics:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;                     Loss       Accuracy   Elem Accuracy</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;    Epoch:      </span><span class="si">{2:10.4f}</span><span class="s2">   </span><span class="si">{3:10.4f}</span><span class="s2">   </span><span class="si">{4:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;    Validation: </span><span class="si">{5:10.4f}</span><span class="s2">   </span><span class="si">{6:10.4f}</span><span class="s2">   </span><span class="si">{7:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                      <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">el_acc</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">val_el_acc</span><span class="p">))</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished!&quot;</span><span class="p">)</span>
     <span class="c1"># Calculate accuracy for MNIST test images</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">accuracy_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
+    <span class="k">return</span> <span class="n">metrics</span>
+</pre></div>
+</div>
+</div>
+<p>And now let’s train for <code class="docutils literal notranslate"><span class="pre">EPOCHS</span></code> epochs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[503]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -921,111 +978,76 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Completed epoch 1/500. Metrics:
-                     Loss       Accuracy
-    Epoch:          2.7881       0.0000
-    Validation:     2.6322       0.0000
+Completed epoch 1/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.7072       0.0000       0.5708
+    Validation:     0.6705       0.0000       0.6260
 
-Completed epoch 101/500. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.6243       0.0000
-    Validation:     0.8457       0.0000
+Completed epoch 11/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.5040       0.0000       0.7998
+    Validation:     0.5096       0.0000       0.7998
 
-Completed epoch 201/500. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.3976       0.0000
-    Validation:     0.6830       0.0000
+Completed epoch 21/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4888       0.0000       0.7998
+    Validation:     0.5007       0.0000       0.7998
 
-Completed epoch 301/500. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.2768       0.0000
-    Validation:     0.5896       0.0000
+Completed epoch 31/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4834       0.0000       0.7998
+    Validation:     0.4981       0.0000       0.7998
 
-Completed epoch 401/500. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.2047       0.0400
-    Validation:     0.5280       0.0000
+Completed epoch 41/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4789       0.0000       0.7998
+    Validation:     0.4954       0.0000       0.7998
 
-Completed epoch 500/500. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.1589       0.1300
-    Validation:     0.4845       0.0000
+Completed epoch 50/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4750       0.0000       0.7998
+    Validation:     0.4926       0.0000       0.7998
 
 Optimization Finished!
 Testing Accuracy: 0.0
+CPU times: user 19.1 s, sys: 3.3 s, total: 22.4 s
+Wall time: 7.89 s
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[284]:
+</div>
+<div class="section" id="Plotting-the-Training-Curves">
+<h3>Plotting the Training Curves<a class="headerlink" href="#Plotting-the-Training-Curves" title="Permalink to this headline">¶</a></h3>
+<p>Just like before, let’s plot the training curves using the metrics we obtained. To do this, let’s borrow the same function we had earlier but make a slight adjustment to it works for plain dictionaries.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[501]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">history</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">history</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="s1">&#39;history&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training History&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">EPOCHS</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;500 Epochs&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-
-<span class="n">plot_history</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<p>This function will now work for both keras history objects and dictionaries.</p>
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_51_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_51_0.png" />
-</div>
-</div>
+<div class="section" id="Recreating-the-BCE+E-Training-Curves">
+<h3>Recreating the BCE+E Training Curves<a class="headerlink" href="#Recreating-the-BCE+E-Training-Curves" title="Permalink to this headline">¶</a></h3>
+<p>Let’s recreate the same plot shown above for the O’Reilly model when running for ten times as many epochs.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[286]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[504]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
-<span class="n">total_epochs</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">EPOCHS</span>
-
-<span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:[]}</span>
-<span class="c1"># Start training</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
-    <span class="c1"># Run the initialization ops</span>
-    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
-    <span class="c1"># Define training and validation handlers</span>
-    <span class="n">training_handle</span><span class="p">,</span> <span class="n">validation_handle</span><span class="p">,</span> <span class="n">testing_handle</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">train_iter</span><span class="o">.</span><span class="n">string_handle</span><span class="p">(),</span>
-         <span class="n">val_iter</span><span class="o">.</span><span class="n">string_handle</span><span class="p">(),</span>
-         <span class="n">test_iter</span><span class="o">.</span><span class="n">string_handle</span><span class="p">()])</span>
-
-    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_epochs</span><span class="p">):</span>
-        <span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N_TRAIN</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N_TRAIN</span><span class="p">])</span>
-        <span class="c1"># Run the training step</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TRAIN</span><span class="p">):</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">epoch_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">epoch_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy_op</span><span class="p">],</span>
-                                                  <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">})</span>
-        <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">epoch_loss</span><span class="p">,</span> <span class="n">epoch_acc</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="c1"># Calculate validation accuracy and loss</span>
-        <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy_op</span><span class="p">],</span>
-                                     <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">validation_handle</span><span class="p">})</span>
-        <span class="c1"># Record</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="p">[</span><span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">]):</span>
-            <span class="n">metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-        <span class="c1"># Selectively display the epoch number</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">total_epochs</span> <span class="o">/</span> <span class="n">N_UPDATES</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">total_epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;Completed epoch </span><span class="si">{0}</span><span class="s1">/</span><span class="si">{1}</span><span class="s1">. Metrics:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;                     Loss       Accuracy</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;    Epoch:      </span><span class="si">{2:10.4f}</span><span class="s1">   </span><span class="si">{3:10.4f}</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;    Validation: </span><span class="si">{4:10.4f}</span><span class="s1">   </span><span class="si">{5:10.4f}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                      <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_epochs</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">))</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished!&quot;</span><span class="p">)</span>
-    <span class="c1"># Calculate accuracy for MNIST test images</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">accuracy_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1035,43 +1057,43 @@ Testing Accuracy: 0.0
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Completed epoch 1/5000. Metrics:
-                     Loss       Accuracy
-    Epoch:          2.7965       0.0000
-    Validation:     2.7782       0.0000
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.7168       0.0000       0.5350
+    Validation:     0.6800       0.0000       0.5771
 
 Completed epoch 1001/5000. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.0753       0.7500
-    Validation:     0.3770       0.0000
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.1357       0.4600       0.9801
+    Validation:     0.2340       0.0200       0.9082
 
 Completed epoch 2001/5000. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.0327       1.0000
-    Validation:     0.2981       0.0000
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0583       0.9800       0.9995
+    Validation:     0.1589       0.0800       0.9429
 
 Completed epoch 3001/5000. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.0209       1.0000
-    Validation:     0.2639       0.0000
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0341       1.0000       1.0000
+    Validation:     0.1295       0.0800       0.9521
 
 Completed epoch 4001/5000. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.0154       1.0000
-    Validation:     0.2436       0.0200
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0234       1.0000       1.0000
+    Validation:     0.1138       0.1200       0.9590
 
 Completed epoch 5000/5000. Metrics:
-                     Loss       Accuracy
-    Epoch:          0.0121       1.0000
-    Validation:     0.2297       0.0200
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0175       1.0000       1.0000
+    Validation:     0.1039       0.1600       0.9634
 
 Optimization Finished!
-Testing Accuracy: 0.024
-CPU times: user 24min 22s, sys: 2min 28s, total: 26min 50s
-Wall time: 15min 33s
+Testing Accuracy: 0.236
+CPU times: user 31min 30s, sys: 5min 33s, total: 37min 3s
+Wall time: 12min 49s
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[287]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[505]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1084,16 +1106,7 @@ Wall time: 15min 33s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_53_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_53_0.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
+<img alt="../_images/notebooks_0.3-BP-Model-in-Tensorflow_61_0.png" src="../_images/notebooks_0.3-BP-Model-in-Tensorflow_61_0.png" />
 </div>
 </div>
 </div>
