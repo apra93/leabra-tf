@@ -1,0 +1,1508 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>0.3.1 Comparing Accuracy Metrics &mdash; Leabra Tensorflow 0+untagged.71.g344c811 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="0.3 BP Model in Tensorflow" href="0.3-BP-Model-in-Tensorflow.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Leabra Tensorflow
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.71.g344c811
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_schedule.html">Release Schedule</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tasks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../combinatorics.html">Combinatorial Generalizaton and Interactivity</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scripts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utility Functions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Notebooks</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.0-Notebook-Template.html">0.0 Leabra-tf Notebook Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1-Designing-the-Combigen-Task.html">0.1 Implementing the Combinatorial Generalization Task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1.1-Combigen-All-True-Bug-Fix.html">0.1.1 Combigen All-True Bug Fix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1.2-Combigen-Stacks.html">0.1.2 Combigen Stacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1.3-Specifying-the-Number-of-Lines.html">0.1.3 Specifying the Number of Lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.2-Running-a-Basic-Model-on-Combigen.html">0.2 Running a Basic Model on Combigen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.2.1-Iterating-the-BP-Model-on-GPUs.html">0.2.1 Iterating the BP Model on GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.3.1 Comparing Accuracy Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Global-Variables">Global Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Combigen-Task-Variables">Combigen Task Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Data-Parameters">Data Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Datasets">Datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Network-Parameters">Network Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Training-Parameters">Training Parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-Combigen-Task">The Combigen Task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Previous-Accuracy-Results">Previous Accuracy Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Elemental-Accuracy">Elemental Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Sample-Accuracy">Sample Accuracy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Obtaining-the-Metrics">Obtaining the Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Make-the-Datasets">Make the Datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TF-Variables">TF Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Model-and-Loss-Function">Model and Loss Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Metrics">Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Defining-the-Training-Function">Defining the Training Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Getting-Metrics-for-10-Models">Getting Metrics for 10 Models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Plotting-the-Metrics">Plotting the Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-Legend">The Legend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Training-Set-Metrics">Training Set Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Validation-Set-Metrics">Validation Set Metrics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Summary-Plots">Summary Plots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#All-Metrics-for-All-Models">All Metrics for All Models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Accuracy-Metrics-in-Detail">Accuracy Metrics in Detail</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Average-Loss-and-Elemental-Accuracy">Average Loss and Elemental Accuracy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Average-Training-Axis-and-Slot-Accuracy">Average Training Axis and Slot Accuracy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Validation-Accuracy-Metrics">Validation Accuracy Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Validation-Sample-Accuracy">Validation Sample Accuracy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Leabra Tensorflow</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>0.3.1 Comparing Accuracy Metrics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/notebooks/0.3.1-Comparing-Accuracy-Metrics.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="0.3.1-Comparing-Accuracy-Metrics">
+<h1>0.3.1 Comparing Accuracy Metrics<a class="headerlink" href="#0.3.1-Comparing-Accuracy-Metrics" title="Permalink to this headline">¶</a></h1>
+<p>The accuracy results that we’ve been getting so far haven’t reflected the those presented in O’Reilly’s paper, so let’s generate them more systematically.</p>
+<div class="section" id="Boilerplate">
+<h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
+<p>The following subsections are largely boilerplate code, so skip around as needed.</p>
+<div class="section" id="Jupyter-Extensions">
+<h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
+<p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Load `watermark` extension</span>
+<span class="o">%</span><span class="k">load_ext</span> watermark
+<span class="c1"># Display the status of the machine and packages. Add more as necessary.</span>
+<span class="o">%</span><span class="k">watermark</span> -v -n -m -g -b -t -p numpy,matplotlib,seaborn,tensorflow
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Sun Mar 10 2019 15:15:54
+
+CPython 3.6.8
+IPython 7.3.0
+
+numpy 1.16.2
+matplotlib 3.0.3
+seaborn 0.9.0
+tensorflow 1.12.0
+
+compiler   : GCC 7.3.0
+system     : Linux
+release    : 4.4.0-130-generic
+machine    : x86_64
+processor  : x86_64
+CPU cores  : 12
+interpreter: 64bit
+Git hash   : c78d1b5e16d1a927fca67905d23089041445c4fd
+Git branch : master
+</pre></div></div>
+</div>
+<p>Load <a class="reference external" href="https://ipython.org/ipython-doc/3/config/extensions/autoreload.html">autoreload</a> which will always reload modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
+<p>This behavior can be inverted by running <code class="docutils literal notranslate"><span class="pre">autoreload</span> <span class="pre">2</span></code> which will set everything to be auto-reloaded <em>except</em> for modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Load `autoreload` extension</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="c1"># Set autoreload behavior</span>
+<span class="o">%</span><span class="k">autoreload</span> 1
+</pre></div>
+</div>
+</div>
+<p>Load <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in one of the more <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>-friendly <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/plotting.html">rich-output modes</a>. Some options (that may or may not have worked) are <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">notebook</span></code>, and <code class="docutils literal notranslate"><span class="pre">gtk</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Set the matplotlib mode.</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
+<p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Standard library imports</span>
+<span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c1"># Third party</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+</pre></div>
+</div>
+</div>
+<p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Task script</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.combigen
+<span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.combigen</span> <span class="k">as</span> <span class="nn">cg</span>
+<span class="c1"># Visualization for the task</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.visualization.combigen_heatmap
+<span class="kn">import</span> <span class="nn">leabratf.visualization.combigen_heatmap</span> <span class="k">as</span> <span class="nn">cgh</span>
+<span class="c1"># Utility functions</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.utils
+<span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.constants
+<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_MODELS</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Initial-Setup">
+<h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
+<p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;notebook&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Run base logger setup</span>
+<span class="n">setup_logging</span><span class="p">()</span>
+<span class="c1"># Define a logger object</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;leabratf&#39;</span><span class="p">)</span>
+<span class="c1"># Don&#39;t propagate messages</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Global-Variables">
+<h3>Global Variables<a class="headerlink" href="#Global-Variables" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Combigen-Task-Variables">
+<h4>Combigen Task Variables<a class="headerlink" href="#Combigen-Task-Variables" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Number of slots in a training set</span>
+<span class="n">STACK</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="c1"># Size of each axis in the input array</span>
+<span class="n">SIZE</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1"># Number of axes to use per slot</span>
+<span class="n">DIMS</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Number of lines per axis</span>
+<span class="n">LINES</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Data-Parameters">
+<h4>Data Parameters<a class="headerlink" href="#Data-Parameters" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Number of epochs to train for</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="c1"># Number of samples in the training set</span>
+<span class="n">N_TRAIN</span><span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># Number of samples in the validation set</span>
+<span class="n">N_VAL</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1"># Number of samples in the testing set</span>
+<span class="n">N_TEST</span> <span class="o">=</span> <span class="mi">500</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Datasets">
+<h4>Datasets<a class="headerlink" href="#Datasets" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Training Data</span>
+<span class="n">Y_TRAIN</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_TRAIN</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">,</span> <span class="n">n_lines</span><span class="o">=</span><span class="n">LINES</span><span class="p">)</span>
+<span class="n">X_TRAIN</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_TRAIN</span><span class="p">)</span>
+<span class="c1"># Validation Data</span>
+<span class="n">Y_VAL</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_VAL</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">,</span> <span class="n">n_lines</span><span class="o">=</span><span class="n">LINES</span><span class="p">)</span>
+<span class="n">X_VAL</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_VAL</span><span class="p">)</span>
+<span class="c1"># Testing data</span>
+<span class="n">Y_TEST</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_TEST</span><span class="p">,</span> <span class="n">stack</span><span class="o">=</span><span class="n">STACK</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">,</span> <span class="n">n_lines</span><span class="o">=</span><span class="n">LINES</span><span class="p">)</span>
+<span class="n">X_TEST</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_TEST</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Network-Parameters">
+<h4>Network Parameters<a class="headerlink" href="#Network-Parameters" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Learning rate</span>
+<span class="n">ALPHA</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="c1"># Batch size</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Number of parameters in the inputs</span>
+<span class="n">N_INPUTS</span> <span class="o">=</span> <span class="n">STACK</span> <span class="o">*</span> <span class="n">SIZE</span> <span class="o">**</span> <span class="n">DIMS</span>
+<span class="c1"># Number of hidden units</span>
+<span class="n">N_HIDDEN_1</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># Number of parameters in the labels</span>
+<span class="n">N_OUTPUTS</span> <span class="o">=</span> <span class="n">STACK</span> <span class="o">*</span> <span class="n">SIZE</span> <span class="o">*</span> <span class="n">DIMS</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Training-Parameters">
+<h4>Training Parameters<a class="headerlink" href="#Training-Parameters" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Number of times to print an update</span>
+<span class="n">N_UPDATES</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1"># Which device to train on</span>
+<span class="n">TF_DEVICE</span> <span class="o">=</span> <span class="s1">&#39;/cpu:0&#39;</span>
+<span class="c1"># Number of models to train with</span>
+<span class="n">N_MODELS</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Background">
+<h2>Background<a class="headerlink" href="#Background" title="Permalink to this headline">¶</a></h2>
+<p>This section goes over some of the background information for the notebook using results from previous notebooks. Skip around as needed.</p>
+<div class="section" id="The-Combigen-Task">
+<h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
+<p>Quickly remind ourselves what the task looks like before diving in.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cgh</span><span class="o">.</span><span class="n">visualize_combigen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_32_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_32_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Previous-Accuracy-Results">
+<h3>Previous Accuracy Results<a class="headerlink" href="#Previous-Accuracy-Results" title="Permalink to this headline">¶</a></h3>
+<p>Between nb-0.2.x and 0.3, our accuracy results have been quite reproducible. Here is a summary of the different results so far. All of the models shown below were trained using the O’Reilly BP architecture and binary cross-entropy as the loss.</p>
+<div class="section" id="Elemental-Accuracy">
+<h4>Elemental Accuracy<a class="headerlink" href="#Elemental-Accuracy" title="Permalink to this headline">¶</a></h4>
+<p>In nb-0.2.x, the O’Reilly BP model was implemented in keras using an absolute error based accuracy metric. Below is the training curve when trained to 5000 epochs.</p>
+<p><a href="#id1"><span class="problematic" id="id2">|BCE\_SGD|</span></a></p>
+</div>
+<div class="section" id="Sample-Accuracy">
+<h4>Sample Accuracy<a class="headerlink" href="#Sample-Accuracy" title="Permalink to this headline">¶</a></h4>
+<p>In nb-0.3, the model was implemented in tensorflow with a modification to the accuracy Some things to note are that the models were trained to 10 times the number of epochs as O’Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model’s performance would have looked like.</p>
+</div>
+</div>
+</div>
+<div class="section" id="Obtaining-the-Metrics">
+<h2>Obtaining the Metrics<a class="headerlink" href="#Obtaining-the-Metrics" title="Permalink to this headline">¶</a></h2>
+<p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Cleanup any residual nodes</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Make-the-Datasets">
+<h3>Make the Datasets<a class="headerlink" href="#Make-the-Datasets" title="Permalink to this headline">¶</a></h3>
+<p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">):</span>
+    <span class="c1"># The first step of the setup is that each of the datasets (training, validation, and</span>
+    <span class="c1"># testing) are turned into their own `Dataset` objects.</span>
+    <span class="c1"># Training dataset</span>
+    <span class="n">dataset_train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">X_TRAIN</span><span class="p">,</span> <span class="n">Y_TRAIN</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+    <span class="c1"># Validation dataset</span>
+    <span class="n">dataset_val</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">X_VAL</span><span class="p">,</span> <span class="n">Y_VAL</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">N_VAL</span><span class="p">)</span>
+    <span class="c1"># Testing dataset</span>
+    <span class="n">dataset_test</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">X_TEST</span><span class="p">,</span> <span class="n">Y_TEST</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">N_TEST</span><span class="p">)</span>
+
+    <span class="c1"># Next, let&#39;s define the iterators for each of the datasets, and then add their</span>
+    <span class="c1"># initializations to the `init_ops` list.</span>
+    <span class="c1"># Training iterator</span>
+    <span class="n">train_iter</span> <span class="o">=</span> <span class="n">dataset_train</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
+    <span class="c1"># Validation iterator</span>
+    <span class="n">val_iter</span> <span class="o">=</span> <span class="n">dataset_val</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
+    <span class="c1"># Testing iterator</span>
+    <span class="n">test_iter</span> <span class="o">=</span> <span class="n">dataset_test</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
+    <span class="c1"># Aggregate the iterators</span>
+    <span class="n">iterators</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">]</span>
+
+    <span class="c1"># Add the initiatlizations to the init opts</span>
+    <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">train_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">val_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">test_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">]</span>
+
+    <span class="c1"># And finally, the interesting part. Rather than creating separate next elements for</span>
+    <span class="c1"># the model, the `tf.data` API has a string handler iterator so we can contextually</span>
+    <span class="c1"># switch the active `Dataset` object, resulting in different values being used for `x`</span>
+    <span class="c1"># and `y`.</span>
+
+    <span class="c1"># The way this is done is by defining a `tf.placeholder` variable, which is used</span>
+    <span class="c1"># first to create a string handler iterator, and later to hold the dataset-indicating</span>
+    <span class="c1"># string handle. The string handler iterator is what then changes the values of `x` and</span>
+    <span class="c1"># `y`, naturally also supplying them using the `get_next` method.</span>
+    <span class="c1"># The placeholder variable of type string</span>
+    <span class="n">handle</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+    <span class="c1"># Iterator from string handle</span>
+    <span class="n">handle_iterator</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Iterator</span><span class="o">.</span><span class="n">from_string_handle</span><span class="p">(</span>
+        <span class="n">handle</span><span class="p">,</span> <span class="n">dataset_train</span><span class="o">.</span><span class="n">output_types</span><span class="p">,</span>
+        <span class="n">dataset_train</span><span class="o">.</span><span class="n">output_shapes</span><span class="p">)</span>
+
+    <span class="c1"># x and y that will be used in the graph</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">handle_iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="TF-Variables">
+<h3>TF Variables<a class="headerlink" href="#TF-Variables" title="Permalink to this headline">¶</a></h3>
+<p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
+<p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Weights and biases</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
+<span class="p">}</span>
+<span class="n">biases</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_OUTPUTS</span><span class="p">],</span>
+                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
+<span class="p">}</span>
+
+<span class="c1"># List for initialization operations</span>
+<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Model-and-Loss-Function">
+<h3>Model and Loss Function<a class="headerlink" href="#Model-and-Loss-Function" title="Permalink to this headline">¶</a></h3>
+<p>The architecture is the same as previous notebooks. See nb-0.3 for more details.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">oreilly_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+    <span class="c1"># Reshape for hidden layer</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_INPUTS</span><span class="p">])</span>
+    <span class="c1"># Single hidden layer</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">]))</span>
+    <span class="c1"># Output layer</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">])</span>
+    <span class="c1"># Reshape for labels</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">STACK</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">,</span> <span class="n">DIMS</span><span class="p">])</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+    <span class="c1"># Get the relevant dataset nodes</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
+
+    <span class="c1"># Build the model</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">oreilly_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Ensure y is cast to the same type as logits</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="c1"># Define loss and optimizer</span>
+    <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
+        <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">)</span>
+
+    <span class="c1"># train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())</span>
+    <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Metrics">
+<h3>Metrics<a class="headerlink" href="#Metrics" title="Permalink to this headline">¶</a></h3>
+<p>The last few ops to define before training are the metrics.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+    <span class="c1"># Define some intermediate nodes</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+    <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+    <span class="n">equal_labels_and_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rounded_predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="c1"># O&#39;Reilly Accuracy</span>
+    <span class="n">axis_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">slot_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">axis_acc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">sample_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">slot_acc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Elemental Accuracy</span>
+    <span class="n">el_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+    <span class="c1"># Axis Accuracy</span>
+    <span class="n">axis_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">axis_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+    <span class="c1"># Slot Accuracy</span>
+    <span class="n">slot_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">slot_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+    <span class="c1"># Sample Accuracy</span>
+    <span class="n">sample_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="New-Session-Function">
+<h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
+<p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">new_session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># Try to close the globally defined session if it isn&#39;t already</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sess</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c1"># If it doesn&#39;t exist, then just pass</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="c1"># Return the new instance</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Defining-the-Training-Function">
+<h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
+<p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">):</span>
+    <span class="c1"># Ensure this is an int</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
+    <span class="c1"># Dict with the various metrics we care about</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;el_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;ax_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;sl_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;sm_acc&#39;</span><span class="p">:[],</span>
+               <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">:[],</span>
+               <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">:[]}</span>
+    <span class="c1"># Run the initialization ops</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
+    <span class="c1"># Define training and validation handlers</span>
+    <span class="n">training_handle</span><span class="p">,</span> <span class="n">validation_handle</span><span class="p">,</span> <span class="n">testing_handle</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">string_handle</span><span class="p">()</span>
+                                                                   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterators</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="n">N_TRAIN</span><span class="p">])</span>
+        <span class="c1"># Run the training steps</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TRAIN</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ep_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sl_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_ax_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sm_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">el_acc_op</span><span class="p">,</span> <span class="n">axis_acc_op</span><span class="p">,</span> <span class="n">slot_acc_op</span><span class="p">,</span> <span class="n">sample_acc_op</span><span class="p">],</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">})</span>
+
+        <span class="c1"># Get means for the epoch</span>
+        <span class="n">epoch_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span><span class="p">),</span>
+                                  <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Calculate validation accuracy and loss</span>
+        <span class="n">val_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">loss_op</span><span class="p">,</span> <span class="n">el_acc_op</span><span class="p">,</span> <span class="n">axis_acc_op</span><span class="p">,</span> <span class="n">slot_acc_op</span><span class="p">,</span> <span class="n">sample_acc_op</span><span class="p">],</span>
+                                 <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">validation_handle</span><span class="p">}))</span>
+
+        <span class="c1"># Record</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">epoch_data</span> <span class="o">+</span> <span class="n">val_data</span><span class="p">):</span>
+            <span class="n">metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Selectively display the epoch number</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">epochs</span> <span class="o">/</span> <span class="n">n_updates</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;Completed epoch </span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">. Metrics:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;                     Loss   Sample Accuracy   Elem Accuracy</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;    Epoch:      </span><span class="si">{2:10.4f}</span><span class="s2">   </span><span class="si">{3:10.4f}</span><span class="s2">   </span><span class="si">{4:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;    Validation: </span><span class="si">{5:10.4f}</span><span class="s2">   </span><span class="si">{6:10.4f}</span><span class="s2">   </span><span class="si">{7:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">epoch_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">epoch_data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">epoch_data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">val_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># Calculate accuracy for test images</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished! Testing Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">accuracy_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
+    <span class="k">return</span> <span class="n">metrics</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Getting-Metrics-for-10-Models">
+<h3>Getting Metrics for 10 Models<a class="headerlink" href="#Getting-Metrics-for-10-Models" title="Permalink to this headline">¶</a></h3>
+<p>The last thing to do is encapsulate everything into one list.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_MODELS</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed training for model </span><span class="si">{0}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting training for model 0...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.6657       0.0000       0.5955
+    Validation:     0.6367       0.0000       0.6450
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0635       0.3999       0.9766
+
+Optimization Finished! Testing Accuracy: 0.454
+Completed training for model 0!
+
+Starting training for model 1...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.7226       0.0000       0.5315
+    Validation:     0.6821       0.0000       0.5732
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0618       0.4199       0.9771
+
+Optimization Finished! Testing Accuracy: 0.484
+Completed training for model 1!
+
+Starting training for model 2...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.6739       0.0000       0.6012
+    Validation:     0.6468       0.0000       0.6465
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0613       0.3999       0.9761
+
+Optimization Finished! Testing Accuracy: 0.452
+Completed training for model 2!
+
+Starting training for model 3...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.7103       0.0000       0.5833
+    Validation:     0.6879       0.0000       0.6040
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0674       0.3799       0.9736
+
+Optimization Finished! Testing Accuracy: 0.438
+Completed training for model 3!
+
+Starting training for model 4...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.7036       0.0000       0.5950
+    Validation:     0.6646       0.0000       0.6196
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0596       0.4199       0.9775
+
+Optimization Finished! Testing Accuracy: 0.454
+Completed training for model 4!
+
+Starting training for model 5...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.7352       0.0000       0.4913
+    Validation:     0.6886       0.0000       0.5649
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0639       0.3601       0.9746
+
+Optimization Finished! Testing Accuracy: 0.49
+Completed training for model 5!
+
+Starting training for model 6...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.7234       0.0000       0.4922
+    Validation:     0.6932       0.0000       0.5278
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0585       0.4800       0.9790
+
+Optimization Finished! Testing Accuracy: 0.466
+Completed training for model 6!
+
+Starting training for model 7...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.6881       0.0000       0.5540
+    Validation:     0.6663       0.0000       0.5747
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0644       0.5200       0.9790
+
+Optimization Finished! Testing Accuracy: 0.434
+Completed training for model 7!
+
+Starting training for model 8...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.6645       0.0000       0.5910
+    Validation:     0.6521       0.0000       0.6362
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0631       0.5000       0.9761
+
+Optimization Finished! Testing Accuracy: 0.468
+Completed training for model 8!
+
+Starting training for model 9...
+Completed epoch 1/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.6865       0.0000       0.5622
+    Validation:     0.6628       0.0000       0.6001
+
+Completed epoch 25000/25000. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0621       0.3601       0.9746
+
+Optimization Finished! Testing Accuracy: 0.452
+Completed training for model 9!
+
+CPU times: user 1d 3h 11min 44s, sys: 4h 45min 4s, total: 1d 7h 56min 49s
+Wall time: 11h 19min 5s
+</pre></div></div>
+</div>
+<p>And then now let’s put everything in one pandas dataframe.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_LOGS</span>
+
+<span class="n">metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">DIR_LOGS</span> <span class="o">/</span> <span class="s1">&#39;10_models_25000_epochs.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Plotting-the-Metrics">
+<h2>Plotting the Metrics<a class="headerlink" href="#Plotting-the-Metrics" title="Permalink to this headline">¶</a></h2>
+<p>Just like before, let’s plot the training curves using the metrics we obtained. To do this, let’s borrow the same function from nb-0.3 but make it a bit more general.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># What metrics to plot</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="c1"># Empty lists for the long form data</span>
+    <span class="n">long_epochs</span><span class="p">,</span> <span class="n">long_metrics</span><span class="p">,</span> <span class="n">long_hues</span><span class="p">,</span> <span class="n">long_units</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop through each model&#39;s data</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metrics_series</span> <span class="ow">in</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="c1"># Series data is in a string format, convert to floats and put them in a dict</span>
+        <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">literal_eval</span><span class="p">(</span><span class="n">metrics_series</span><span class="p">[</span><span class="n">key</span><span class="p">])]</span>
+                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>
+
+        <span class="c1"># How many epochs to plot</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">epochs</span><span class="p">:</span>
+            <span class="n">len_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metrics_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+            <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="n">len_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">len_metrics</span><span class="p">),</span> <span class="s1">&#39;Metrics have different lengths&#39;</span>
+            <span class="n">epochs</span> <span class="o">=</span> <span class="n">len_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Add to the long form lists</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">key</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="s1">&#39;Model </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">i</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="n">key</span>
+            <span class="n">long_epochs</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">))</span>
+            <span class="n">long_metrics</span> <span class="o">+=</span> <span class="n">metrics_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">epochs</span><span class="p">]</span>
+            <span class="n">long_hues</span> <span class="o">+=</span> <span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
+            <span class="n">long_units</span> <span class="o">+=</span> <span class="p">[</span><span class="n">units</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
+
+    <span class="k">if</span> <span class="n">model_average</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot each line individually</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">long_units</span><span class="p">)</span>
+
+    <span class="c1"># Title, axis, and 500 epoch line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;Training History&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epochs</span> <span class="o">&gt;</span> <span class="n">EPOCHS</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;500 Epochs&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Prune down the number of labels to just the unique ones</span>
+    <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+    <span class="n">by_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="c1"># Make the plot twice as large to make things a little more viewable</span>
+    <span class="n">gcf</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+    <span class="n">gcf</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">size</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">gcf</span><span class="o">.</span><span class="n">get_size_inches</span><span class="p">()])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="The-Legend">
+<h3>The Legend<a class="headerlink" href="#The-Legend" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have so may metrics to keep track of, it’s worth taking the time to define each of them.</p>
+<div class="section" id="Training-Set-Metrics">
+<h4>Training Set Metrics<a class="headerlink" href="#Training-Set-Metrics" title="Permalink to this headline">¶</a></h4>
+<p>Metrics obtained every epoch from from performance on the training set.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">loss</span></code> - Loss for the training set</li>
+<li><code class="docutils literal notranslate"><span class="pre">el_acc</span></code> - Element-wise accuracy between predictions and labels for the training set</li>
+<li><code class="docutils literal notranslate"><span class="pre">ax_acc</span></code> - Axis accuracy for each slot in each sample between predictions and labels for the training set. Score per sample goes in eighth steps between 0.0 and 1.0. Every correct axis in every slot contributes 0.125 to the the overall accuracy</li>
+<li><code class="docutils literal notranslate"><span class="pre">sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the training set. Score per sample goes in quarter steps between 0.0 and 1.0. Any slot that has all elements correct contributes 0.25 to the score</li>
+<li><code class="docutils literal notranslate"><span class="pre">sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. Score per sample is binary - model must get every element correct to receive 1.0</li>
+</ul>
+</div>
+<div class="section" id="Validation-Set-Metrics">
+<h4>Validation Set Metrics<a class="headerlink" href="#Validation-Set-Metrics" title="Permalink to this headline">¶</a></h4>
+<p>Metrics obtained every epoch from from performance on the validation set.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">val_loss</span></code> - Loss for the validation set for a particular epoch</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_el_acc</span></code> - Element-wise accuracy between predictions and labels for the validation set. See above for details</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the validation set. See above for details</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. See above for details</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="Summary-Plots">
+<h2>Summary Plots<a class="headerlink" href="#Summary-Plots" title="Permalink to this headline">¶</a></h2>
+<p>The following two plots have summaries of all the data collected.</p>
+<div class="section" id="All-Metrics-for-All-Models">
+<h3>All Metrics for All Models<a class="headerlink" href="#All-Metrics-for-All-Models" title="Permalink to this headline">¶</a></h3>
+<p>Let’s plot all the metrics for all the models to see what they all generally look like.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[147]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
+             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;All Metrics for All Models&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_58_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_58_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Accuracy-Metrics-in-Detail">
+<h2>Accuracy Metrics in Detail<a class="headerlink" href="#Accuracy-Metrics-in-Detail" title="Permalink to this headline">¶</a></h2>
+<p>Let’s go through each of the different accuracy metrics individually.</p>
+<div class="section" id="Average-Loss-and-Elemental-Accuracy">
+<h3>Average Loss and Elemental Accuracy<a class="headerlink" href="#Average-Loss-and-Elemental-Accuracy" title="Permalink to this headline">¶</a></h3>
+<p>These are plots we have already generated in the past so let’s just start with them. Since they also asymptote relatively quickly, let’s only plot the first 2000 epochs, and also average them since they don’t vary much between models.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="c1"># These are the possible metrics to use</span>
+<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
+<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
+<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
+             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;val_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;el_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">],</span>
+             <span class="n">epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Loss and Elemental Accuracy&#39;</span><span class="p">,</span>
+             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">model_average</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_61_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_61_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 2min 57s, sys: 8.61 s, total: 3min 6s
+Wall time: 3min 6s
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Average-Training-Axis-and-Slot-Accuracy">
+<h3>Average Training Axis and Slot Accuracy<a class="headerlink" href="#Average-Training-Axis-and-Slot-Accuracy" title="Permalink to this headline">¶</a></h3>
+<p>Next let’s take a look at the training axis and slot accuracy, which also level off relatively quickly (by around 2000 epochs).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="c1"># These are the possible metrics to use</span>
+<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
+<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
+<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
+             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ax_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;sl_acc&#39;</span><span class="p">,],</span>
+             <span class="n">epochs</span><span class="o">=</span><span class="mi">2500</span><span class="p">,</span>
+             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Training Axis and Slot Accuracy&#39;</span><span class="p">,</span>
+             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">model_average</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_63_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_63_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 1min 50s, sys: 5.54 s, total: 1min 55s
+Wall time: 1min 55s
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Validation-Accuracy-Metrics">
+<h3>Validation Accuracy Metrics<a class="headerlink" href="#Validation-Accuracy-Metrics" title="Permalink to this headline">¶</a></h3>
+<p>The validation curves are where the curves for training are most revealing. So let’s plot them all in one graph in the first 10,000 epochs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="c1"># These are the possible metrics to use</span>
+<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
+<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
+<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
+             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;val_el_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">],</span>
+             <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Validation Accuracy&#39;</span><span class="p">,</span>
+             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_65_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_65_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 17.2 s, sys: 312 ms, total: 17.5 s
+Wall time: 8.51 s
+</pre></div></div>
+</div>
+<p>Validation axis and slot accuracy begin asymptotic ascent around 4000 epochs never approach 1.0 the way it does for the training data. The slot accuracy also levels off at a lower point than the axis accuracy.</p>
+</div>
+<div class="section" id="Validation-Sample-Accuracy">
+<h3>Validation Sample Accuracy<a class="headerlink" href="#Validation-Sample-Accuracy" title="Permalink to this headline">¶</a></h3>
+<p>The most interesting metric seems to definitely be the sample accuracy, which has the most diverse behavior of all the metrics. So let’s plot it for all the models.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="c1"># These are the possible metrics to use</span>
+<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
+<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
+<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
+             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;val_sm_acc&#39;</span><span class="p">],</span>
+             <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Validation Sample Accuracy&#39;</span><span class="p">,</span>
+             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 3.82 s, sys: 92 ms, total: 3.92 s
+Wall time: 3.91 s
+</pre></div></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="0.3-BP-Model-in-Tensorflow.html" class="btn btn-neutral" title="0.3 BP Model in Tensorflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

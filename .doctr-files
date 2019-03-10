@@ -62,6 +62,12 @@
 ./_images/notebooks_0.3-BP-Model-in-Tensorflow_62_0.png
 ./_images/notebooks_0.3-BP-Model-in-Tensorflow_65_0.png
 ./_images/notebooks_0.3-BP-Model-in-Tensorflow_68_0.png
+./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_32_0.png
+./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_58_0.png
+./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_61_0.png
+./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_63_0.png
+./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_65_0.png
+./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png
 ./_sources/combinatorics.rst.txt
 ./_sources/commands.rst.txt
 ./_sources/data.rst.txt
@@ -76,6 +82,7 @@
 ./_sources/notebooks/0.2-Running-a-Basic-Model-on-Combigen.ipynb.txt
 ./_sources/notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.ipynb.txt
 ./_sources/notebooks/0.3-BP-Model-in-Tensorflow.ipynb.txt
+./_sources/notebooks/0.3.1-Comparing-Accuracy-Metrics.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/utils.rst.txt
 ./_sources/visualization.rst.txt
@@ -149,6 +156,7 @@
 ./notebooks/0.2-Running-a-Basic-Model-on-Combigen.html
 ./notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.html
 ./notebooks/0.3-BP-Model-in-Tensorflow.html
+./notebooks/0.3.1-Comparing-Accuracy-Metrics.html
 ./objects.inv
 ./release_schedule.html
 ./search.html
