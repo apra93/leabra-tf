@@ -40,7 +40,17 @@ Contents:
    :glob:
 	 
    notebooks/*
-	     
+
+    
+.. toctree::
+   :hidden:
+   :caption: Project Links
+
+   Home <https://apra93.github.io/leabra-tf/>
+   Github <https://github.com/apra93/leabra-tf/>
+   Travis CI <https://travis-ci.org/apra93/leabra-tf>
+   Coverage <https://codecov.io/gh/apra93/leabra-tf>
+
 	     
 Indices and tables
 ==================
