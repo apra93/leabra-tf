@@ -1,0 +1,12 @@
+codecov:
+  token: 686c041a-55f4-4753-aa54-b404620f6e40
+
+ignore:
+  - "#versioning"
+  - ".*version.*"
+  - "*_version.py"
+  - "#tests"
+  - "*test*"
+  - "leabratf/tests/*"
+  - "leabratf/models/official/*"
+
