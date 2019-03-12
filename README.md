@@ -1,10 +1,6 @@
 <h1 align="center">Leabra Tensorflow - Under Construction</h1>
 <!-- Pulled from the readme of pcdsdevices https://github.com/pcdshub/pcdsdevices -->
 
-<div align="center">
-  <strong>A tensorflow + TPU exploration of LEABRA</strong>
-</div>
-
 <!-- <p align="center"> -->
 <!--   <a href="#motivation">Motivation</a> • -->
 <!--   <a href="#installation">Installation</a> -->
@@ -12,22 +8,18 @@
 
 <div align="center">
   <!-- Build Status -->
-  <a href="https://travis-ci.org/apra93/leabra-tf">
-    <img
-src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=flat-square"
-      alt="Build Status" />
-  </a>
+  <img alt="Travis (.org)" src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=for-the-badge">
   <!-- Test Coverage -->
-  <a href="https://codecov.io/gh/apra93/leabra-tf">
-    <img
-src="https://img.shields.io/codecov/c/github/apra93/leabra-tf.svg?logo=codecov&style=flat-square"
-      alt="Test Coverage" />
-  </a>
-
+  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/apra93/leabra-tf.svg?logo=codecov&style=for-the-badge">
+  <!-- Code Grade -->
+  <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/ee0d0724c19b416aa84b5ce297cbeaca.svg?logo=codacy&style=for-the-badge"> 
 <!-- Add in a break between the badges and the next section. Will likely not be necessary if there is a header after this -->
-  <br><br>
+<div align="center">
+  <strong>A tensorflow + TPU exploration of LEABRA</strong>
+</div>
 </div>
 
+<br>
 A tensorflow + TPU exploration of the "Local, Error-driven and Associative,
 Biologically Realistic Algorithm" (LEABRA). For details see the
 [wikipedia](https://en.wikipedia.org/wiki/Leabra) or [emergent](https://grey.colorado.edu/emergent/index.php/Leabra) pages.
