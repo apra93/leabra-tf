@@ -18,8 +18,8 @@
   <strong>A tensorflow + TPU exploration of LEABRA</strong>
 </div>
 </div>
-
 <br>
+
 A tensorflow + TPU exploration of the "Local, Error-driven and Associative,
 Biologically Realistic Algorithm" (LEABRA). For details see the
 [wikipedia](https://en.wikipedia.org/wiki/Leabra) or [emergent](https://grey.colorado.edu/emergent/index.php/Leabra) pages.
