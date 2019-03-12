@@ -8,11 +8,19 @@
 
 <div align="center">
   <!-- Build Status -->
+  <a href="https://travis-ci.org/apra93/leabra-tf">
   <img alt="Travis (.org)" src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=for-the-badge">
+  </a>
+  
   <!-- Test Coverage -->
+  <a href="https://codecov.io/gh/apra93/leabra-tf">
   <img alt="Codecov" src="https://img.shields.io/codecov/c/github/apra93/leabra-tf.svg?logo=codecov&style=for-the-badge">
+  </a>
+  
   <!-- Code Grade -->
+  <a href="https://app.codacy.com/project/apra93/leabra-tf/dashboard">
   <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/ee0d0724c19b416aa84b5ce297cbeaca.svg?logo=codacy&style=for-the-badge"> 
+  </a>
 <!-- Add in a break between the badges and the next section. Will likely not be necessary if there is a header after this -->
 <div align="center">
   <strong>A tensorflow + TPU exploration of LEABRA</strong>
