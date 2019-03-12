@@ -7,6 +7,7 @@
 <!-- </p> -->
 
 <div align="center">
+
   <!-- Build Status -->
   <a href="https://travis-ci.org/apra93/leabra-tf">
   <img alt="Travis (.org)" src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=for-the-badge">
@@ -21,12 +22,11 @@
   <a href="https://app.codacy.com/project/apra93/leabra-tf/dashboard">
   <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/ee0d0724c19b416aa84b5ce297cbeaca.svg?logo=codacy&style=for-the-badge"> 
   </a>
-<!-- Add in a break between the badges and the next section. Will likely not be necessary if there is a header after this -->
-<div align="center">
-  <strong>A tensorflow + TPU exploration of LEABRA</strong>
+  
 </div>
-</div>
-<br>
+  <!-- Add in a break between the badges and the next section. Will likely not be necessary if there is a header after this -->
+
+<h5 align="center">A tensorflow + TPU exploration of LEABRA</h5>
 
 A tensorflow + TPU exploration of the "Local, Error-driven and Associative,
 Biologically Realistic Algorithm" (LEABRA). For details see the
@@ -71,3 +71,5 @@ This repo is based on two cookiecutter templates. See the following github pages
 
 - [cookiecutter-data-science-pp](https://github.com/apra93/cookiecutter-data-science-pp)
 - [cookiecutter-data-science](https://github.com/drivendata/cookiecutter-data-science)
+
+ 
