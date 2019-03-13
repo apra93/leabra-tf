@@ -62,7 +62,7 @@ def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
     x_label : str, optional
     	A label to add to the x axis (title) of the plot
     """
-    n_samples, stack, size, _ = data.shape
+    n_samples, stack, _, _ = data.shape
     # Check if another dataset was passed
     hor = stack if data2 is None else stack + data2.shape[1]
     # Place everything in subplots
@@ -121,7 +121,7 @@ def visualize_combigen(n_pairs=1, *args, **kwargs):
     example_y = cg.generate_labels(n_samples=n_pairs, *args, **kwargs)
     # Generate a single x from the y
     example_x = cg.inverse_transform(example_y)
-    
+
     _, stack, size, dim = example_y.shape
     # Hack
     titles = [a+str(i) for a in ['y','x'] for i in range(4)] + \
