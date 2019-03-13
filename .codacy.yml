@@ -11,6 +11,6 @@ engines:
 exclude_paths:
   - "leabratf/models/official/**"
   - ".*version.*"
-  - "*_version.py"
+  - "leabratf/_version.py"
   - "versioneer.py"
   - ".github/**"
