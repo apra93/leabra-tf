@@ -13,7 +13,7 @@ def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
             square=True, gridspec_kw=None, sharey=True, sharex=True,
             titles=None, squeeze=False, y_label='Samples', x_label=None,
             *args, **kwargs):
-    """Wrapper function of `sns.heatmap` with some different defaults. 
+    """Wrapper function of `sns.heatmap` with some different defaults.
     
     Only changed values are shown, see the documentation for `sns.heatmap`
     for all available parameters.
@@ -24,7 +24,7 @@ def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
     	The data to send to the heatmap
 
     data2 : np.ndarray, optional
-    	A second dataset to send to the heatmap in a zip     
+    	A second dataset to send to the heatmap in a zip
     
     vmin : float, optional
         Min color. Now set to 0
@@ -62,7 +62,7 @@ def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
     x_label : str, optional
     	A label to add to the x axis (title) of the plot
     """
-    n_samples, stack, size, dims = data.shape
+    n_samples, stack, _, _ = data.shape
     # Check if another dataset was passed
     hor = stack if data2 is None else stack + data2.shape[1]
     # Place everything in subplots
@@ -121,16 +121,16 @@ def visualize_combigen(n_pairs=1, *args, **kwargs):
     example_y = cg.generate_labels(n_samples=n_pairs, *args, **kwargs)
     # Generate a single x from the y
     example_x = cg.inverse_transform(example_y)
-    
+
     _, stack, size, dim = example_y.shape
     # Hack
     titles = [a+str(i) for a in ['y','x'] for i in range(4)] + \
              ['']*(n_pairs-1)*stack*2
     gridspec_kw={'width_ratios': [dim]*stack + [size]*stack}
-    
+
     heatmaps.append(heatmap(example_y, example_x,
                             gridspec_kw=gridspec_kw,
                             sharex=False,
                             titles=titles,
                             x_label='y and X Pairs'))
-    return heatmaps            
+    return heatmaps

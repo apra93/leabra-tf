@@ -2,10 +2,11 @@
 import logging
 
 import pytest
-import numpy as np
 
 import leabratf.tasks.combinatorics.combigen as cg
 import leabratf.visualization.combigen_heatmap as cgh
+
+logger = logging.getLogger(__name__)
 
 N = [1, 3, 5]
 

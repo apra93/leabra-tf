@@ -6,6 +6,8 @@ import numpy as np
 
 from leabratf.tasks.combinatorics import combigen
 
+logger = logging.getLogger(__name__)
+
 test_y = np.array([[[[1, 1],
                      [0, 1],
                      [0, 0],
@@ -64,9 +66,9 @@ def test_inverse_transform():
 @pytest.mark.parametrize("line_2", range(5))
 def test_labels_have_the_correct_number_of_lines(line_1, line_2):
     n_samples, stack, dims = 1000, 4, 2
-    labels = combigen.generate_labels(n_samples=n_samples, stack=stack, 
+    labels = combigen.generate_labels(n_samples=n_samples, stack=stack,
                                       dims=dims, n_lines=[line_1, line_2])
     # Ensure the sums are exactly what we expect them to be at each combination
-    assert np.array_equal(labels.sum(axis=(0,1,2)), 
+    assert np.array_equal(labels.sum(axis=(0,1,2)),
                           [line_1*stack*n_samples, line_2*stack*n_samples])
-            
+

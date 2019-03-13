@@ -8,7 +8,7 @@ from leabratf.utils import as_list
 
 logger = logging.getLogger(__file__)
 
-def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=[1,1]):
+def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=None):
     """Returns an array of labels to construct the data from.
 
     Parameters
@@ -41,7 +41,7 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=[1,1]):
     	than one number was provided for it)
     """
     # Ensure this is a list
-    n_lines = as_list(n_lines)
+    n_lines = as_list(n_lines) if n_lines else [1,1]
     # If one number is passed in for n_lines and there is more than 1 dim, then
     # assume that they should both be set to the value of n_lines.
     if len(n_lines) == 1 and dims != 1:
@@ -65,7 +65,7 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=[1,1]):
     # zero-array to be 1 for each dim in dims.
     for dim, arg_one in enumerate(arg_ones):
         np.put_along_axis(raw_labels[:,:,:,dim], arg_one, values=1, axis=2)
-    return raw_labels    
+    return raw_labels
 
 def inverse_transform_single_sample(y):
     """Turns the inputted nxn array into the nx2 array
@@ -74,7 +74,7 @@ def inverse_transform_single_sample(y):
     ----------
     y : array-like (nx2)
         The the label we are transforming.
-        
+
     Returns
     -------
     x : np.array (nxn)
@@ -84,7 +84,7 @@ def inverse_transform_single_sample(y):
     size, _ = y.shape
     # Create a horizontal array and a vertical array according to y
     horizontal, vertical = np.tile(y, size).reshape(size, size, 2).T
-    return (horizontal.T + vertical).astype(bool).astype(np.float32)    
+    return (horizontal.T + vertical).astype(bool).astype(np.float32)
 
 def inverse_transform(Y, *args, **kwargs):
     """Wrapper for first pass implementation that accounts for multiple
@@ -101,6 +101,6 @@ def inverse_transform(Y, *args, **kwargs):
     	Array of samples transformed from Y to X.
     """
     n_samples, stack, size, dims = Y.shape
-    return np.concatenate([inverse_transform_single_sample(face) 
+    return np.concatenate([inverse_transform_single_sample(face)
                            for y in Y for face in y], axis=0).reshape(
                                    n_samples, stack, *([size]*dims))
