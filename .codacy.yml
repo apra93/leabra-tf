@@ -3,9 +3,14 @@ engines:
     enabled: true
     exclude_paths:
       - 'leabratf/tests/**'
-
+  bandit:
+    enabled: true
+    exclude_paths:
+      - 'leabratf/tests/**'
+    
 exclude_paths:
   - "leabratf/models/official/**"
   - ".*version.*"
   - "*_version.py"
   - "versioneer.py"
+  - ".github/**"
