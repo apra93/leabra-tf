@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utility Functions &mdash; Leabra Tensorflow 0+untagged.66.g853f276 documentation</title>
+  <title>Utility Functions &mdash; Leabra Tensorflow 0+untagged.65.g47ed347 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0+untagged.66.g853f276
+                0+untagged.65.g47ed347
               </div>
             
           
@@ -267,8 +267,7 @@ enclose it in one.</li>
 <dl class="function">
 <dt id="leabratf.utils.isiterable">
 <code class="descclassname">leabratf.utils.</code><code class="descname">isiterable</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils.isiterable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function that determines if an object is an iterable, not including
-str.</p>
+<dd><p>Function that determines if an object is an iterable, not including str.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -286,32 +285,15 @@ str.</p>
 <dl class="function">
 <dt id="leabratf.utils.flatten">
 <code class="descclassname">leabratf.utils.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>inp_iter</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils.flatten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a flattened list of the inputted iterable.</p>
+<dd><p>Recursively iterate through values in nested iterables, and return a
+flattened list of the inputted iterable.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>inp_iter</strong> (<em>iterable</em>) – The iterable to flatten.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>flattened_iter</strong> – The contents of the iterable as a flat list</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="leabratf.utils._flatten">
-<code class="descclassname">leabratf.utils.</code><code class="descname">_flatten</code><span class="sig-paren">(</span><em>inp_iter</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.utils._flatten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Recursively iterate through values in nested iterables.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>inp_iter</strong> (<em>iterable</em>) – The iterable to flatten.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>value</strong> – The contents of the iterable</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>value</strong> – The contents of the iterable as a flat list.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">object</td>
 </tr>
