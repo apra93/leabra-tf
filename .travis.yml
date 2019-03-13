@@ -1,3 +1,6 @@
+# Disable sudo to speed up the build
+sudo: false
+
 language: python
   
 env: 
@@ -11,9 +14,7 @@ python:
   - "3.6"    
   
 install:
-  - sudo apt-get update
-  # We do this conditionally because it saves us some downloading if the
-  # version is the same.
+  # Download conda
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -27,8 +28,7 @@ install:
   # Launch Conda environment
   - source activate test-environment
   # Install the requirements
-  - pip install codecov
-  - pip install -r requirements.txt
+  - pip install -r requirements.txt -r dev-requirements.txt
 
 script:
   - coverage run run_tests.py
