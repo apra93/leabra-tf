@@ -16,6 +16,13 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
+   :caption: Reports
+   :glob:
+	 
+   reports/*	     
+
+.. toctree::
+   :maxdepth: 2
    :caption: Tasks
 
    combinatorics	     
@@ -28,19 +35,11 @@ Contents:
    utils
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Reports
-   :glob:
-	 
-   reports/*
-
-.. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Notebooks
    :glob:
 	 
    notebooks/*
-
     
 .. toctree::
    :hidden:
@@ -49,7 +48,8 @@ Contents:
    Home <https://apra93.github.io/leabra-tf/>
    Github <https://github.com/apra93/leabra-tf/>
    Travis CI <https://travis-ci.org/apra93/leabra-tf>
-   Coverage <https://codecov.io/gh/apra93/leabra-tf>
+   Codecov <https://codecov.io/gh/apra93/leabra-tf>
+   Codacy <https://app.codacy.com/project/apra93/leabra-tf/dashboard>	     
 
 	     
 Indices and tables

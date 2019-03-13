@@ -2,15 +2,12 @@
 Script for utility functions in leabra-tf
 """
 import os
-import inspect
 import logging
 import logging.config
 import yaml
 import coloredlogs
-import numpy as np
 
 from collections.abc import Iterable
-from functools import wraps
 from pathlib import Path
 from logging.handlers import RotatingFileHandler
 
@@ -20,10 +17,10 @@ from leabratf.constants import DIR_REPO, DIR_LOGS
 logger = logging.getLogger(__name__)
 
 
-class RotatingFileHandlerRelativePath(logging.handlers.RotatingFileHandler):
+class RotatingFileHandlerRelativePath(RotatingFileHandler):
     """
     Extension of the filehandler class that appends the current directory to the
-    inputted filename. This is so the log files can be found relative to this 
+    inputted filename. This is so the log files can be found relative to this
     file rather than from wherever the script is run.
     """
     def __init__(self, filename, *args, **kwargs):
@@ -54,7 +51,7 @@ def setup_logging(path_yaml=None, dir_logs=None, default_level=logging.INFO):
     if path_yaml is None:
         path_yaml = DIR_REPO / "logging.yml"
     # Make sure we are using Path objects
-    else: 
+    else:
         path_yaml = Path(path_yaml)
     # Get the log directory
     if dir_logs is None:
@@ -64,7 +61,7 @@ def setup_logging(path_yaml=None, dir_logs=None, default_level=logging.INFO):
         dir_logs = Path(dir_logs)
         
     # Make the log directory if it doesn't exist
-    if not dir_logs.exists(): 
+    if not dir_logs.exists():
         dir_logs.mkdir()
 
     log_files = ['info.log', 'errors.log', 'debug.log',  'critical.log', 
@@ -76,7 +73,7 @@ def setup_logging(path_yaml=None, dir_logs=None, default_level=logging.INFO):
             path_log_file.touch()
         # Set permissions to be accessible to everyone
         if path_log_file.stat().st_mode != 33279:
-            path_log_file.chmod(0o777)        
+            path_log_file.chmod(0o777)
 
     # Set up everything if the yaml file is present
     if path_yaml.exists():
@@ -151,8 +148,7 @@ def as_list(obj, length=None, tp=None, iter_to_list=True):
 
 def isiterable(obj):
     """
-    Function that determines if an object is an iterable, not including 
-    str.
+    Function that determines if an object is an iterable, not including str.
 
     Parameters
     ----------
@@ -169,9 +165,10 @@ def isiterable(obj):
     else:
         return isinstance(obj, Iterable)
 
-def _flatten(inp_iter):
+def flatten(inp_iter):
     """
-    Recursively iterate through values in nested iterables.
+    Recursively iterate through values in nested iterables, and return a
+    flattened list of the inputted iterable.
 
     Parameters
     ----------
@@ -181,27 +178,14 @@ def _flatten(inp_iter):
     Returns
     -------
     value : object
-        The contents of the iterable
-    """
-    for val in inp_iter:
-        if isiterable(val):
-            for ival in _flatten(val):
-                yield ival
-        else:
-            yield val
-            
-def flatten(inp_iter):
-    """
-    Returns a flattened list of the inputted iterable.
+    	The contents of the iterable as a flat list.
 
-    Parameters
-    ----------
-    inp_iter : iterable
-        The iterable to flatten.
-
-    Returns
-    -------
-    flattened_iter : list
-        The contents of the iterable as a flat list
     """
-    return list(_flatten(inp_iter))
+    def inner(inp):
+        for val in inp:
+            if isiterable(val):
+                for ival in inner(val):
+                    yield ival
+            else:
+                yield val
+    return list(inner(inp_iter))

@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-############
-# Standard #
-############
 import os
 import sys
 import pytest
@@ -33,8 +29,8 @@ if __name__ == '__main__':
         log_file.touch()
     # Set permissions to be accessible to everyone
     if log_file.stat().st_mode != 33279:
-        log_file.chmod(0o777)        
-        
+        log_file.chmod(0o777)
+
     handler = RotatingFileHandler(str(log_file), backupCount=5,
                                   maxBytes=1024*1024*10, encoding=None, delay=0)
     formatter = logging.Formatter(fmt=('%(asctime)s.%(msecs)03d '
@@ -47,6 +43,6 @@ if __name__ == '__main__':
     root_logger.addHandler(handler)
 
     logger = logging.getLogger(__name__)
-    logger.info('pytest arguments: {}'.format(args))    
+    logger.info('pytest arguments: {}'.format(args))
 
     sys.exit(pytest.main(args))

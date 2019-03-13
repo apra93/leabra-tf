@@ -1,0 +1,16 @@
+engines:
+  duplication:
+    enabled: true
+    exclude_paths:
+      - 'leabratf/tests/**'
+  bandit:
+    enabled: true
+    exclude_paths:
+      - 'leabratf/tests/**'
+    
+exclude_paths:
+  - "leabratf/models/official/**"
+  - ".*version.*"
+  - "leabratf/_version.py"
+  - "versioneer.py"
+  - ".github/**"
