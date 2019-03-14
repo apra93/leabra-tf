@@ -69,6 +69,13 @@
 ./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_66_0.png
 ./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png
 ./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_71_0.png
+./_images/notebooks_0.4-Exploring-Different-Learning-Rates_32_0.png
+./_images/notebooks_0.4-Exploring-Different-Learning-Rates_59_0.png
+./_images/notebooks_0.4-Exploring-Different-Learning-Rates_61_0.png
+./_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_0.png
+./_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_1.png
+./_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_2.png
+./_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_3.png
 ./_sources/combinatorics.rst.txt
 ./_sources/commands.rst.txt
 ./_sources/data.rst.txt
@@ -84,6 +91,7 @@
 ./_sources/notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.ipynb.txt
 ./_sources/notebooks/0.3-BP-Model-in-Tensorflow.ipynb.txt
 ./_sources/notebooks/0.3.1-Comparing-Accuracy-Metrics.ipynb.txt
+./_sources/notebooks/0.4-Exploring-Different-Learning-Rates.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/utils.rst.txt
 ./_sources/visualization.rst.txt
@@ -158,6 +166,7 @@
 ./notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.html
 ./notebooks/0.3-BP-Model-in-Tensorflow.html
 ./notebooks/0.3.1-Comparing-Accuracy-Metrics.html
+./notebooks/0.4-Exploring-Different-Learning-Rates.html
 ./objects.inv
 ./release_schedule.html
 ./search.html
