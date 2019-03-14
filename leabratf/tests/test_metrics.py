@@ -4,7 +4,7 @@ import logging
 import pandas as pd
 import pytest
 
-from leabratf.visualization.metrics import plot_df_str_metrics
+from leabratf.visualization.metrics import plot_df_metrics
 
 logger = logging.getLogger(__name__)
 
@@ -13,8 +13,8 @@ data = [[str(list(range(10))) for _ in range(2)] for _ in range(5)]
 columns = ['col1', 'col2']
 df = pd.DataFrame(data, columns=columns)
 
-def test_plot_df_str_metrics_passes_default_input_combinations():
-    assert plot_df_str_metrics(df) is None
+def test_plot_df_metrics_passes_default_input_combinations():
+    assert plot_df_metrics(df) is None
 
 @pytest.mark.parametrize("metrics", [[columns[0]], [columns[1]], columns])
 @pytest.mark.parametrize("title", ['', 'Test'])
@@ -22,10 +22,10 @@ def test_plot_df_str_metrics_passes_default_input_combinations():
 @pytest.mark.parametrize("key_by_model", [True])
 @pytest.mark.parametrize("model_average", [True])
 @pytest.mark.parametrize("epoch_vline", [None, 5])
-def test_plot_df_str_metrics_passes_all_nondefault_input_combinations(
+def test_plot_df_metrics_passes_all_nondefault_input_combinations(
         metrics, title, epochs, key_by_model, model_average, epoch_vline):
     args =  metrics, title, epochs, key_by_model, model_average, epoch_vline
-    assert plot_df_str_metrics(df, *args) is None
+    assert plot_df_metrics(df, *args) is None
 
 
 

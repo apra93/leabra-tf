@@ -5,22 +5,26 @@ import logging
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from leabratf.utils import set_plot_size
+
 logger = logging.getLogger(__name__)
 
-def plot_df_str_metrics(metrics_df, metrics=None, title='Training History',
-                        epochs=None, key_by_model=False, model_average=False,
-                        epoch_vline=500):
-    """Plots a dataframe of metrics stored as strings for multiple models.
+@set_plot_size()
+def plot_df_metrics(metrics_df, metrics=None, title='Training History',
+                    epochs=None, key_by_model=False, model_average=False,
+                    epoch_vline=500):
+    """Plots a dataframe of metrics for multiple models.
 
     This function was written to plot multiple metrics of 10 models. The metrics
     were stored as csv files, and then read in using `pd.read_csv`, which would
-    load the actual metrics as a long `str`.
+    load the actual metrics as a long `str`. If the data is used upon
+    generation, then it won't be of type `str` and will just be used as-is.
 
     To plot the data, each of the metrics for each model are run using
-    `literal_eval` to turn the data into `list`s and then `dict`s, the data is
-    then subselected for the desired number of epochs, and then compiled into
-    a long-form list of values. These values are then passed into `sns.lineplot`
-    for the actual plots.
+    `literal_eval` to turn the data into `list`s if they are of type `str`, and
+    then `dict`s, the data is then subselected for the desired number of epochs,
+    and then compiled into a long-form list of values. These values are then
+    passed into `sns.lineplot` for the actual plots.
 
     See `nb-0.3.1` for example usage.
 
@@ -68,9 +72,13 @@ def plot_df_str_metrics(metrics_df, metrics=None, title='Training History',
     for i, metrics_series in metrics_df.iterrows():
         # Series data is in a string format, convert to floats and put them in a
         # dict
-        metrics_dict = {key: [float(val)
-                              for val in literal_eval(metrics_series[key])]
-                        for key in metrics}
+        if isinstance(metrics_series[metrics[0]], str):
+            metrics_dict = {key: [float(val)
+                                  for val in literal_eval(metrics_series[key])]
+                            for key in metrics}
+        else:
+            metrics_dict = {key: [val for val in metrics_series[key]]
+                            for key in metrics}
         
         # How many epochs to plot
         if not epochs:
@@ -105,7 +113,3 @@ def plot_df_str_metrics(metrics_df, metrics=None, title='Training History',
     handles, labels = plt.gca().get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
     plt.legend(by_label.values(), by_label.keys())
-    
-    # Make the plot twice as large to make things a little more viewable
-    gcf = plt.gcf()
-    gcf.set_size_inches(*[size*2 for size in gcf.get_size_inches()])
