@@ -4,8 +4,9 @@ Tests for leabratf.utils.py
 import logging
 from collections.abc import Iterable
 
-import pytest
+import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 
 from leabratf import utils
 
@@ -37,3 +38,13 @@ def test_isiterable_correctly_returns(test):
 @pytest.mark.parametrize("test", test_lists)
 def test_flatten_works_correctly(test):
     assert utils.flatten(test) == [1,2,3,4,5]
+
+@pytest.mark.parametrize("size", [[5,5], [16,9], [20,10]])
+def test_set_plot_size_correctly_changes_plot_size(size):
+    @utils.set_plot_size(size)
+    def inner():
+        pass
+    gcf = plt.gcf()
+    assert all(gcf.get_size_inches() != size)
+    inner()
+    assert all(gcf.get_size_inches() == size)

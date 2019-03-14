@@ -1,16 +1,17 @@
 """
 Script for utility functions in leabra-tf
 """
-import os
 import logging
 import logging.config
-import yaml
-import coloredlogs
-
+import os
 from collections.abc import Iterable
-from pathlib import Path
+from functools import wraps
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
+import coloredlogs
+import matplotlib.pyplot as plt
+import yaml
 
 from leabratf.constants import DIR_REPO, DIR_LOGS
 
@@ -189,3 +190,38 @@ def flatten(inp_iter):
             else:
                 yield val
     return list(inner(inp_iter))
+
+def set_plot_size(size=None):
+    """Decorator that sets the plot size using plt.gcf.
+
+    This size change should preserve the size of the fonts on the graphs,
+    while increasing the size of the actual graphs.
+
+    Note: This did not work when applied to figures with subplots, just single
+    plots.
+
+    Parameters
+    ----------
+    size : list or None, optional
+    	The desired size of the plots. Compare this to what is returned when
+    	`gcf.get_size_inches()` returns.
+
+    Returns
+    -------
+    size_decorator : function
+    	The function that is being decorated but with the extra padding of the
+    	size comparison.
+    """
+    # Default size
+    size = size or [16, 9]
+    def size_decorator(func):
+        @wraps(func)
+        def func_wrapper(*args, **kwargs):
+            ret = func(*args, **kwargs)
+            gcf = plt.gcf()
+            if all(gcf.get_size_inches() != size):
+                gcf.set_size_inches(*size)
+            return ret
+        return func_wrapper
+    return size_decorator
+
