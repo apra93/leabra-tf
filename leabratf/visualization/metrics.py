@@ -83,7 +83,9 @@ def plot_df_metrics(metrics_df, metrics=None, title='Training History',
         # How many epochs to plot
         if not epochs:
             len_metrics = [len(val) for val in metrics_dict.values()]
-            epochs = len_metrics[0]
+            # Plot the number of epochs according to the data with the shortest
+            # number of epochs.
+            epochs = min(len_metrics)
 
         # Add to the long form lists
         for key in metrics:
