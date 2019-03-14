@@ -1,6 +1,8 @@
 Utility Functions
 =================
 
+Utility functions used throughout the project.
+
 .. autoclass:: leabratf.utils.RotatingFileHandlerRelativePath
 
 .. autofunction:: leabratf.utils.setup_logging
@@ -11,5 +13,4 @@ Utility Functions
 
 .. autofunction:: leabratf.utils.flatten
 
-.. autofunction:: leabratf.utils._flatten
-
+.. autofunction:: leabratf.utils.set_plot_size
