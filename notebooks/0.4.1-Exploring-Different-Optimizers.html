@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.80.g9368e9b documentation</title>
+  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.79.gc485726 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.80.g9368e9b
+                0+untagged.79.gc485726
               </div>
             
           
@@ -158,6 +158,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.0033-LR">Adam with 0.0033 LR</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.033-LR">Adam with 0.033 LR</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.001-LR">Adam with 0.001 LR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.00033-LR">Adam with 0.00033 LR</a></li>
 </ul>
 </li>
 </ul>
@@ -1353,13 +1354,12 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
 <div class="section" id="Adam-Optimizer-Learning-Rates">
 <h2>Adam Optimizer Learning Rates<a class="headerlink" href="#Adam-Optimizer-Learning-Rates" title="Permalink to this headline">¶</a></h2>
 <p>The adam optimizer had the most promising results. Let’s see how it does with a few different learning rates when run for 500 epochs.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="k">def</span> <span class="nf">exp_optimizer_lr</span><span class="p">(</span><span class="n">train_op</span><span class="p">,</span> <span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="p">[</span><span class="n">ALPHA</span><span class="p">],</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">exp_optimizer_lr</span><span class="p">(</span><span class="n">train_op</span><span class="p">,</span> <span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="p">[</span><span class="n">ALPHA</span><span class="p">],</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">):</span>
     <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
     <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">exit</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1389,7 +1389,15 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed &quot;</span><span class="si">{0}</span><span class="s1">&quot; optimizer training with lr of </span><span class="si">{1}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lr</span><span class="p">))</span>
         <span class="n">metrics_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">metrics_dict</span>
-
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
 <span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0033</span><span class="p">,</span> <span class="mf">0.033</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
 <span class="n">adam_alpha_metrics</span> <span class="o">=</span> <span class="n">exp_optimizer_lr</span><span class="p">(</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">],</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="n">lrs</span><span class="p">)</span>
 </pre></div>
@@ -1471,6 +1479,8 @@ CPU times: user 1h 9min 55s, sys: 13min 23s, total: 1h 23min 19s
 Wall time: 31min 52s
 </pre></div></div>
 </div>
+<p>Since it didn’t seem to do well with the LR of 0.033, and then had a sample accuracy of 0.0 for the first model when using a LR of 0.1, I ended the exp with the data for just the first two.</p>
+<p>Let’s plot both curves.</p>
 <div class="section" id="Adam-with-0.0033-LR">
 <h3>Adam with 0.0033 LR<a class="headerlink" href="#Adam-with-0.0033-LR" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
@@ -1488,9 +1498,10 @@ Wall time: 31min 52s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_72_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_72_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_74_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_74_0.png" />
 </div>
 </div>
+<p>This learning rate appears to work quite well, and its accuracy is generally better than all the</p>
 </div>
 <div class="section" id="Adam-with-0.033-LR">
 <h3>Adam with 0.033 LR<a class="headerlink" href="#Adam-with-0.033-LR" title="Permalink to this headline">¶</a></h3>
@@ -1509,7 +1520,7 @@ Wall time: 31min 52s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_74_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_74_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_77_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_77_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1583,7 +1594,7 @@ Completed &#34;Adam&#34; optimizer training with lr of 0.001!
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_78_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_78_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_81_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_81_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1605,6 +1616,85 @@ Completed &#34;Adam&#34; optimizer training with lr of 0.001!
 File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.0033_lr_adam_optimizer.csv&#39; present, skipping.
 File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.033_lr_adam_optimizer.csv&#39; present, skipping.
 Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.001_lr_adam_optimizer.csv&#39;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Adam-with-0.00033-LR">
+<h3>Adam with 0.00033 LR<a class="headerlink" href="#Adam-with-0.00033-LR" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">adam_alpha_metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">**</span><span class="n">adam_alpha_metrics</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">exp_optimizer_lr</span><span class="p">(</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">],</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="p">[</span><span class="mf">0.00033</span><span class="p">]),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting &#34;Adam&#34; optimizer training with lr of 0.00033
+Optimization Finished! Testing Sample Accuracy: 0.758
+Optimization Finished! Testing Sample Accuracy: 0.758
+Optimization Finished! Testing Sample Accuracy: 0.776
+Optimization Finished! Testing Sample Accuracy: 0.76
+Optimization Finished! Testing Sample Accuracy: 0.782
+Optimization Finished! Testing Sample Accuracy: 0.758
+Optimization Finished! Testing Sample Accuracy: 0.766
+Optimization Finished! Testing Sample Accuracy: 0.758
+Optimization Finished! Testing Sample Accuracy: 0.784
+Optimization Finished! Testing Sample Accuracy: 0.742
+Optimization Finished! Testing Sample Accuracy: 0.742
+Completed &#34;Adam&#34; optimizer training with lr of 0.00033!
+
+CPU times: user 33min 29s, sys: 6min 24s, total: 39min 54s
+Wall time: 15min 16s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_alpha_metrics</span><span class="p">[</span><span class="s1">&#39;0.001&#39;</span><span class="p">],</span>
+                            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with 0.001 LR&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_85_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_85_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">lr_name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">adam_alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_name</span><span class="p">,</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.0033_lr_adam_optimizer.csv&#39; present, skipping.
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.033_lr_adam_optimizer.csv&#39; present, skipping.
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.001_lr_adam_optimizer.csv&#39; present, skipping.
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.00033_lr_adam_optimizer.csv&#39;
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
