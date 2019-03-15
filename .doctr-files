@@ -87,10 +87,16 @@
 ./_images/notebooks_0.4.1-Exploring-Different-Optimizers_77_0.png
 ./_images/notebooks_0.4.1-Exploring-Different-Optimizers_81_0.png
 ./_images/notebooks_0.4.1-Exploring-Different-Optimizers_85_0.png
-./_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_0.png
-./_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_1.png
-./_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_2.png
-./_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_3.png
+./_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_0.png
+./_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_1.png
+./_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_2.png
+./_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_3.png
+./_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_32_0.png
+./_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_0.png
+./_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_1.png
+./_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_2.png
+./_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_3.png
+./_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_4.png
 ./_sources/combinatorics.rst.txt
 ./_sources/commands.rst.txt
 ./_sources/data.rst.txt
@@ -108,6 +114,7 @@
 ./_sources/notebooks/0.3.1-Comparing-Accuracy-Metrics.ipynb.txt
 ./_sources/notebooks/0.4-Exploring-Different-Learning-Rates.ipynb.txt
 ./_sources/notebooks/0.4.1-Exploring-Different-Optimizers.ipynb.txt
+./_sources/notebooks/0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/utils.rst.txt
 ./_sources/visualization.rst.txt
@@ -184,6 +191,7 @@
 ./notebooks/0.3.1-Comparing-Accuracy-Metrics.html
 ./notebooks/0.4-Exploring-Different-Learning-Rates.html
 ./notebooks/0.4.1-Exploring-Different-Optimizers.html
+./notebooks/0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html
 ./objects.inv
 ./release_schedule.html
 ./search.html

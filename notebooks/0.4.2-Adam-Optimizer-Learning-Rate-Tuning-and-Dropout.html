@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.3.1 Comparing Accuracy Metrics &mdash; Leabra Tensorflow 0+untagged.74.g6b70513 documentation</title>
+  <title>0.4.2 Adam Optimizer Learning Rate Tuning and Dropout &mdash; Leabra Tensorflow 0+untagged.74.g6b70513 documentation</title>
   
 
   
@@ -37,8 +37,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="0.4 Exploring Different Learning Rates" href="0.4-Exploring-Different-Learning-Rates.html" />
-    <link rel="prev" title="0.3 BP Model in Tensorflow" href="0.3-BP-Model-in-Tensorflow.html" /> 
+    <link rel="prev" title="0.4.1 Exploring Different Optimizers" href="0.4.1-Exploring-Different-Optimizers.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -109,7 +108,10 @@
 <li class="toctree-l1"><a class="reference internal" href="0.2-Running-a-Basic-Model-on-Combigen.html">0.2 Running a Basic Model on Combigen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.2.1-Iterating-the-BP-Model-on-GPUs.html">0.2.1 Iterating the BP Model on GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0.3.1 Comparing Accuracy Metrics</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="0.3.1-Comparing-Accuracy-Metrics.html">0.3.1 Comparing Accuracy Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.4-Exploring-Different-Learning-Rates.html">0.4 Exploring Different Learning Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.4.1-Exploring-Different-Optimizers.html">0.4.1 Exploring Different Optimizers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.4.2 Adam Optimizer Learning Rate Tuning and Dropout</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
@@ -126,48 +128,36 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Background">Background</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#The-Combigen-Task">The Combigen Task</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Previous-Accuracy-Results">Previous Accuracy Results</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Elemental-Accuracy">Elemental Accuracy</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Sample-Accuracy">Sample Accuracy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Adam-Optimizer-Learning-Rates-Thus-Far">Adam Optimizer Learning Rates Thus Far</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Reading-the-Data">Reading the Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#The-Legend">The Legend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LR-0.00033,-0.001,-0.0033,-0.01,-0.033">LR 0.00033, 0.001, 0.0033, 0.01, 0.033</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Obtaining-the-Metrics">Obtaining the Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Setting-Up-the-Graph">Setting Up the Graph</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Make-the-Datasets">Make the Datasets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#TF-Variables">TF Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Model-and-Loss-Function">Model and Loss Function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Metrics">Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Model-and-Metrics">Model and Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Varying-the-Optimizer">Varying the Optimizer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Defining-the-Training-Function">Defining the Training Function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Getting-Metrics-for-10-Models">Getting Metrics for 10 Models</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Plotting-the-Metrics">Plotting the Metrics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#The-Legend">The Legend</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Training-Set-Metrics">Training Set Metrics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Validation-Set-Metrics">Validation Set Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Utility-Functions">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Defining-The-Training-Routine">Defining The Training Routine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Save-Data-Routine">Save Data Routine</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Summary-Plots">Summary Plots</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#All-Metrics-for-All-Models">All Metrics for All Models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Average-Metrics-for-All-Models">Average Metrics for All Models</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Accuracy-Metrics-in-Detail">Accuracy Metrics in Detail</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Average-Loss-and-Elemental-Accuracy">Average Loss and Elemental Accuracy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Average-Training-Axis-and-Slot-Accuracy">Average Training Axis and Slot Accuracy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Validation-Accuracy-Metrics">Validation Accuracy Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Validation-Sample-Accuracy">Validation Sample Accuracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Adam-Optimizer-LRs-with-1500-Epochs">Adam Optimizer LRs with 1500 Epochs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Getting-the-Metrics">Getting the Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Saving-the-Data">Saving the Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Plots-for-LRs-0.0001,-0.00033,-0.00067,-0.001,-0.0033">Plots for LRs 0.0001, 0.00033, 0.00067, 0.001, 0.0033</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="0.4-Exploring-Different-Learning-Rates.html">0.4 Exploring Different Learning Rates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="0.4.1-Exploring-Different-Optimizers.html">0.4.1 Exploring Different Optimizers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html">0.4.2 Adam Optimizer Learning Rate Tuning and Dropout</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Project Links</span></p>
 <ul>
@@ -221,13 +211,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>0.3.1 Comparing Accuracy Metrics</li>
+      <li>0.4.2 Adam Optimizer Learning Rate Tuning and Dropout</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/0.3.1-Comparing-Accuracy-Metrics.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -462,9 +452,9 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="0.3.1-Comparing-Accuracy-Metrics">
-<h1>0.3.1 Comparing Accuracy Metrics<a class="headerlink" href="#0.3.1-Comparing-Accuracy-Metrics" title="Permalink to this headline">¶</a></h1>
-<p>The accuracy results that we’ve been getting so far haven’t reflected the those presented in O’Reilly’s paper, so let’s generate them more systematically.</p>
+<div class="section" id="0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout">
+<h1>0.4.2 Adam Optimizer Learning Rate Tuning and Dropout<a class="headerlink" href="#0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout" title="Permalink to this headline">¶</a></h1>
+<p>The Adam optimizer worked quite well in the last notebook, so let’s do a little more tuning and then add dropout to see how well we can get the model to perform.</p>
 <div class="section" id="Boilerplate">
 <h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
 <p>The following subsections are largely boilerplate code, so skip around as needed.</p>
@@ -488,7 +478,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Sun Mar 10 2019 15:15:54
+Fri Mar 15 2019 00:06:11
 
 CPython 3.6.8
 IPython 7.3.0
@@ -505,7 +495,7 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 12
 interpreter: 64bit
-Git hash   : c78d1b5e16d1a927fca67905d23089041445c4fd
+Git hash   : c485726d69f4e3299fdd6438ad219bda814334ae
 Git branch : master
 </pre></div></div>
 </div>
@@ -544,11 +534,12 @@ Git branch : master
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Standard library imports</span>
-<span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 <span class="c1"># Third party</span>
+<span class="kn">import</span> <span class="nn">IPython</span> <span class="k">as</span> <span class="nn">ipy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -569,11 +560,14 @@ Git branch : master
 <span class="c1"># Visualization for the task</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.visualization.combigen_heatmap
 <span class="kn">import</span> <span class="nn">leabratf.visualization.combigen_heatmap</span> <span class="k">as</span> <span class="nn">cgh</span>
+<span class="c1"># Metrics visulaization</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.visualization.metrics
+<span class="kn">import</span> <span class="nn">leabratf.visualization.metrics</span> <span class="k">as</span> <span class="nn">plt_metrics</span>
 <span class="c1"># Utility functions</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.utils
 <span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.constants
-<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_MODELS</span>
+<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_DATA_PROC</span>
 </pre></div>
 </div>
 </div>
@@ -604,8 +598,6 @@ Git branch : master
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;leabratf&#39;</span><span class="p">)</span>
 <span class="c1"># Don&#39;t propagate messages</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
-
-<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -641,7 +633,7 @@ Git branch : master
 <span></span><span class="c1"># Number of epochs to train for</span>
 <span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="c1"># Number of samples in the training set</span>
-<span class="n">N_TRAIN</span><span class="o">=</span> <span class="mi">100</span>
+<span class="n">N_TRAIN</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="c1"># Number of samples in the validation set</span>
 <span class="n">N_VAL</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="c1"># Number of samples in the testing set</span>
@@ -699,7 +691,7 @@ Git branch : master
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Number of times to print an update</span>
-<span class="n">N_UPDATES</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">N_UPDATES</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1"># Which device to train on</span>
 <span class="n">TF_DEVICE</span> <span class="o">=</span> <span class="s1">&#39;/cpu:0&#39;</span>
 <span class="c1"># Number of models to train with</span>
@@ -712,7 +704,7 @@ Git branch : master
 </div>
 <div class="section" id="Background">
 <h2>Background<a class="headerlink" href="#Background" title="Permalink to this headline">¶</a></h2>
-<p>This section goes over some of the background information for the notebook using results from previous notebooks. Skip around as needed.</p>
+<p>This section goes over some of the background information for the notebook using results from previous notebooks. This first section shows the task as always, but then will also go over the previous training curves.</p>
 <div class="section" id="The-Combigen-Task">
 <h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
 <p>Quickly remind ourselves what the task looks like before diving in.</p>
@@ -730,29 +722,129 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_32_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_32_0.png" />
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_32_0.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_32_0.png" />
 </div>
 </div>
 </div>
-<div class="section" id="Previous-Accuracy-Results">
-<h3>Previous Accuracy Results<a class="headerlink" href="#Previous-Accuracy-Results" title="Permalink to this headline">¶</a></h3>
-<p>Between nb-0.2.x and 0.3, our accuracy results have been quite reproducible. Here is a summary of the different results so far. All of the models shown below were trained using the O’Reilly BP architecture and binary cross-entropy as the loss.</p>
-<div class="section" id="Elemental-Accuracy">
-<h4>Elemental Accuracy<a class="headerlink" href="#Elemental-Accuracy" title="Permalink to this headline">¶</a></h4>
-<p>In nb-0.2.x, the O’Reilly BP model was implemented in keras using an absolute error based accuracy metric. Below is the training curve when trained to 5000 epochs.</p>
-<p><a href="#id1"><span class="problematic" id="id2">|BCE\_SGD|</span></a></p>
+<div class="section" id="Adam-Optimizer-Learning-Rates-Thus-Far">
+<h3>Adam Optimizer Learning Rates Thus Far<a class="headerlink" href="#Adam-Optimizer-Learning-Rates-Thus-Far" title="Permalink to this headline">¶</a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">nb-0.4.1</span></code> we collected data on the models for several different learning rates. Let’s read them all and plot them to remind outselves of where the performance currently stands.</p>
+<div class="section" id="Reading-the-Data">
+<h4>Reading the Data<a class="headerlink" href="#Reading-the-Data" title="Permalink to this headline">¶</a></h4>
+<p>Let’s write a function to read the relevant data we want back into a dictionary, keyed by learning rates.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
 </div>
-<div class="section" id="Sample-Accuracy">
-<h4>Sample Accuracy<a class="headerlink" href="#Sample-Accuracy" title="Permalink to this headline">¶</a></h4>
-<p>In nb-0.3, the model was implemented in tensorflow with a modification to the accuracy Some things to note are that the models were trained to 10 times the number of epochs as O’Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model’s performance would have looked like.</p>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">optimizer_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span> <span class="s1">&#39;different_optimizers&#39;</span>
+<span class="n">adam_lr_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">optimizer_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">stem</span>
+    <span class="c1"># Only look at files that containt the fields we are interested in</span>
+    <span class="k">if</span> <span class="s1">&#39;adam&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">file_name</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="c1"># Split the string by underscores</span>
+    <span class="n">file_split_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="c1"># Grab the key from the element thats one before the one we&#39;re after</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">lr_key</span> <span class="o">=</span> <span class="n">file_split_name</span><span class="p">[</span><span class="n">file_split_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;lr&#39;</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># The keyby isnt in the name, which means its a default</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">lr_key</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="c1"># Set the key value</span>
+    <span class="n">adam_lr_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Obtaining-the-Metrics">
-<h2>Obtaining the Metrics<a class="headerlink" href="#Obtaining-the-Metrics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="The-Legend">
+<h4>The Legend<a class="headerlink" href="#The-Legend" title="Permalink to this headline">¶</a></h4>
+<p>Before plotting everything, let’s remind ourselves of the metrics legend. This is a direct copy from <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code>, so skip as needed.</p>
+<div class="section" id="Training-Set-Metrics">
+<h5>Training Set Metrics<a class="headerlink" href="#Training-Set-Metrics" title="Permalink to this headline">¶</a></h5>
+<p>Metrics obtained every epoch from from performance on the training set.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">loss</span></code> - Loss for the training set</li>
+<li><code class="docutils literal notranslate"><span class="pre">el_acc</span></code> - Element-wise accuracy between predictions and labels for the training set</li>
+<li><code class="docutils literal notranslate"><span class="pre">ax_acc</span></code> - Axis accuracy for each slot in each sample between predictions and labels for the training set. Score per sample goes in eighth steps between 0.0 and 1.0. Every correct axis in every slot contributes 0.125 to the the overall accuracy</li>
+<li><code class="docutils literal notranslate"><span class="pre">sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the training set. Score per sample goes in quarter steps between 0.0 and 1.0. Any slot that has all elements correct contributes 0.25 to the score</li>
+<li><code class="docutils literal notranslate"><span class="pre">sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. Score per sample is binary - model must get every element correct to receive 1.0</li>
+</ul>
+</div>
+<div class="section" id="Validation-Set-Metrics">
+<h5>Validation Set Metrics<a class="headerlink" href="#Validation-Set-Metrics" title="Permalink to this headline">¶</a></h5>
+<p>Metrics obtained every epoch from from performance on the validation set.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">val_loss</span></code> - Loss for the validation set for a particular epoch</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_el_acc</span></code> - Element-wise accuracy between predictions and labels for the validation set. See above for details</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the validation set. See above for details</li>
+<li><code class="docutils literal notranslate"><span class="pre">val_sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. See above for details</li>
+</ul>
+</div>
+</div>
+<div class="section" id="LR-0.00033,-0.001,-0.0033,-0.01,-0.033">
+<h4>LR 0.00033, 0.001, 0.0033, 0.01, 0.033<a class="headerlink" href="#LR-0.00033,-0.001,-0.0033,-0.01,-0.033" title="Permalink to this headline">¶</a></h4>
+<p>And now let’s plot them all in descending order of LR.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Create a sorted list of lrs</span>
+<span class="n">lr_sorted_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">adam_lr_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()])]</span>
+<span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lr_sorted_list</span><span class="p">:</span>
+    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_lr_dict</span><span class="p">[</span><span class="n">lr</span><span class="p">],</span>
+                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with </span><span class="si">{0}</span><span class="s1"> LR&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_0.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_1.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_2.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_3.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_3.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_4.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_38_4.png" />
+</div>
+</div>
+<p>Now that we’ve seen what has been done thus far, let’s rebuild the graph again so we can get some more plots.</p>
+</div>
+</div>
+</div>
+<div class="section" id="Setting-Up-the-Graph">
+<h2>Setting Up the Graph<a class="headerlink" href="#Setting-Up-the-Graph" title="Permalink to this headline">¶</a></h2>
 <p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -765,11 +857,11 @@ Git branch : master
 <h3>Make the Datasets<a class="headerlink" href="#Make-the-Datasets" title="Permalink to this headline">¶</a></h3>
 <p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># The first step of the setup is that each of the datasets (training, validation, and</span>
     <span class="c1"># testing) are turned into their own `Dataset` objects.</span>
     <span class="c1"># Training dataset</span>
@@ -794,6 +886,7 @@ Git branch : master
     <span class="n">iterators</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">]</span>
 
     <span class="c1"># Add the initiatlizations to the init opts</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">train_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">val_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">test_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">]</span>
 
     <span class="c1"># And finally, the interesting part. Rather than creating separate next elements for</span>
@@ -825,7 +918,7 @@ Git branch : master
 <p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
 <p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -843,17 +936,16 @@ Git branch : master
                       <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
 <span class="p">}</span>
 
-<span class="c1"># List for initialization operations</span>
-<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()]</span>
+<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[]</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Model-and-Loss-Function">
-<h3>Model and Loss Function<a class="headerlink" href="#Model-and-Loss-Function" title="Permalink to this headline">¶</a></h3>
-<p>The architecture is the same as previous notebooks. See nb-0.3 for more details.</p>
+<div class="section" id="Model-and-Metrics">
+<h3>Model and Metrics<a class="headerlink" href="#Model-and-Metrics" title="Permalink to this headline">¶</a></h3>
+<p>The architecture is the same as previous notebooks. See <code class="docutils literal notranslate"><span class="pre">nb-0.3</span></code> for more details.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -866,8 +958,15 @@ Git branch : master
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">])</span>
     <span class="c1"># Reshape for labels</span>
     <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">STACK</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">,</span> <span class="n">DIMS</span><span class="p">])</span>
-
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
     <span class="c1"># Get the relevant dataset nodes</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
 
@@ -876,30 +975,19 @@ Git branch : master
     <span class="c1"># Ensure y is cast to the same type as logits</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
+    <span class="c1"># We will keep this in for now</span>
+    <span class="c1"># Define alpha as placeholder variable</span>
+    <span class="n">alpha_ph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+
     <span class="c1"># Define loss and optimizer</span>
     <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
         <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">)</span>
 
-    <span class="c1"># train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())</span>
-    <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Metrics">
-<h3>Metrics<a class="headerlink" href="#Metrics" title="Permalink to this headline">¶</a></h3>
-<p>The last few ops to define before training are the metrics.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
     <span class="c1"># Define some intermediate nodes</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
     <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
     <span class="n">equal_labels_and_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rounded_predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
 
     <span class="c1"># O&#39;Reilly Accuracy</span>
     <span class="n">axis_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
@@ -918,11 +1006,37 @@ Git branch : master
 </div>
 </div>
 </div>
+<div class="section" id="Varying-the-Optimizer">
+<h3>Varying the Optimizer<a class="headerlink" href="#Varying-the-Optimizer" title="Permalink to this headline">¶</a></h3>
+<p>Let’s create several different training operations.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+    <span class="c1"># Adam</span>
+    <span class="n">train_op_adam</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+    <span class="c1"># Adadelta</span>
+    <span class="n">train_op_adadelta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdadeltaOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+    <span class="c1"># RMSProp</span>
+    <span class="n">train_op_rmsprop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">RMSPropOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+
+<span class="c1"># And now add these to a dictionary</span>
+<span class="n">optimizer_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Adam&#39;</span> <span class="p">:</span> <span class="n">train_op_adam</span><span class="p">,</span>
+    <span class="s1">&#39;Adadelta&#39;</span> <span class="p">:</span> <span class="n">train_op_adadelta</span><span class="p">,</span>
+    <span class="s1">&#39;RMSProp&#39;</span> <span class="p">:</span> <span class="n">train_op_rmsprop</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="New-Session-Function">
 <h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
 <p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -944,11 +1058,12 @@ Git branch : master
 <h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">train_adam</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">,</span>
+               <span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># Ensure this is an int</span>
     <span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
     <span class="c1"># Dict with the various metrics we care about</span>
@@ -956,6 +1071,8 @@ Git branch : master
                <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">:[],</span>
                <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">:[]}</span>
     <span class="c1"># Run the initialization ops</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">(),</span> <span class="n">tf</span><span class="o">.</span><span class="n">local_variables_initializer</span><span class="p">()]</span>
     <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
     <span class="c1"># Define training and validation handlers</span>
     <span class="n">training_handle</span><span class="p">,</span> <span class="n">validation_handle</span><span class="p">,</span> <span class="n">testing_handle</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">string_handle</span><span class="p">()</span>
@@ -966,8 +1083,8 @@ Git branch : master
         <span class="c1"># Run the training steps</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TRAIN</span><span class="p">):</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">ep_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sl_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_ax_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sm_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">el_acc_op</span><span class="p">,</span> <span class="n">axis_acc_op</span><span class="p">,</span> <span class="n">slot_acc_op</span><span class="p">,</span> <span class="n">sample_acc_op</span><span class="p">],</span>
-                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">})</span>
+                <span class="p">[</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">],</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">el_acc_op</span><span class="p">,</span> <span class="n">axis_acc_op</span><span class="p">,</span> <span class="n">slot_acc_op</span><span class="p">,</span> <span class="n">sample_acc_op</span><span class="p">],</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">,</span> <span class="n">alpha_ph</span><span class="p">:</span> <span class="n">lr</span><span class="p">})</span>
 
         <span class="c1"># Get means for the epoch</span>
         <span class="n">epoch_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span><span class="p">),</span>
@@ -982,7 +1099,7 @@ Git branch : master
             <span class="n">metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
         <span class="c1"># Selectively display the epoch number</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">epochs</span> <span class="o">/</span> <span class="n">n_updates</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_updates</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">epochs</span> <span class="o">/</span> <span class="n">n_updates</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;Completed epoch </span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">. Metrics:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
                    <span class="s2">&quot;                     Loss   Sample Accuracy   Elem Accuracy</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
                    <span class="s2">&quot;    Epoch:      </span><span class="si">{2:10.4f}</span><span class="s2">   </span><span class="si">{3:10.4f}</span><span class="s2">   </span><span class="si">{4:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
@@ -991,313 +1108,130 @@ Git branch : master
                 <span class="n">val_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
     <span class="c1"># Calculate accuracy for test images</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished! Testing Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="n">accuracy_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished! Testing Sample Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">sample_acc_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
     <span class="k">return</span> <span class="n">metrics</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Getting-Metrics-for-10-Models">
-<h3>Getting Metrics for 10 Models<a class="headerlink" href="#Getting-Metrics-for-10-Models" title="Permalink to this headline">¶</a></h3>
-<p>The last thing to do is encapsulate everything into one list.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
-</pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_MODELS</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-    <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed training for model </span><span class="si">{0}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Starting training for model 0...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6657       0.0000       0.5955
-    Validation:     0.6367       0.0000       0.6450
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0635       0.3999       0.9766
-
-Optimization Finished! Testing Accuracy: 0.454
-Completed training for model 0!
-
-Starting training for model 1...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7226       0.0000       0.5315
-    Validation:     0.6821       0.0000       0.5732
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0618       0.4199       0.9771
-
-Optimization Finished! Testing Accuracy: 0.484
-Completed training for model 1!
-
-Starting training for model 2...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6739       0.0000       0.6012
-    Validation:     0.6468       0.0000       0.6465
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0613       0.3999       0.9761
-
-Optimization Finished! Testing Accuracy: 0.452
-Completed training for model 2!
-
-Starting training for model 3...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7103       0.0000       0.5833
-    Validation:     0.6879       0.0000       0.6040
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0674       0.3799       0.9736
-
-Optimization Finished! Testing Accuracy: 0.438
-Completed training for model 3!
-
-Starting training for model 4...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7036       0.0000       0.5950
-    Validation:     0.6646       0.0000       0.6196
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0596       0.4199       0.9775
-
-Optimization Finished! Testing Accuracy: 0.454
-Completed training for model 4!
-
-Starting training for model 5...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7352       0.0000       0.4913
-    Validation:     0.6886       0.0000       0.5649
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0639       0.3601       0.9746
-
-Optimization Finished! Testing Accuracy: 0.49
-Completed training for model 5!
-
-Starting training for model 6...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7234       0.0000       0.4922
-    Validation:     0.6932       0.0000       0.5278
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0585       0.4800       0.9790
-
-Optimization Finished! Testing Accuracy: 0.466
-Completed training for model 6!
-
-Starting training for model 7...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6881       0.0000       0.5540
-    Validation:     0.6663       0.0000       0.5747
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0644       0.5200       0.9790
-
-Optimization Finished! Testing Accuracy: 0.434
-Completed training for model 7!
-
-Starting training for model 8...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6645       0.0000       0.5910
-    Validation:     0.6521       0.0000       0.6362
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0631       0.5000       0.9761
-
-Optimization Finished! Testing Accuracy: 0.468
-Completed training for model 8!
-
-Starting training for model 9...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6865       0.0000       0.5622
-    Validation:     0.6628       0.0000       0.6001
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0621       0.3601       0.9746
-
-Optimization Finished! Testing Accuracy: 0.452
-Completed training for model 9!
-
-CPU times: user 1d 3h 11min 44s, sys: 4h 45min 4s, total: 1d 7h 56min 49s
-Wall time: 11h 19min 5s
-</pre></div></div>
-</div>
-<p>And then now let’s put everything in one pandas dataframe.</p>
+<div class="section" id="Utility-Functions">
+<h2>Utility Functions<a class="headerlink" href="#Utility-Functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Defining-The-Training-Routine">
+<h3>Defining The Training Routine<a class="headerlink" href="#Defining-The-Training-Routine" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+<span></span><span class="k">def</span> <span class="nf">exp_lrs</span><span class="p">(</span><span class="n">lrs</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+    <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">exit</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lrs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting &quot;Adam&quot; optimizer training with lr of </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">N_MODELS</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_adam</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
+                                          <span class="n">n_updates</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">))</span>
+
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Encountered a KeyboardInterrupt. Starting a IPython Shell.&#39;</span><span class="p">)</span>
+                <span class="n">ipy</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
+                <span class="n">inp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">]:</span>
+                    <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training or skip current lr? [(Y)es/(N)o/(S)kip]&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Continuing training...&#39;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Continuing to next lr...&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exiting&#39;</span><span class="p">)</span>
+                    <span class="n">exit</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+        <span class="k">if</span> <span class="n">exit</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed &quot;Adam&quot; optimizer training with lr of </span><span class="si">{0}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
+        <span class="n">metrics_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">metrics_dict</span>
 </pre></div>
 </div>
 </div>
-<p>In the event that the data needs to be reloaded (for example if the kernel needs to be restarted), I have the data saved locally and can be reloaded using the following lines:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_LOGS</span>
-<span class="n">metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">DIR_LOGS</span> <span class="o">/</span> <span class="s1">&#39;10_models_25000_epochs.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="Plotting-the-Metrics">
-<h2>Plotting the Metrics<a class="headerlink" href="#Plotting-the-Metrics" title="Permalink to this headline">¶</a></h2>
-<p>Just like before, let’s plot the training curves using the metrics we obtained. To do this, let’s borrow the same function from nb-0.3 but make it a bit more general.</p>
+<div class="section" id="Save-Data-Routine">
+<h3>Save Data Routine<a class="headerlink" href="#Save-Data-Routine" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="c1"># What metrics to plot</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">columns</span>
-    <span class="c1"># Empty lists for the long form data</span>
-    <span class="n">long_epochs</span><span class="p">,</span> <span class="n">long_metrics</span><span class="p">,</span> <span class="n">long_hues</span><span class="p">,</span> <span class="n">long_units</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span></span><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">n_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">,</span> <span class="n">n_train</span><span class="o">=</span><span class="n">N_TRAIN</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span><span class="p">,</span> <span class="n">exp_dir</span><span class="o">=</span><span class="n">DIR_DATA_PROC</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">df_metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+    <span class="c1"># Grab the exp params</span>
+    <span class="n">n_models</span> <span class="o">=</span> <span class="n">n_models</span> <span class="ow">or</span> <span class="n">df_metrics</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_epochs</span> <span class="o">=</span> <span class="n">n_epochs</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_metrics</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="c1"># Loop through each model&#39;s data</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metrics_series</span> <span class="ow">in</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="c1"># Series data is in a string format, convert to floats and put them in a dict</span>
-        <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">literal_eval</span><span class="p">(</span><span class="n">metrics_series</span><span class="p">[</span><span class="n">key</span><span class="p">])]</span>
-                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>
+    <span class="c1"># Create a dict containing different keys and values if they differ</span>
+    <span class="c1"># from the default exp</span>
+    <span class="n">file_name_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># If we used a different number of models</span>
+    <span class="k">if</span> <span class="n">n_models</span> <span class="o">!=</span> <span class="n">N_MODELS</span><span class="p">:</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_models</span><span class="p">)</span>
+    <span class="c1"># If we used a different number of epochs</span>
+    <span class="k">if</span> <span class="n">n_epochs</span> <span class="o">!=</span> <span class="n">EPOCHS</span><span class="p">:</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
+    <span class="c1"># If we used a different number of training samples</span>
+    <span class="k">if</span> <span class="n">n_train</span> <span class="o">!=</span> <span class="n">N_TRAIN</span><span class="p">:</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_train</span><span class="p">)</span>
+    <span class="c1"># If we used a different learning rate</span>
+    <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ALPHA</span><span class="p">:</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+    <span class="c1"># If we used a different optimizer</span>
+    <span class="k">if</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;sgd&#39;</span><span class="p">:</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-        <span class="c1"># How many epochs to plot</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">epochs</span><span class="p">:</span>
-            <span class="n">len_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metrics_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
-            <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="n">len_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">len_metrics</span><span class="p">),</span> <span class="s1">&#39;Metrics have different lengths&#39;</span>
-            <span class="n">epochs</span> <span class="o">=</span> <span class="n">len_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Create the filename and path object</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">file_name_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_name</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">file_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
+    <span class="n">file_name</span> <span class="o">+=</span> <span class="s1">&#39;.csv&#39;</span>
+    <span class="n">exp_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">exp_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">file_name</span>
 
-        <span class="c1"># Add to the long form lists</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
-            <span class="n">label</span> <span class="o">=</span> <span class="n">key</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="s1">&#39;Model </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-            <span class="n">units</span> <span class="o">=</span> <span class="n">i</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="n">key</span>
-            <span class="n">long_epochs</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">))</span>
-            <span class="n">long_metrics</span> <span class="o">+=</span> <span class="n">metrics_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">epochs</span><span class="p">]</span>
-            <span class="n">long_hues</span> <span class="o">+=</span> <span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
-            <span class="n">long_units</span> <span class="o">+=</span> <span class="p">[</span><span class="n">units</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
-
-    <span class="k">if</span> <span class="n">model_average</span><span class="p">:</span>
-        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
-                     <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
-    <span class="c1"># Plot each line individually</span>
+    <span class="c1"># Save the df if the file does not exist</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">exp_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+            <span class="n">df_metrics</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved df to &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dryrun: (Not) Saved df to &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">)))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
-                     <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">long_units</span><span class="p">)</span>
-
-    <span class="c1"># Title, axis, and 500 epoch line</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;Training History&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">epochs</span> <span class="o">&gt;</span> <span class="n">EPOCHS</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;500 Epochs&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Prune down the number of labels to just the unique ones</span>
-    <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
-    <span class="n">by_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-
-    <span class="c1"># Make the plot twice as large to make things a little more viewable</span>
-    <span class="n">gcf</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
-    <span class="n">gcf</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">size</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">gcf</span><span class="o">.</span><span class="n">get_size_inches</span><span class="p">()])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">{0}</span><span class="s2">&#39; present, skipping.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="The-Legend">
-<h3>The Legend<a class="headerlink" href="#The-Legend" title="Permalink to this headline">¶</a></h3>
-<p>Now that we have so may metrics to keep track of, it’s worth taking the time to define each of them.</p>
-<div class="section" id="Training-Set-Metrics">
-<h4>Training Set Metrics<a class="headerlink" href="#Training-Set-Metrics" title="Permalink to this headline">¶</a></h4>
-<p>Metrics obtained every epoch from from performance on the training set.</p>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">loss</span></code> - Loss for the training set</li>
-<li><code class="docutils literal notranslate"><span class="pre">el_acc</span></code> - Element-wise accuracy between predictions and labels for the training set</li>
-<li><code class="docutils literal notranslate"><span class="pre">ax_acc</span></code> - Axis accuracy for each slot in each sample between predictions and labels for the training set. Score per sample goes in eighth steps between 0.0 and 1.0. Every correct axis in every slot contributes 0.125 to the the overall accuracy</li>
-<li><code class="docutils literal notranslate"><span class="pre">sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the training set. Score per sample goes in quarter steps between 0.0 and 1.0. Any slot that has all elements correct contributes 0.25 to the score</li>
-<li><code class="docutils literal notranslate"><span class="pre">sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. Score per sample is binary - model must get every element correct to receive 1.0</li>
-</ul>
-</div>
-<div class="section" id="Validation-Set-Metrics">
-<h4>Validation Set Metrics<a class="headerlink" href="#Validation-Set-Metrics" title="Permalink to this headline">¶</a></h4>
-<p>Metrics obtained every epoch from from performance on the validation set.</p>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">val_loss</span></code> - Loss for the validation set for a particular epoch</li>
-<li><code class="docutils literal notranslate"><span class="pre">val_el_acc</span></code> - Element-wise accuracy between predictions and labels for the validation set. See above for details</li>
-<li><code class="docutils literal notranslate"><span class="pre">val_sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the validation set. See above for details</li>
-<li><code class="docutils literal notranslate"><span class="pre">val_sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. See above for details</li>
-</ul>
 </div>
 </div>
-</div>
-<div class="section" id="Summary-Plots">
-<h2>Summary Plots<a class="headerlink" href="#Summary-Plots" title="Permalink to this headline">¶</a></h2>
-<p>The following two plots have summaries of all the data collected.</p>
-<div class="section" id="All-Metrics-for-All-Models">
-<h3>All Metrics for All Models<a class="headerlink" href="#All-Metrics-for-All-Models" title="Permalink to this headline">¶</a></h3>
-<p>Let’s plot all the metrics for all the models to see what they all generally look like.</p>
+<div class="section" id="Adam-Optimizer-LRs-with-1500-Epochs">
+<h2>Adam Optimizer LRs with 1500 Epochs<a class="headerlink" href="#Adam-Optimizer-LRs-with-1500-Epochs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Getting-the-Metrics">
+<h3>Getting the Metrics<a class="headerlink" href="#Getting-the-Metrics" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;All Metrics for All Models&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.00033</span><span class="p">,</span> <span class="mf">0.00067</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.0033</span><span class="p">]</span>
+<span class="n">adam_lr_metrics</span> <span class="o">=</span> <span class="n">exp_lrs</span><span class="p">(</span><span class="n">lrs</span><span class="o">=</span><span class="n">lrs</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_58_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_58_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1305,210 +1239,38 @@ Wall time: 11h 19min 5s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 1min 18s, sys: 1.84 s, total: 1min 20s
-Wall time: 43.4 s
+Starting &#34;Adam&#34; optimizer training with lr of 0.0001
 </pre></div></div>
 </div>
 </div>
-<div class="section" id="Average-Metrics-for-All-Models">
-<h3>Average Metrics for All Models<a class="headerlink" href="#Average-Metrics-for-All-Models" title="Permalink to this headline">¶</a></h3>
-<p>Let’s also plot the average metric values across all 10 models.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="section" id="Saving-the-Data">
+<h3>Saving the Data<a class="headerlink" href="#Saving-the-Data" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>%%time
-# These are the possible metrics to use
-# [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,
-#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]
-plot_metrics(metrics_df,
-             metrics=None,
-             epochs=None,
-             title=&#39;Average Metrics Across All Models&#39;,
-             key_by_model=False,
-             model_average=True)`
-plt.show()
+<span></span><span class="k">for</span> <span class="n">lr_name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">adam_lr_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_name</span><span class="p">,</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_60_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_60_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 1h 35min 4s, sys: 4min 23s, total: 1h 39min 28s
-Wall time: 1h 38min 36s
-</pre></div></div>
-</div>
-<p>Note the execution time difference between the two plots.</p>
-</div>
-</div>
-<div class="section" id="Accuracy-Metrics-in-Detail">
-<h2>Accuracy Metrics in Detail<a class="headerlink" href="#Accuracy-Metrics-in-Detail" title="Permalink to this headline">¶</a></h2>
-<p>Let’s go through each of the different accuracy metrics individually.</p>
-<div class="section" id="Average-Loss-and-Elemental-Accuracy">
-<h3>Average Loss and Elemental Accuracy<a class="headerlink" href="#Average-Loss-and-Elemental-Accuracy" title="Permalink to this headline">¶</a></h3>
-<p>These are plots we have already generated in the past so let’s just start with them. Since they also asymptote relatively quickly, let’s only plot the first 2000 epochs, and also average them since they don’t vary much between models.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+<div class="section" id="Plots-for-LRs-0.0001,-0.00033,-0.00067,-0.001,-0.0033">
+<h3>Plots for LRs 0.0001, 0.00033, 0.00067, 0.001, 0.0033<a class="headerlink" href="#Plots-for-LRs-0.0001,-0.00033,-0.00067,-0.001,-0.0033" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;val_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;el_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Loss and Elemental Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span></span><span class="n">lr_sorted_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">adam_lr_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()])]</span>
+<span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lr_sorted_list</span><span class="p">:</span>
+    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_lr_metrics</span><span class="p">[</span><span class="n">lr</span><span class="p">],</span>
+                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with </span><span class="si">{0}</span><span class="s1"> LR&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_64_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_64_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 2min 57s, sys: 8.61 s, total: 3min 6s
-Wall time: 3min 6s
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="Average-Training-Axis-and-Slot-Accuracy">
-<h3>Average Training Axis and Slot Accuracy<a class="headerlink" href="#Average-Training-Axis-and-Slot-Accuracy" title="Permalink to this headline">¶</a></h3>
-<p>Next let’s take a look at the training axis and slot accuracy, which also level off relatively quickly (by around 2000 epochs).</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ax_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;sl_acc&#39;</span><span class="p">,],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="mi">2500</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Training Axis and Slot Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_66_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_66_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 1min 50s, sys: 5.54 s, total: 1min 55s
-Wall time: 1min 55s
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="Validation-Accuracy-Metrics">
-<h3>Validation Accuracy Metrics<a class="headerlink" href="#Validation-Accuracy-Metrics" title="Permalink to this headline">¶</a></h3>
-<p>The validation curves are where the curves for training are most revealing. So let’s plot them all in one graph in the first 10,000 epochs.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;val_el_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Validation Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 17.2 s, sys: 312 ms, total: 17.5 s
-Wall time: 8.51 s
-</pre></div></div>
-</div>
-<p>Validation axis and slot accuracy begin asymptotic ascent around 4000 epochs never approach 1.0 the way it does for the training data. The slot accuracy also levels off at a lower point than the axis accuracy.</p>
-</div>
-<div class="section" id="Validation-Sample-Accuracy">
-<h3>Validation Sample Accuracy<a class="headerlink" href="#Validation-Sample-Accuracy" title="Permalink to this headline">¶</a></h3>
-<p>The most interesting metric seems to definitely be the sample accuracy, which has the most diverse behavior of all the metrics. So let’s plot it for all the models.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;val_sm_acc&#39;</span><span class="p">],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Validation Sample Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_71_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_71_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 3.82 s, sys: 92 ms, total: 3.92 s
-Wall time: 3.91 s
-</pre></div></div>
 </div>
 </div>
 </div>
@@ -1522,10 +1284,8 @@ Wall time: 3.91 s
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="0.4-Exploring-Different-Learning-Rates.html" class="btn btn-neutral float-right" title="0.4 Exploring Different Learning Rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="0.3-BP-Model-in-Tensorflow.html" class="btn btn-neutral float-left" title="0.3 BP Model in Tensorflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="0.4.1-Exploring-Different-Optimizers.html" class="btn btn-neutral float-left" title="0.4.1 Exploring Different Optimizers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

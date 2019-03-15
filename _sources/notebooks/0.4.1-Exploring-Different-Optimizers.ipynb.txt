@@ -1121,7 +1121,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 98,
+   "execution_count": 112,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -1141,13 +1141,16 @@
     "                print('Encountered a KeyboardInterrupt. Starting a IPython Shell.')\n",
     "                ipy.embed()\n",
     "                inp = ''\n",
-    "                while inp.lower() not in ['y', 'n']:\n",
+    "                while inp.lower() not in ['y', 'n', 's']:\n",
     "                    inp = input(\"Continue training or skip current lr? [(Y)es/(N)o/(S)kip]\")\n",
     "                if inp.lower() == 'y':\n",
     "                    print('Continuing training...')\n",
     "                    continue\n",
+    "                elif inp.lower() == 's':\n",
+    "                    print('Continuing to next lr...')\n",
+    "                    break\n",
     "                else:\n",
-    "                    print('Exiting.')\n",
+    "                    print('Exiting')\n",
     "                    exit = True\n",
     "                    break\n",
     "        if exit:\n",
@@ -1508,7 +1511,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## RMSProp"
+    "## RMSProp Optimizer Learning Rates"
    ]
   },
   {
@@ -1618,19 +1621,10 @@
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": null,
+   "cell_type": "markdown",
    "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
    "source": [
-    "### RMSProp LR 0.00033, "
+    "### RMSProp Training Curves for LR 0.00033, 0.001, 0.0033, 0.01 "
    ]
   },
   {
@@ -1686,6 +1680,262 @@
     "    plt_metrics.plot_df_metrics(rmsprop_alpha_metrics[lr], \n",
     "                                title='RMSProp Training Curves with {0} LR'.format(lr))\n",
     "    plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Adadelta Optimizer Learning Rates"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 113,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Starting \"Adadelta\" optimizer training with lr of 0.1\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.0\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.0\n",
+      "Encountered a KeyboardInterrupt. Starting a IPython Shell.\n",
+      "Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) \n",
+      "Type 'copyright', 'credits' or 'license' for more information\n",
+      "IPython 7.3.0 -- An enhanced Interactive Python. Type '?' for help.\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "In [1]:  #Lets skip this lr since it isn't any more accurate\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "In [2]:  quite\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "---------------------------------------------------------------------------\n",
+      "KeyboardInterrupt                         Traceback (most recent call last)\n",
+      "<ipython-input-112-fd9ae7e58c17> in exp_optimizer_lr(train_op, optimizer_name, lrs, epochs, n_models)\n",
+      "     10                 metrics.append(train_with_optimizer(sess, train_op, epochs=epochs, lr=lr, \n",
+      "---> 11                                                     n_updates=0, init_ops=init_ops))\n",
+      "     12 \n",
+      "\n",
+      "<ipython-input-42-b5b668824a55> in train_with_optimizer(sess, train_op, lr, epochs, n_updates, init_ops)\n",
+      "     22                 [train_op, loss_op, el_acc_op, axis_acc_op, slot_acc_op, sample_acc_op],\n",
+      "---> 23                 feed_dict={handle: training_handle, alpha_ph: lr})\n",
+      "     24             \n",
+      "\n",
+      "~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in run(self, fetches, feed_dict, options, run_metadata)\n",
+      "    928       result = self._run(None, fetches, feed_dict, options_ptr,\n",
+      "--> 929                          run_metadata_ptr)\n",
+      "    930       if run_metadata:\n",
+      "\n",
+      "~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _run(self, handle, fetches, feed_dict, options, run_metadata)\n",
+      "   1151       results = self._do_run(handle, final_targets, final_fetches,\n",
+      "-> 1152                              feed_dict_tensor, options, run_metadata)\n",
+      "   1153     else:\n",
+      "\n",
+      "~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _do_run(self, handle, target_list, fetch_list, feed_dict, options, run_metadata)\n",
+      "   1327       return self._do_call(_run_fn, feeds, fetches, targets, options,\n",
+      "-> 1328                            run_metadata)\n",
+      "   1329     else:\n",
+      "\n",
+      "~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _do_call(self, fn, *args)\n",
+      "   1333     try:\n",
+      "-> 1334       return fn(*args)\n",
+      "   1335     except errors.OpError as e:\n",
+      "\n",
+      "~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _run_fn(feed_dict, fetch_list, target_list, options, run_metadata)\n",
+      "   1318       return self._call_tf_sessionrun(\n",
+      "-> 1319           options, feed_dict, fetch_list, target_list, run_metadata)\n",
+      "   1320 \n",
+      "\n",
+      "~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _call_tf_sessionrun(self, options, feed_dict, fetch_list, target_list, run_metadata)\n",
+      "   1406         self._session, options, feed_dict, fetch_list, target_list,\n",
+      "-> 1407         run_metadata)\n",
+      "   1408 \n",
+      "\n",
+      "KeyboardInterrupt: \n",
+      "\n",
+      "During handling of the above exception, another exception occurred:\n",
+      "\n",
+      "NameError                                 Traceback (most recent call last)\n",
+      "<ipython-input-2-c70bc754f005> in <module>\n",
+      "----> 1 quite\n",
+      "\n",
+      "NameError: name 'quite' is not defined\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "In [3]:  quit\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Continue training or skip current lr? [(Y)es/(N)o/(S)kip] s\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Continuing to next lr...\n",
+      "Completed \"Adadelta\" optimizer training with lr of 0.1!\n",
+      "\n",
+      "Starting \"Adadelta\" optimizer training with lr of 0.33\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.162\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.158\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.144\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.186\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.15\n",
+      "Encountered a KeyboardInterrupt. Starting a IPython Shell.\n",
+      "Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) \n",
+      "Type 'copyright', 'credits' or 'license' for more information\n",
+      "IPython 7.3.0 -- An enhanced Interactive Python. Type '?' for help.\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "In [1]:  # Let's skip this one as well\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "In [2]:  quit\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Continue training or skip current lr? [(Y)es/(N)o/(S)kip] S\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Continuing to next lr...\n",
+      "Completed \"Adadelta\" optimizer training with lr of 0.33!\n",
+      "\n",
+      "Starting \"Adadelta\" optimizer training with lr of 1.0\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.502\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.484\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.544\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.482\n",
+      "Encountered a KeyboardInterrupt. Starting a IPython Shell.\n",
+      "Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) \n",
+      "Type 'copyright', 'credits' or 'license' for more information\n",
+      "IPython 7.3.0 -- An enhanced Interactive Python. Type '?' for help.\n",
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "In [1]:  quit\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Continue training or skip current lr? [(Y)es/(N)o/(S)kip] n\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Exiting\n",
+      "CPU times: user 36min 8s, sys: 7min 15s, total: 43min 24s\n",
+      "Wall time: 17min 45s\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "lrs = [0.1, 0.33, 1.0]\n",
+    "adadelta_alpha_metrics = exp_optimizer_lr(optimizer_dict['Adadelta'], 'Adadelta', lrs=lrs)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Starting \"Adadelta\" optimizer training with lr of 1.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "lrs = [1.0, 1.33, 1.67, 2.0]\n",
+    "adadelta_alpha_metrics = exp_optimizer_lr(optimizer_dict['Adadelta'], 'Adadelta', lrs=lrs, epochs=5*EPOCHS)"
    ]
   },
   {

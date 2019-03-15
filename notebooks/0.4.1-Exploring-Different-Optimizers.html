@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.77.ge6ebb2c documentation</title>
+  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.74.g6b70513 documentation</title>
   
 
   
@@ -37,6 +37,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="0.4.2 Adam Optimizer Learning Rate Tuning and Dropout" href="0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html" />
     <link rel="prev" title="0.4 Exploring Different Learning Rates" href="0.4-Exploring-Different-Learning-Rates.html" /> 
 </head>
 
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.77.ge6ebb2c
+                0+untagged.74.g6b70513
               </div>
             
           
@@ -161,9 +162,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.00033-LR">Adam with 0.00033 LR</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#RMSProp">RMSProp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#RMSProp-Optimizer-Learning-Rates">RMSProp Optimizer Learning Rates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#RMSProp-Training-Curves-for-LR-0.00033,-0.001,-0.0033,-0.01">RMSProp Training Curves for LR 0.00033, 0.001, 0.0033, 0.01</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#Adadelta-Optimizer-Learning-Rates">Adadelta Optimizer Learning Rates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html">0.4.2 Adam Optimizer Learning Rate Tuning and Dropout</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Project Links</span></p>
 <ul>
@@ -1355,7 +1361,7 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
 <h2>Adam Optimizer Learning Rates<a class="headerlink" href="#Adam-Optimizer-Learning-Rates" title="Permalink to this headline">¶</a></h2>
 <p>The adam optimizer had the most promising results. Let’s see how it does with a few different learning rates when run for 500 epochs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1375,13 +1381,16 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Encountered a KeyboardInterrupt. Starting a IPython Shell.&#39;</span><span class="p">)</span>
                 <span class="n">ipy</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
                 <span class="n">inp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">]:</span>
+                <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">]:</span>
                     <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training or skip current lr? [(Y)es/(N)o/(S)kip]&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Continuing training...&#39;</span><span class="p">)</span>
                     <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Continuing to next lr...&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exiting.&#39;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exiting&#39;</span><span class="p">)</span>
                     <span class="n">exit</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
         <span class="k">if</span> <span class="n">exit</span><span class="p">:</span>
@@ -1699,8 +1708,8 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/di
 </div>
 </div>
 </div>
-<div class="section" id="RMSProp">
-<h2>RMSProp<a class="headerlink" href="#RMSProp" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="RMSProp-Optimizer-Learning-Rates">
+<h2>RMSProp Optimizer Learning Rates<a class="headerlink" href="#RMSProp-Optimizer-Learning-Rates" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[102]:
 </pre></div>
@@ -1795,24 +1804,8 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/di
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1">### RMSProp LR 0.00033,</span>
-</pre></div>
-</div>
-</div>
+<div class="section" id="RMSProp-Training-Curves-for-LR-0.00033,-0.001,-0.0033,-0.01">
+<h3>RMSProp Training Curves for LR 0.00033, 0.001, 0.0033, 0.01<a class="headerlink" href="#RMSProp-Training-Curves-for-LR-0.00033,-0.001,-0.0033,-0.01" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[108]:
 </pre></div>
@@ -1831,29 +1824,300 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/di
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_1.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_1.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_1.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_2.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_2.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_2.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_2.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_3.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_3.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_3.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_94_3.png" />
 </div>
+</div>
+</div>
+</div>
+<div class="section" id="Adadelta-Optimizer-Learning-Rates">
+<h2>Adadelta Optimizer Learning Rates<a class="headerlink" href="#Adadelta-Optimizer-Learning-Rates" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[113]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="n">adadelta_alpha_metrics</span> <span class="o">=</span> <span class="n">exp_optimizer_lr</span><span class="p">(</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adadelta&#39;</span><span class="p">],</span> <span class="s1">&#39;Adadelta&#39;</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="n">lrs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting &#34;Adadelta&#34; optimizer training with lr of 0.1
+Optimization Finished! Testing Sample Accuracy: 0.0
+Optimization Finished! Testing Sample Accuracy: 0.0
+Encountered a KeyboardInterrupt. Starting a IPython Shell.
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34)
+Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
+IPython 7.3.0 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [1]:  #Lets skip this lr since it isn&#39;t any more accurate
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [2]:  quite
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+---------------------------------------------------------------------------
+KeyboardInterrupt                         Traceback (most recent call last)
+&lt;ipython-input-112-fd9ae7e58c17&gt; in exp_optimizer_lr(train_op, optimizer_name, lrs, epochs, n_models)
+     10                 metrics.append(train_with_optimizer(sess, train_op, epochs=epochs, lr=lr,
+---&gt; 11                                                     n_updates=0, init_ops=init_ops))
+     12
+
+&lt;ipython-input-42-b5b668824a55&gt; in train_with_optimizer(sess, train_op, lr, epochs, n_updates, init_ops)
+     22                 [train_op, loss_op, el_acc_op, axis_acc_op, slot_acc_op, sample_acc_op],
+---&gt; 23                 feed_dict={handle: training_handle, alpha_ph: lr})
+     24
+
+~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in run(self, fetches, feed_dict, options, run_metadata)
+    928       result = self._run(None, fetches, feed_dict, options_ptr,
+--&gt; 929                          run_metadata_ptr)
+    930       if run_metadata:
+
+~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _run(self, handle, fetches, feed_dict, options, run_metadata)
+   1151       results = self._do_run(handle, final_targets, final_fetches,
+-&gt; 1152                              feed_dict_tensor, options, run_metadata)
+   1153     else:
+
+~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _do_run(self, handle, target_list, fetch_list, feed_dict, options, run_metadata)
+   1327       return self._do_call(_run_fn, feeds, fetches, targets, options,
+-&gt; 1328                            run_metadata)
+   1329     else:
+
+~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _do_call(self, fn, *args)
+   1333     try:
+-&gt; 1334       return fn(*args)
+   1335     except errors.OpError as e:
+
+~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _run_fn(feed_dict, fetch_list, target_list, options, run_metadata)
+   1318       return self._call_tf_sessionrun(
+-&gt; 1319           options, feed_dict, fetch_list, target_list, run_metadata)
+   1320
+
+~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py in _call_tf_sessionrun(self, options, feed_dict, fetch_list, target_list, run_metadata)
+   1406         self._session, options, feed_dict, fetch_list, target_list,
+-&gt; 1407         run_metadata)
+   1408
+
+KeyboardInterrupt:
+
+During handling of the above exception, another exception occurred:
+
+NameError                                 Traceback (most recent call last)
+&lt;ipython-input-2-c70bc754f005&gt; in &lt;module&gt;
+----&gt; 1 quite
+
+NameError: name &#39;quite&#39; is not defined
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [3]:  quit
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continue training or skip current lr? [(Y)es/(N)o/(S)kip] s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continuing to next lr...
+Completed &#34;Adadelta&#34; optimizer training with lr of 0.1!
+
+Starting &#34;Adadelta&#34; optimizer training with lr of 0.33
+Optimization Finished! Testing Sample Accuracy: 0.162
+Optimization Finished! Testing Sample Accuracy: 0.158
+Optimization Finished! Testing Sample Accuracy: 0.144
+Optimization Finished! Testing Sample Accuracy: 0.186
+Optimization Finished! Testing Sample Accuracy: 0.15
+Encountered a KeyboardInterrupt. Starting a IPython Shell.
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34)
+Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
+IPython 7.3.0 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [1]:  # Let&#39;s skip this one as well
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [2]:  quit
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continue training or skip current lr? [(Y)es/(N)o/(S)kip] S
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continuing to next lr...
+Completed &#34;Adadelta&#34; optimizer training with lr of 0.33!
+
+Starting &#34;Adadelta&#34; optimizer training with lr of 1.0
+Optimization Finished! Testing Sample Accuracy: 0.502
+Optimization Finished! Testing Sample Accuracy: 0.484
+Optimization Finished! Testing Sample Accuracy: 0.544
+Optimization Finished! Testing Sample Accuracy: 0.482
+Encountered a KeyboardInterrupt. Starting a IPython Shell.
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34)
+Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
+IPython 7.3.0 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [1]:  quit
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continue training or skip current lr? [(Y)es/(N)o/(S)kip] n
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Exiting
+CPU times: user 36min 8s, sys: 7min 15s, total: 43min 24s
+Wall time: 17min 45s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.33</span><span class="p">,</span> <span class="mf">1.67</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]</span>
+<span class="n">adadelta_alpha_metrics</span> <span class="o">=</span> <span class="n">exp_optimizer_lr</span><span class="p">(</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adadelta&#39;</span><span class="p">],</span> <span class="s1">&#39;Adadelta&#39;</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="n">lrs</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting &#34;Adadelta&#34; optimizer training with lr of 1.0
+</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1874,6 +2138,8 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/di
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html" class="btn btn-neutral float-right" title="0.4.2 Adam Optimizer Learning Rate Tuning and Dropout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="0.4-Exploring-Different-Learning-Rates.html" class="btn btn-neutral float-left" title="0.4 Exploring Different Learning Rates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
