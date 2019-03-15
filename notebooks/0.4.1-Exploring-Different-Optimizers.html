@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.4 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.81.g9106ca2 documentation</title>
+  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.80.g9368e9b documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.81.g9106ca2
+                0+untagged.80.g9368e9b
               </div>
             
           
@@ -110,7 +110,7 @@
 <li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.3.1-Comparing-Accuracy-Metrics.html">0.3.1 Comparing Accuracy Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.4-Exploring-Different-Learning-Rates.html">0.4 Exploring Different Learning Rates</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0.4 Exploring Different Optimizers</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.4.1 Exploring Different Optimizers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
@@ -152,6 +152,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#Adam-Optimizer">Adam Optimizer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Adadelta-Optimizer">Adadelta Optimizer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#RMSProp-Optimizer">RMSProp Optimizer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Adam-Optimizer-Learning-Rates">Adam Optimizer Learning Rates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.0033-LR">Adam with 0.0033 LR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.033-LR">Adam with 0.033 LR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.001-LR">Adam with 0.001 LR</a></li>
 </ul>
 </li>
 </ul>
@@ -209,7 +215,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>0.4 Exploring Different Optimizers</li>
+      <li>0.4.1 Exploring Different Optimizers</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -450,8 +456,8 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="0.4-Exploring-Different-Optimizers">
-<h1>0.4 Exploring Different Optimizers<a class="headerlink" href="#0.4-Exploring-Different-Optimizers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="0.4.1-Exploring-Different-Optimizers">
+<h1>0.4.1 Exploring Different Optimizers<a class="headerlink" href="#0.4.1-Exploring-Different-Optimizers" title="Permalink to this headline">¶</a></h1>
 <p>The next easy change to explore the effects of are to use different optimizers on the model to see how it changes.</p>
 <div class="section" id="Boilerplate">
 <h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
@@ -527,7 +533,7 @@ Git branch : master
 <h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -537,6 +543,7 @@ Git branch : master
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 <span class="c1"># Third party</span>
+<span class="kn">import</span> <span class="nn">IPython</span> <span class="k">as</span> <span class="nn">ipy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -894,7 +901,7 @@ Git branch : master
 <h3>Varying the Optimizer<a class="headerlink" href="#Varying-the-Optimizer" title="Permalink to this headline">¶</a></h3>
 <p>Let’s create several different training operations.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1104,13 +1111,13 @@ Wall time: 42min 21s
 </div>
 </div>
 <p>Now loop through each of the resulting dataframes, check if there is already a file named according to its parameters, and then selectively save it.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">n_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">,</span> <span class="n">n_train</span><span class="o">=</span><span class="n">N_TRAIN</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span><span class="p">,</span> <span class="n">exp_dir</span><span class="o">=</span><span class="n">DIR_DATA_PROC</span><span class="p">):</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span><span class="p">,</span> <span class="n">exp_dir</span><span class="o">=</span><span class="n">DIR_DATA_PROC</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">df_metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="c1"># Grab the exp params</span>
     <span class="n">n_models</span> <span class="o">=</span> <span class="n">n_models</span> <span class="ow">or</span> <span class="n">df_metrics</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1121,16 +1128,16 @@ Wall time: 42min 21s
     <span class="n">file_name_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># If we used a different number of models</span>
     <span class="k">if</span> <span class="n">n_models</span> <span class="o">!=</span> <span class="n">N_MODELS</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_models</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_models</span><span class="p">)</span>
     <span class="c1"># If we used a different number of epochs</span>
     <span class="k">if</span> <span class="n">n_epochs</span> <span class="o">!=</span> <span class="n">EPOCHS</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_epochs</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">)</span>
     <span class="c1"># If we used a different number of training samples</span>
     <span class="k">if</span> <span class="n">n_train</span> <span class="o">!=</span> <span class="n">N_TRAIN</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_train</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_train</span><span class="p">)</span>
     <span class="c1"># If we used a different learning rate</span>
-    <span class="k">if</span> <span class="n">lr</span> <span class="o">!=</span> <span class="n">ALPHA</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">str_alpha</span>
+    <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ALPHA</span><span class="p">:</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
     <span class="c1"># If we used a different optimizer</span>
     <span class="k">if</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;sgd&#39;</span><span class="p">:</span>
         <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -1138,21 +1145,31 @@ Wall time: 42min 21s
     <span class="c1"># Create the filename and path object</span>
     <span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">file_name_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">val</span><span class="p">,</span> <span class="n">key</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_name</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">file_name</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">key</span><span class="p">])</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">file_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
     <span class="n">file_name</span> <span class="o">+=</span> <span class="s1">&#39;.csv&#39;</span>
     <span class="n">exp_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">exp_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">file_name</span>
 
     <span class="c1"># Save the df if the file does not exist</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">exp_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">df_metrics</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved df to &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+            <span class="n">df_metrics</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved df to &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dryrun: (Not) Saved df to &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">)))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">{0}</span><span class="s2">&#39; present, skipping.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exp_file</span><span class="p">)))</span>
-
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">optimizer_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">optimizer_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1162,9 +1179,9 @@ Wall time: 42min 21s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/adam_optimizer.csv&#39;
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/adadelta_optimizer.csv&#39;
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/rmsprop_optimizer.csv&#39;
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/adam_optimizer.csv&#39; present, skipping.
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/adadelta_optimizer.csv&#39; present, skipping.
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/rmsprop_optimizer.csv&#39; present, skipping.
 </pre></div></div>
 </div>
 <p>In the event that the data needs to be reloaded (for example if the kernel needs to be restarted), I have the data saved locally and can be reloaded using the following lines:</p>
@@ -1265,7 +1282,7 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_61_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_61_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_62_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_62_0.png" />
 </div>
 </div>
 </div>
@@ -1286,7 +1303,7 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_63_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_63_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_64_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_64_0.png" />
 </div>
 </div>
 </div>
@@ -1307,7 +1324,7 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_65_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_65_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_66_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_66_0.png" />
 </div>
 </div>
 </div>
@@ -1328,8 +1345,267 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_67_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_67_0.png" />
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_68_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_68_0.png" />
 </div>
+</div>
+</div>
+</div>
+<div class="section" id="Adam-Optimizer-Learning-Rates">
+<h2>Adam Optimizer Learning Rates<a class="headerlink" href="#Adam-Optimizer-Learning-Rates" title="Permalink to this headline">¶</a></h2>
+<p>The adam optimizer had the most promising results. Let’s see how it does with a few different learning rates when run for 500 epochs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="k">def</span> <span class="nf">exp_optimizer_lr</span><span class="p">(</span><span class="n">train_op</span><span class="p">,</span> <span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="p">[</span><span class="n">ALPHA</span><span class="p">],</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+    <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">exit</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lrs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting &quot;</span><span class="si">{0}</span><span class="s1">&quot; optimizer training with lr of </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lr</span><span class="p">))</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">N_MODELS</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_with_optimizer</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">train_op</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
+                                                    <span class="n">n_updates</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">))</span>
+
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Encountered a KeyboardInterrupt. Starting a IPython Shell.&#39;</span><span class="p">)</span>
+                <span class="n">ipy</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
+                <span class="n">inp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">]:</span>
+                    <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training? [y/n]&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Continuing training...&#39;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exiting.&#39;</span><span class="p">)</span>
+                    <span class="n">exit</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+        <span class="k">if</span> <span class="n">exit</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed &quot;</span><span class="si">{0}</span><span class="s1">&quot; optimizer training with lr of </span><span class="si">{1}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lr</span><span class="p">))</span>
+        <span class="n">metrics_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">metrics_dict</span>
+
+<span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0033</span><span class="p">,</span> <span class="mf">0.033</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="n">adam_alpha_metrics</span> <span class="o">=</span> <span class="n">exp_optimizer_lr</span><span class="p">(</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">],</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="n">lrs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting &#34;Adam&#34; optimizer training with lr of 0.0033
+Optimization Finished! Testing Sample Accuracy: 0.82
+Optimization Finished! Testing Sample Accuracy: 0.816
+Optimization Finished! Testing Sample Accuracy: 0.824
+Optimization Finished! Testing Sample Accuracy: 0.796
+Optimization Finished! Testing Sample Accuracy: 0.814
+Optimization Finished! Testing Sample Accuracy: 0.808
+Optimization Finished! Testing Sample Accuracy: 0.812
+Optimization Finished! Testing Sample Accuracy: 0.814
+Optimization Finished! Testing Sample Accuracy: 0.842
+Optimization Finished! Testing Sample Accuracy: 0.802
+Optimization Finished! Testing Sample Accuracy: 0.806
+Completed &#34;Adam&#34; optimizer training with lr of 0.0033!
+
+Starting &#34;Adam&#34; optimizer training with lr of 0.033
+Optimization Finished! Testing Sample Accuracy: 0.044
+Optimization Finished! Testing Sample Accuracy: 0.04
+Optimization Finished! Testing Sample Accuracy: 0.036
+Optimization Finished! Testing Sample Accuracy: 0.02
+Optimization Finished! Testing Sample Accuracy: 0.044
+Optimization Finished! Testing Sample Accuracy: 0.04
+Optimization Finished! Testing Sample Accuracy: 0.058
+Optimization Finished! Testing Sample Accuracy: 0.032
+Optimization Finished! Testing Sample Accuracy: 0.04
+Optimization Finished! Testing Sample Accuracy: 0.042
+Optimization Finished! Testing Sample Accuracy: 0.048
+Completed &#34;Adam&#34; optimizer training with lr of 0.033!
+
+Starting &#34;Adam&#34; optimizer training with lr of 0.1
+Optimization Finished! Testing Sample Accuracy: 0.0
+Encountered a KeyboardInterrupt. Starting a IPython Shell.
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34)
+Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
+IPython 7.3.0 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [1]:  quit
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continue training? [y/n] n
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Exiting.
+CPU times: user 1h 9min 55s, sys: 13min 23s, total: 1h 23min 19s
+Wall time: 31min 52s
+</pre></div></div>
+</div>
+<div class="section" id="Adam-with-0.0033-LR">
+<h3>Adam with 0.0033 LR<a class="headerlink" href="#Adam-with-0.0033-LR" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_alpha_metrics</span><span class="p">[</span><span class="s1">&#39;0.0033&#39;</span><span class="p">],</span>
+                            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with 0.0033 LR&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_72_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_72_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Adam-with-0.033-LR">
+<h3>Adam with 0.033 LR<a class="headerlink" href="#Adam-with-0.033-LR" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_alpha_metrics</span><span class="p">[</span><span class="s1">&#39;0.033&#39;</span><span class="p">],</span>
+                            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with 0.033 LR&#39;</span><span class="p">,)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_74_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_74_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">lr_name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">adam_alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_name</span><span class="p">,</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.0033_lr_adam_optimizer.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.033_lr_adam_optimizer.csv&#39;
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Adam-with-0.001-LR">
+<h3>Adam with 0.001 LR<a class="headerlink" href="#Adam-with-0.001-LR" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">adam_alpha_metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">**</span><span class="n">adam_alpha_metrics</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">exp_optimizer_lr</span><span class="p">(</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">],</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="p">[</span><span class="mf">0.001</span><span class="p">]),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting &#34;Adam&#34; optimizer training with lr of 0.001
+Optimization Finished! Testing Sample Accuracy: 0.806
+Optimization Finished! Testing Sample Accuracy: 0.822
+Optimization Finished! Testing Sample Accuracy: 0.78
+Optimization Finished! Testing Sample Accuracy: 0.82
+Optimization Finished! Testing Sample Accuracy: 0.776
+Optimization Finished! Testing Sample Accuracy: 0.828
+Optimization Finished! Testing Sample Accuracy: 0.814
+Optimization Finished! Testing Sample Accuracy: 0.802
+Optimization Finished! Testing Sample Accuracy: 0.8
+Optimization Finished! Testing Sample Accuracy: 0.836
+Optimization Finished! Testing Sample Accuracy: 0.786
+Completed &#34;Adam&#34; optimizer training with lr of 0.001!
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[91]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_alpha_metrics</span><span class="p">[</span><span class="s1">&#39;0.001&#39;</span><span class="p">],</span>
+                            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with 0.001 LR&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_78_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_78_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">lr_name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">adam_alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_name</span><span class="p">,</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.0033_lr_adam_optimizer.csv&#39; present, skipping.
+File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.033_lr_adam_optimizer.csv&#39; present, skipping.
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.001_lr_adam_optimizer.csv&#39;
+</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
