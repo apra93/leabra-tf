@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.78.g84d952e documentation</title>
+  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.77.ge6ebb2c documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.78.g84d952e
+                0+untagged.77.ge6ebb2c
               </div>
             
           
@@ -161,6 +161,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Adam-with-0.00033-LR">Adam with 0.00033 LR</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#RMSProp">RMSProp</a></li>
 </ul>
 </li>
 </ul>
@@ -880,7 +881,6 @@ Git branch : master
     <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
     <span class="n">equal_labels_and_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rounded_predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 
-
     <span class="c1"># O&#39;Reilly Accuracy</span>
     <span class="n">axis_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
     <span class="n">slot_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">axis_acc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
@@ -902,7 +902,7 @@ Git branch : master
 <h3>Varying the Optimizer<a class="headerlink" href="#Varying-the-Optimizer" title="Permalink to this headline">¶</a></h3>
 <p>Let’s create several different training operations.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[100]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1141,13 +1141,13 @@ Wall time: 42min 21s
         <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
     <span class="c1"># If we used a different optimizer</span>
     <span class="k">if</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;sgd&#39;</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="c1"># Create the filename and path object</span>
     <span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">file_name_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">file_name</span><span class="p">:</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">val</span><span class="p">,</span> <span class="n">key</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">file_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
     <span class="n">file_name</span> <span class="o">+=</span> <span class="s1">&#39;.csv&#39;</span>
@@ -1355,18 +1355,18 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
 <h2>Adam Optimizer Learning Rates<a class="headerlink" href="#Adam-Optimizer-Learning-Rates" title="Permalink to this headline">¶</a></h2>
 <p>The adam optimizer had the most promising results. Let’s see how it does with a few different learning rates when run for 500 epochs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">exp_optimizer_lr</span><span class="p">(</span><span class="n">train_op</span><span class="p">,</span> <span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="p">[</span><span class="n">ALPHA</span><span class="p">],</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">exp_optimizer_lr</span><span class="p">(</span><span class="n">train_op</span><span class="p">,</span> <span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="p">[</span><span class="n">ALPHA</span><span class="p">],</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_models</span><span class="o">=</span><span class="n">N_MODELS</span><span class="p">):</span>
     <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
     <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">exit</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lrs</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting &quot;</span><span class="si">{0}</span><span class="s1">&quot; optimizer training with lr of </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">optimizer_name</span><span class="p">,</span> <span class="n">lr</span><span class="p">))</span>
         <span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">N_MODELS</span><span class="p">:</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_models</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_with_optimizer</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">train_op</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
                                                     <span class="n">n_updates</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">))</span>
@@ -1376,7 +1376,7 @@ Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processe
                 <span class="n">ipy</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
                 <span class="n">inp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                 <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">]:</span>
-                    <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training? [y/n]&quot;</span><span class="p">)</span>
+                    <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training or skip current lr? [(Y)es/(N)o/(S)kip]&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Continuing training...&#39;</span><span class="p">)</span>
                     <span class="k">continue</span>
@@ -1697,6 +1697,104 @@ File &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different
 Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/11_models_0.00033_lr_adam_optimizer.csv&#39;
 </pre></div></div>
 </div>
+</div>
+</div>
+<div class="section" id="RMSProp">
+<h2>RMSProp<a class="headerlink" href="#RMSProp" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[102]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0033</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.00033</span><span class="p">]</span>
+<span class="n">rmsprop_alpha_metrics</span> <span class="o">=</span> <span class="n">exp_optimizer_lr</span><span class="p">(</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;RMSProp&#39;</span><span class="p">],</span> <span class="s1">&#39;RMSProp&#39;</span><span class="p">,</span> <span class="n">lrs</span><span class="o">=</span><span class="n">lrs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting &#34;RMSProp&#34; optimizer training with lr of 0.0033
+Optimization Finished! Testing Sample Accuracy: 0.634
+Optimization Finished! Testing Sample Accuracy: 0.636
+Optimization Finished! Testing Sample Accuracy: 0.67
+Optimization Finished! Testing Sample Accuracy: 0.636
+Optimization Finished! Testing Sample Accuracy: 0.63
+Optimization Finished! Testing Sample Accuracy: 0.664
+Optimization Finished! Testing Sample Accuracy: 0.644
+Optimization Finished! Testing Sample Accuracy: 0.66
+Optimization Finished! Testing Sample Accuracy: 0.622
+Optimization Finished! Testing Sample Accuracy: 0.63
+Completed &#34;RMSProp&#34; optimizer training with lr of 0.0033!
+
+Starting &#34;RMSProp&#34; optimizer training with lr of 0.001
+Optimization Finished! Testing Sample Accuracy: 0.63
+Optimization Finished! Testing Sample Accuracy: 0.626
+Optimization Finished! Testing Sample Accuracy: 0.612
+Optimization Finished! Testing Sample Accuracy: 0.646
+Optimization Finished! Testing Sample Accuracy: 0.57
+Optimization Finished! Testing Sample Accuracy: 0.622
+Optimization Finished! Testing Sample Accuracy: 0.618
+Optimization Finished! Testing Sample Accuracy: 0.626
+Optimization Finished! Testing Sample Accuracy: 0.62
+Optimization Finished! Testing Sample Accuracy: 0.644
+Completed &#34;RMSProp&#34; optimizer training with lr of 0.001!
+
+Starting &#34;RMSProp&#34; optimizer training with lr of 0.00033
+Optimization Finished! Testing Sample Accuracy: 0.532
+Optimization Finished! Testing Sample Accuracy: 0.576
+Optimization Finished! Testing Sample Accuracy: 0.554
+Optimization Finished! Testing Sample Accuracy: 0.556
+Optimization Finished! Testing Sample Accuracy: 0.57
+Optimization Finished! Testing Sample Accuracy: 0.596
+Optimization Finished! Testing Sample Accuracy: 0.576
+Optimization Finished! Testing Sample Accuracy: 0.524
+Optimization Finished! Testing Sample Accuracy: 0.55
+Optimization Finished! Testing Sample Accuracy: 0.56
+Completed &#34;RMSProp&#34; optimizer training with lr of 0.00033!
+
+CPU times: user 1h 28min 59s, sys: 17min 3s, total: 1h 46min 3s
+Wall time: 40min 26s
+</pre></div></div>
+</div>
+<p>Now let’s save the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[105]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">lr_name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">rmsprop_alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">,</span>
+              <span class="n">lr</span><span class="o">=</span><span class="n">lr_name</span><span class="p">,</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span>
+              <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/0.0033_lr_rmsprop_optimizer.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/0.001_lr_rmsprop_optimizer.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/0.00033_lr_rmsprop_optimizer.csv&#39;
+</pre></div></div>
+</div>
+<p>And then add in the plots we got earlier for the LR of 0.01.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[109]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">rmsprop_alpha_metrics</span><span class="p">[</span><span class="s1">&#39;0.01&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer_metrics</span><span class="p">[</span><span class="s1">&#39;RMSProp&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1705,6 +1803,65 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/di
 <span></span>
 </pre></div>
 </div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">### RMSProp LR 0.00033,</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[108]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Create a sorted list of lrs</span>
+<span class="n">lr_sorted_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">rmsprop_alpha_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()])]</span>
+<span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lr_sorted_list</span><span class="p">:</span>
+    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">rmsprop_alpha_metrics</span><span class="p">[</span><span class="n">lr</span><span class="p">],</span>
+                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;RMSProp Training Curves with </span><span class="si">{0}</span><span class="s1"> LR&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_1.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_2.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_3.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_95_3.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
 </div>
 </div>
 </div>
