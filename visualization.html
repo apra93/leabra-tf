@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.73.gec2e096 documentation</title>
+  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.73.g7f44e30 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.73.gec2e096
+                0+untagged.73.g7f44e30
               </div>
             
           
@@ -223,8 +223,8 @@ throughout the repo.</p>
 <dl class="function">
 <dt id="leabratf.visualization.combigen_heatmap.heatmap">
 <code class="descclassname">leabratf.visualization.combigen_heatmap.</code><code class="descname">heatmap</code><span class="sig-paren">(</span><em>data</em>, <em>data2=None</em>, <em>vmin=0</em>, <em>vmax=2</em>, <em>cbar=False</em>, <em>linewidths=1</em>, <em>square=True</em>, <em>gridspec_kw=None</em>, <em>sharey=True</em>, <em>sharex=True</em>, <em>titles=None</em>, <em>squeeze=False</em>, <em>y_label='Samples'</em>, <em>x_label=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.combigen_heatmap.heatmap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper function of <cite>sns.heatmap</cite> with some different defaults.</p>
-<p>Only changed values are shown, see the documentation for <cite>sns.heatmap</cite>
+<dd><p>Wrapper function of <code class="docutils literal notranslate"><span class="pre">sns.heatmap</span></code> with some different defaults.</p>
+<p>Only changed values are shown, see the documentation for <code class="docutils literal notranslate"><span class="pre">sns.heatmap</span></code>
 for all available parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -255,12 +255,12 @@ for all available parameters.</p>
 <dl class="function">
 <dt id="leabratf.visualization.combigen_heatmap.visualize_combigen">
 <code class="descclassname">leabratf.visualization.combigen_heatmap.</code><code class="descname">visualize_combigen</code><span class="sig-paren">(</span><em>n_pairs=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.combigen_heatmap.visualize_combigen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot <cite>n_pairs</cite> of <cite>x</cite> and <cite>y</cite> from the combigen task</p>
+<dd><p>Plot <code class="docutils literal notranslate"><span class="pre">n_pairs</span></code> of <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> from the combigen task</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_pairs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of X, y pairs to visualize</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_pairs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of <code class="docutils literal notranslate"><span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> pairs to visualize</td>
 </tr>
 </tbody>
 </table>
@@ -275,26 +275,26 @@ for all available parameters.</p>
 <code class="descclassname">leabratf.visualization.metrics.</code><code class="descname">plot_df_metrics</code><span class="sig-paren">(</span><em>metrics_df</em>, <em>metrics=None</em>, <em>title='Training History'</em>, <em>epochs=None</em>, <em>key_by_model=False</em>, <em>model_average=False</em>, <em>epoch_vline=500</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.metrics.plot_df_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots a dataframe of metrics for multiple models.</p>
 <p>This function was written to plot multiple metrics of 10 models. The metrics
-were stored as csv files, and then read in using <cite>pd.read_csv</cite>, which would
-load the actual metrics as a long <cite>str</cite>. If the data is used upon
-generation, then it won’t be of type <cite>str</cite> and will just be used as-is.</p>
+were stored as csv files, and then read in using <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code>, which
+would load the actual metrics as a long <code class="docutils literal notranslate"><span class="pre">str</span></code>. If the data is used upon
+generation, then it won’t be of type <code class="docutils literal notranslate"><span class="pre">str</span></code> and will just be used as-is.</p>
 <p>To plot the data, each of the metrics for each model are run using
-<cite>literal_eval</cite> to turn the data into <cite>list`s if they are of type `str</cite>, and
-then <cite>dict`s, the data is then subselected for the desired number of epochs,
-and then compiled into a long-form list of values. These values are then
-passed into `sns.lineplot</cite> for the actual plots.</p>
-<p>See <cite>nb-0.3.1</cite> for example usage.</p>
-<p>Note: Setting <cite>model_average</cite> to <cite>True</cite> for large sets of data will result
-in very long runtimes.</p>
+<code class="docutils literal notranslate"><span class="pre">literal_eval</span></code> to turn the data into <code class="docutils literal notranslate"><span class="pre">list``s</span> <span class="pre">if</span> <span class="pre">they</span> <span class="pre">are</span> <span class="pre">of</span> <span class="pre">type</span>
+<span class="pre">``str</span></code>, and then <code class="docutils literal notranslate"><span class="pre">dict``s,</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">is</span> <span class="pre">then</span> <span class="pre">subselected</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">desired</span>
+<span class="pre">number</span> <span class="pre">of</span> <span class="pre">epochs,</span> <span class="pre">and</span> <span class="pre">then</span> <span class="pre">compiled</span> <span class="pre">into</span> <span class="pre">a</span> <span class="pre">long-form</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">values.</span> <span class="pre">These</span>
+<span class="pre">values</span> <span class="pre">are</span> <span class="pre">then</span> <span class="pre">passed</span> <span class="pre">into</span> <span class="pre">``sns.lineplot</span></code> for the actual plots.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code> for example usage.</p>
+<p>Note: Setting <code class="docutils literal notranslate"><span class="pre">model_average</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> for large sets of data will
+result in very long runtimes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>metrics_df</strong> (<em>pd.DataFrame</em>) – The dataframe containing the model data for each of the models. Data is
-expected to be of type <cite>str</cite>, which can be evaluated to data of type
-<cite>list</cite>.</li>
-<li><strong>metrics</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Metrics from <cite>metrics_df</cite> to plot (column names). Defaults to plot all
+expected to be of type <code class="docutils literal notranslate"><span class="pre">str</span></code>, which can be evaluated to data of type
+<code class="docutils literal notranslate"><span class="pre">list</span></code>.</li>
+<li><strong>metrics</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Metrics from <code class="docutils literal notranslate"><span class="pre">metrics_df</span></code> to plot (column names). Defaults to plot all
 of them.</li>
 <li><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title to plot on the data. Defaults to ‘Training History’.</li>
 <li><strong>epochs</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Number of epochs from the data to plot. Defaults to plot every epoch in
@@ -303,10 +303,11 @@ the data.</li>
 different metrics. Most useful if comparing model performance on a
 single metric.</li>
 <li><strong>model_average</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot the average performance across all models on each metric. Warning:
-Setting this to <cite>True</cite> will result in long runtimes for large datasets.</li>
+Setting this to <code class="docutils literal notranslate"><span class="pre">True</span></code> will result in long runtimes for large
+datasets.</li>
 <li><strong>epoch_vline</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Place to plot a dashed vertical line in the metrics plot. If
-<cite>epoch_vline</cite> is <cite>None</cite>, or <cite>epoch_vline &gt; epochs</cite>, then the line will
-not be plotted.</li>
+<code class="docutils literal notranslate"><span class="pre">epoch_vline</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, or <code class="docutils literal notranslate"><span class="pre">epoch_vline</span> <span class="pre">&gt;</span> <span class="pre">epochs</span></code>, then the line
+will not be plotted.</li>
 </ul>
 </td>
 </tr>

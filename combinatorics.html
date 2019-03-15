@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.73.gec2e096 documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.73.g7f44e30 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.73.gec2e096
+                0+untagged.73.g7f44e30
               </div>
             
           
@@ -287,10 +287,10 @@ used for each axis.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>labels</strong> – The resulting task labels.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">np.ndarray (n_samples x size x dims)</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">np.ndarray of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">stack,</span> <span class="pre">size,</span> <span class="pre">dims)</span></code></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If <cite>dims</cite> does not match the number of lines provided (assuming more
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If <code class="docutils literal notranslate"><span class="pre">dims</span></code> does not match the number of lines provided (assuming more
 than one number was provided for it)</p>
 </td>
 </tr>
@@ -309,7 +309,7 @@ samples.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Y</strong> (<em>array-like</em>) – Array of samples</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>X</strong> – Array of samples transformed from Y to X.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>X</strong> – Array of samples transformed from <code class="docutils literal notranslate"><span class="pre">Y</span></code> to <code class="docutils literal notranslate"><span class="pre">X</span></code>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
 </tr>
@@ -327,7 +327,7 @@ samples.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>y</strong> (<em>array-like</em><em> (</em><em>nx2</em><em>)</em>) – The the label we are transforming.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>x</strong> – The <cite>x</cite> that would have generated the inputted <cite>y</cite>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>X</strong> – The <code class="docutils literal notranslate"><span class="pre">X</span></code> that would have generated the inputted <code class="docutils literal notranslate"><span class="pre">y</span></code>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.array (nxn)</td>
 </tr>
