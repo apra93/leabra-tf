@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.74.g6b70513 documentation</title>
+  <title>0.4.1 Exploring Different Optimizers &mdash; Leabra Tensorflow 0+untagged.73.gec2e096 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.74.g6b70513
+                0+untagged.73.gec2e096
               </div>
             
           
@@ -166,7 +166,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#RMSProp-Training-Curves-for-LR-0.00033,-0.001,-0.0033,-0.01">RMSProp Training Curves for LR 0.00033, 0.001, 0.0033, 0.01</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Adadelta-Optimizer-Learning-Rates">Adadelta Optimizer Learning Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Adadelta-Optimizer-Learning-Rates">Adadelta Optimizer Learning Rates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Plots-for-Adadelta-LRs-1.0,-1.33,-1.67,-2.0">Plots for Adadelta LRs 1.0, 1.33, 1.67, 2.0</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html">0.4.2 Adam Optimizer Learning Rate Tuning and Dropout</a></li>
@@ -2101,7 +2104,7 @@ Wall time: 17min 45s
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[114]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -2117,7 +2120,125 @@ Wall time: 17min 45s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Starting &#34;Adadelta&#34; optimizer training with lr of 1.0
+Optimization Finished! Testing Sample Accuracy: 0.658
+Optimization Finished! Testing Sample Accuracy: 0.62
+Optimization Finished! Testing Sample Accuracy: 0.654
+Optimization Finished! Testing Sample Accuracy: 0.66
+Optimization Finished! Testing Sample Accuracy: 0.614
+Optimization Finished! Testing Sample Accuracy: 0.658
+Optimization Finished! Testing Sample Accuracy: 0.632
+Optimization Finished! Testing Sample Accuracy: 0.638
+Optimization Finished! Testing Sample Accuracy: 0.628
+Optimization Finished! Testing Sample Accuracy: 0.616
+Completed &#34;Adadelta&#34; optimizer training with lr of 1.0!
+
+Starting &#34;Adadelta&#34; optimizer training with lr of 1.33
+Optimization Finished! Testing Sample Accuracy: 0.62
+Optimization Finished! Testing Sample Accuracy: 0.618
+Optimization Finished! Testing Sample Accuracy: 0.668
+Optimization Finished! Testing Sample Accuracy: 0.656
+Optimization Finished! Testing Sample Accuracy: 0.688
+Optimization Finished! Testing Sample Accuracy: 0.66
+Optimization Finished! Testing Sample Accuracy: 0.656
+Optimization Finished! Testing Sample Accuracy: 0.648
+Optimization Finished! Testing Sample Accuracy: 0.622
+Optimization Finished! Testing Sample Accuracy: 0.632
+Completed &#34;Adadelta&#34; optimizer training with lr of 1.33!
+
+Starting &#34;Adadelta&#34; optimizer training with lr of 1.67
+Optimization Finished! Testing Sample Accuracy: 0.658
+Optimization Finished! Testing Sample Accuracy: 0.638
+Optimization Finished! Testing Sample Accuracy: 0.668
+Optimization Finished! Testing Sample Accuracy: 0.65
+Optimization Finished! Testing Sample Accuracy: 0.676
+Optimization Finished! Testing Sample Accuracy: 0.626
+Optimization Finished! Testing Sample Accuracy: 0.658
+Optimization Finished! Testing Sample Accuracy: 0.726
+Optimization Finished! Testing Sample Accuracy: 0.668
+Optimization Finished! Testing Sample Accuracy: 0.678
+Completed &#34;Adadelta&#34; optimizer training with lr of 1.67!
+
+Starting &#34;Adadelta&#34; optimizer training with lr of 2.0
+Optimization Finished! Testing Sample Accuracy: 0.646
+Optimization Finished! Testing Sample Accuracy: 0.664
+Optimization Finished! Testing Sample Accuracy: 0.666
+Optimization Finished! Testing Sample Accuracy: 0.666
+Optimization Finished! Testing Sample Accuracy: 0.674
+Optimization Finished! Testing Sample Accuracy: 0.648
+Optimization Finished! Testing Sample Accuracy: 0.664
+Optimization Finished! Testing Sample Accuracy: 0.686
+Optimization Finished! Testing Sample Accuracy: 0.694
+Optimization Finished! Testing Sample Accuracy: 0.726
+Completed &#34;Adadelta&#34; optimizer training with lr of 2.0!
+
+CPU times: user 10h 18min 47s, sys: 2h 6min 24s, total: 12h 25min 11s
+Wall time: 5h 1min 22s
 </pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[115]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">lr_name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">adadelta_alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adadelta&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_name</span><span class="p">,</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Dryrun: (Not) Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_1.0_lr_adadelta_optimizer.csv&#39;
+Dryrun: (Not) Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_1.33_lr_adadelta_optimizer.csv&#39;
+Dryrun: (Not) Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_1.67_lr_adadelta_optimizer.csv&#39;
+Dryrun: (Not) Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_2.0_lr_adadelta_optimizer.csv&#39;
+</pre></div></div>
+</div>
+<div class="section" id="Plots-for-Adadelta-LRs-1.0,-1.33,-1.67,-2.0">
+<h3>Plots for Adadelta LRs 1.0, 1.33, 1.67, 2.0<a class="headerlink" href="#Plots-for-Adadelta-LRs-1.0,-1.33,-1.67,-2.0" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[116]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lr_sorted_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">adadelta_alpha_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()])]</span>
+<span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lr_sorted_list</span><span class="p">:</span>
+    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adadelta_alpha_metrics</span><span class="p">[</span><span class="n">lr</span><span class="p">],</span>
+                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adadelta Training Curves with </span><span class="si">{0}</span><span class="s1"> LR&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_0.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_1.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_2.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_3.png" src="../_images/notebooks_0.4.1-Exploring-Different-Optimizers_100_3.png" />
+</div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -2126,6 +2247,7 @@ Starting &#34;Adadelta&#34; optimizer training with lr of 1.0
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.4.2 Adam Optimizer Learning Rate Tuning and Dropout &mdash; Leabra Tensorflow 0+untagged.74.g6b70513 documentation</title>
+  <title>0.4.2 Adam Optimizer Learning Rate Tuning and Dropout &mdash; Leabra Tensorflow 0+untagged.73.gec2e096 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.74.g6b70513
+                0+untagged.73.gec2e096
               </div>
             
           
@@ -1224,7 +1224,7 @@ Git branch : master
 <div class="section" id="Getting-the-Metrics">
 <h3>Getting the Metrics<a class="headerlink" href="#Getting-the-Metrics" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1240,27 +1240,105 @@ Git branch : master
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Starting &#34;Adam&#34; optimizer training with lr of 0.0001
+Optimization Finished! Testing Sample Accuracy: 0.824
+Optimization Finished! Testing Sample Accuracy: 0.822
+Optimization Finished! Testing Sample Accuracy: 0.798
+Optimization Finished! Testing Sample Accuracy: 0.822
+Optimization Finished! Testing Sample Accuracy: 0.818
+Optimization Finished! Testing Sample Accuracy: 0.846
+Optimization Finished! Testing Sample Accuracy: 0.856
+Optimization Finished! Testing Sample Accuracy: 0.82
+Optimization Finished! Testing Sample Accuracy: 0.814
+Optimization Finished! Testing Sample Accuracy: 0.818
+Completed &#34;Adam&#34; optimizer training with lr of 0.0001!
+
+Starting &#34;Adam&#34; optimizer training with lr of 0.00033
+Optimization Finished! Testing Sample Accuracy: 0.832
+Optimization Finished! Testing Sample Accuracy: 0.844
+Optimization Finished! Testing Sample Accuracy: 0.848
+Optimization Finished! Testing Sample Accuracy: 0.8
+Optimization Finished! Testing Sample Accuracy: 0.832
+Optimization Finished! Testing Sample Accuracy: 0.804
+Optimization Finished! Testing Sample Accuracy: 0.79
+Optimization Finished! Testing Sample Accuracy: 0.814
+Optimization Finished! Testing Sample Accuracy: 0.86
+Optimization Finished! Testing Sample Accuracy: 0.878
+Completed &#34;Adam&#34; optimizer training with lr of 0.00033!
+
+Starting &#34;Adam&#34; optimizer training with lr of 0.00067
+Optimization Finished! Testing Sample Accuracy: 0.862
+Optimization Finished! Testing Sample Accuracy: 0.854
+Optimization Finished! Testing Sample Accuracy: 0.788
+Optimization Finished! Testing Sample Accuracy: 0.812
+Optimization Finished! Testing Sample Accuracy: 0.86
+Optimization Finished! Testing Sample Accuracy: 0.818
+Optimization Finished! Testing Sample Accuracy: 0.828
+Optimization Finished! Testing Sample Accuracy: 0.824
+Optimization Finished! Testing Sample Accuracy: 0.84
+Optimization Finished! Testing Sample Accuracy: 0.834
+Completed &#34;Adam&#34; optimizer training with lr of 0.00067!
+
+Starting &#34;Adam&#34; optimizer training with lr of 0.001
+Optimization Finished! Testing Sample Accuracy: 0.85
+Optimization Finished! Testing Sample Accuracy: 0.816
+Optimization Finished! Testing Sample Accuracy: 0.824
+Optimization Finished! Testing Sample Accuracy: 0.896
+Optimization Finished! Testing Sample Accuracy: 0.834
+Optimization Finished! Testing Sample Accuracy: 0.858
+Optimization Finished! Testing Sample Accuracy: 0.878
+Optimization Finished! Testing Sample Accuracy: 0.85
+Optimization Finished! Testing Sample Accuracy: 0.828
+Optimization Finished! Testing Sample Accuracy: 0.83
+Completed &#34;Adam&#34; optimizer training with lr of 0.001!
+
+Starting &#34;Adam&#34; optimizer training with lr of 0.0033
+Optimization Finished! Testing Sample Accuracy: 0.838
+Optimization Finished! Testing Sample Accuracy: 0.84
+Optimization Finished! Testing Sample Accuracy: 0.89
+Optimization Finished! Testing Sample Accuracy: 0.828
+Optimization Finished! Testing Sample Accuracy: 0.854
+Optimization Finished! Testing Sample Accuracy: 0.834
+Optimization Finished! Testing Sample Accuracy: 0.836
+Optimization Finished! Testing Sample Accuracy: 0.868
+Optimization Finished! Testing Sample Accuracy: 0.844
+Optimization Finished! Testing Sample Accuracy: 0.828
+Completed &#34;Adam&#34; optimizer training with lr of 0.0033!
+
+CPU times: user 13h 46min 13s, sys: 2h 34min 25s, total: 16h 20min 38s
+Wall time: 6h 38min 44s
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="Saving-the-Data">
 <h3>Saving the Data<a class="headerlink" href="#Saving-the-Data" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">for</span> <span class="n">lr_name</span><span class="p">,</span> <span class="n">optimizer_data</span> <span class="ow">in</span> <span class="n">adam_lr_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">save_data</span><span class="p">(</span><span class="n">optimizer_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_name</span><span class="p">,</span>
-              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">optimizer_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_0.0001_lr_adam_optimizer.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_0.00033_lr_adam_optimizer.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_0.00067_lr_adam_optimizer.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_0.001_lr_adam_optimizer.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/different_optimizers/2500_epochs_0.0033_lr_adam_optimizer.csv&#39;
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="Plots-for-LRs-0.0001,-0.00033,-0.00067,-0.001,-0.0033">
 <h3>Plots for LRs 0.0001, 0.00033, 0.00067, 0.001, 0.0033<a class="headerlink" href="#Plots-for-LRs-0.0001,-0.00033,-0.00067,-0.001,-0.0033" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1270,6 +1348,41 @@ Starting &#34;Adam&#34; optimizer training with lr of 0.0001
                                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with </span><span class="si">{0}</span><span class="s1"> LR&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lr</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_0.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_1.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_2.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_3.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_3.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_4.png" src="../_images/notebooks_0.4.2-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_4.png" />
 </div>
 </div>
 </div>
