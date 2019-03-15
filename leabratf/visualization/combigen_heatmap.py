@@ -13,9 +13,9 @@ def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
             square=True, gridspec_kw=None, sharey=True, sharex=True,
             titles=None, squeeze=False, y_label='Samples', x_label=None,
             *args, **kwargs):
-    """Wrapper function of `sns.heatmap` with some different defaults.
+    """Wrapper function of ``sns.heatmap`` with some different defaults.
     
-    Only changed values are shown, see the documentation for `sns.heatmap`
+    Only changed values are shown, see the documentation for ``sns.heatmap``
     for all available parameters.
         
     Parameters
@@ -109,12 +109,12 @@ def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
     return heatmaps
 
 def visualize_combigen(n_pairs=1, *args, **kwargs):
-    """Plot `n_pairs` of `x` and `y` from the combigen task
+    """Plot ``n_pairs`` of ``X`` and ``y`` from the combigen task
 
     Parameters
     ----------
     n_pairs : int, optional
-    	The number of X, y pairs to visualize
+    	The number of ``X``, ``y`` pairs to visualize
     """
     heatmaps = []
     # Generate a signle y

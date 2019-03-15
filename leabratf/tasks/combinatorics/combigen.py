@@ -31,13 +31,13 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=None):
     
     Returns
     -------
-    labels : np.ndarray (n_samples x size x dims)
+    labels : np.ndarray of shape ``(n_samples, stack, size, dims)``
     	The resulting task labels.
 
     Raises
     ------
     ValueError
-    	If `dims` does not match the number of lines provided (assuming more
+    	If ``dims`` does not match the number of lines provided (assuming more
     	than one number was provided for it)
     """
     # Ensure this is a list
@@ -77,8 +77,8 @@ def inverse_transform_single_sample(y):
 
     Returns
     -------
-    x : np.array (nxn)
-        The `x` that would have generated the inputted `y`.
+    X : np.array (nxn)
+        The ``X`` that would have generated the inputted ``y``.
     """
     # Grab the length of y
     size, _ = y.shape
@@ -98,7 +98,7 @@ def inverse_transform(Y, *args, **kwargs):
     Returns
     -------
     X : np.ndarray
-    	Array of samples transformed from Y to X.
+    	Array of samples transformed from ``Y`` to ``X``.
     """
     n_samples, stack, size, dims = Y.shape
     return np.concatenate([inverse_transform_single_sample(face)

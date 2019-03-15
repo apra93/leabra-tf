@@ -16,30 +16,30 @@ def plot_df_metrics(metrics_df, metrics=None, title='Training History',
     """Plots a dataframe of metrics for multiple models.
 
     This function was written to plot multiple metrics of 10 models. The metrics
-    were stored as csv files, and then read in using `pd.read_csv`, which would
-    load the actual metrics as a long `str`. If the data is used upon
-    generation, then it won't be of type `str` and will just be used as-is.
+    were stored as csv files, and then read in using ``pd.read_csv``, which
+    would load the actual metrics as a long ``str``. If the data is used upon
+    generation, then it won't be of type ``str`` and will just be used as-is.
 
     To plot the data, each of the metrics for each model are run using
-    `literal_eval` to turn the data into `list`s if they are of type `str`, and
-    then `dict`s, the data is then subselected for the desired number of epochs,
-    and then compiled into a long-form list of values. These values are then
-    passed into `sns.lineplot` for the actual plots.
+    ``literal_eval`` to turn the data into ``list``s if they are of type
+    ``str``, and then ``dict``s, the data is then subselected for the desired
+    number of epochs, and then compiled into a long-form list of values. These
+    values are then passed into ``sns.lineplot`` for the actual plots.
 
-    See `nb-0.3.1` for example usage.
+    See ``nb-0.3.1`` for example usage.
 
-    Note: Setting `model_average` to `True` for large sets of data will result
-    in very long runtimes. 
+    Note: Setting ``model_average`` to ``True`` for large sets of data will
+    result in very long runtimes. 
 
     Parameters
     ----------
     metrics_df : pd.DataFrame
     	The dataframe containing the model data for each of the models. Data is
-    	expected to be of type `str`, which can be evaluated to data of type
-    	`list`.
+    	expected to be of type ``str``, which can be evaluated to data of type
+    	``list``.
 
     metrics : list or None, optional
-    	Metrics from `metrics_df` to plot (column names). Defaults to plot all
+    	Metrics from ``metrics_df`` to plot (column names). Defaults to plot all
     	of them.
 
     title : str, optional
@@ -56,12 +56,13 @@ def plot_df_metrics(metrics_df, metrics=None, title='Training History',
 
     model_average : bool, optional
     	Plot the average performance across all models on each metric. Warning:
-    	Setting this to `True` will result in long runtimes for large datasets.
+    	Setting this to ``True`` will result in long runtimes for large
+    	datasets.
 
     epoch_vline : int or None, optional
-    	Place to plot a dashed vertical line in the metrics plot. If 
-    	`epoch_vline` is `None`, or `epoch_vline > epochs`, then the line will
-    	not be plotted.
+    	Place to plot a dashed vertical line in the metrics plot. If
+    	``epoch_vline`` is ``None``, or ``epoch_vline > epochs``, then the line
+    	will not be plotted.
     """
     # What metrics to plot
     metrics = metrics or metrics_df.columns

@@ -204,7 +204,7 @@ def set_plot_size(size=None):
     ----------
     size : list or None, optional
     	The desired size of the plots. Compare this to what is returned when
-    	`gcf.get_size_inches()` returns.
+    	``gcf.get_size_inches()`` returns.
 
     Returns
     -------
