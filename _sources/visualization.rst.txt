@@ -19,4 +19,4 @@ Model Metrics
 
 Functions for visualizing model metrics.
 
-.. autofunction:: leabratf.visualization.metrics.plot_df_str_metrics
+.. autofunction:: leabratf.visualization.metrics.plot_df_metrics

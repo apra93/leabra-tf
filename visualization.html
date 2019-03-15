@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.79.gc485726 documentation</title>
+  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.78.g84d952e documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.79.gc485726
+                0+untagged.78.g84d952e
               </div>
             
           
@@ -269,6 +269,50 @@ for all available parameters.</p>
 <div class="section" id="model-metrics">
 <h2>Model Metrics<a class="headerlink" href="#model-metrics" title="Permalink to this headline">¶</a></h2>
 <p>Functions for visualizing model metrics.</p>
+<dl class="function">
+<dt id="leabratf.visualization.metrics.plot_df_metrics">
+<code class="descclassname">leabratf.visualization.metrics.</code><code class="descname">plot_df_metrics</code><span class="sig-paren">(</span><em>metrics_df</em>, <em>metrics=None</em>, <em>title='Training History'</em>, <em>epochs=None</em>, <em>key_by_model=False</em>, <em>model_average=False</em>, <em>epoch_vline=500</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.metrics.plot_df_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a dataframe of metrics for multiple models.</p>
+<p>This function was written to plot multiple metrics of 10 models. The metrics
+were stored as csv files, and then read in using <cite>pd.read_csv</cite>, which would
+load the actual metrics as a long <cite>str</cite>. If the data is used upon
+generation, then it won’t be of type <cite>str</cite> and will just be used as-is.</p>
+<p>To plot the data, each of the metrics for each model are run using
+<cite>literal_eval</cite> to turn the data into <cite>list`s if they are of type `str</cite>, and
+then <cite>dict`s, the data is then subselected for the desired number of epochs,
+and then compiled into a long-form list of values. These values are then
+passed into `sns.lineplot</cite> for the actual plots.</p>
+<p>See <cite>nb-0.3.1</cite> for example usage.</p>
+<p>Note: Setting <cite>model_average</cite> to <cite>True</cite> for large sets of data will result
+in very long runtimes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>metrics_df</strong> (<em>pd.DataFrame</em>) – The dataframe containing the model data for each of the models. Data is
+expected to be of type <cite>str</cite>, which can be evaluated to data of type
+<cite>list</cite>.</li>
+<li><strong>metrics</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Metrics from <cite>metrics_df</cite> to plot (column names). Defaults to plot all
+of them.</li>
+<li><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title to plot on the data. Defaults to ‘Training History’.</li>
+<li><strong>epochs</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Number of epochs from the data to plot. Defaults to plot every epoch in
+the data.</li>
+<li><strong>key_by_model</strong> (<em>bool</em><em>, </em><em>optional</em>) – Color the plots by the models that they come from, as opposed to the
+different metrics. Most useful if comparing model performance on a
+single metric.</li>
+<li><strong>model_average</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot the average performance across all models on each metric. Warning:
+Setting this to <cite>True</cite> will result in long runtimes for large datasets.</li>
+<li><strong>epoch_vline</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Place to plot a dashed vertical line in the metrics plot. If
+<cite>epoch_vline</cite> is <cite>None</cite>, or <cite>epoch_vline &gt; epochs</cite>, then the line will
+not be plotted.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 </div>
 
