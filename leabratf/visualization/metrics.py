@@ -21,8 +21,8 @@ def plot_df_metrics(metrics_df, metrics=None, title='Training History',
     generation, then it won't be of type ``str`` and will just be used as-is.
 
     To plot the data, each of the metrics for each model are run using
-    ``literal_eval`` to turn the data into ``list``s if they are of type
-    ``str``, and then ``dict``s, the data is then subselected for the desired
+    ``literal_eval`` to turn the data into ``lists`` if they are of type
+    ``str``, and then ``dicts``, the data is then subselected for the desired
     number of epochs, and then compiled into a long-form list of values. These
     values are then passed into ``sns.lineplot`` for the actual plots.
 

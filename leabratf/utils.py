@@ -192,7 +192,7 @@ def flatten(inp_iter):
     return list(inner(inp_iter))
 
 def set_plot_size(size=None):
-    """Decorator that sets the plot size using plt.gcf.
+    """Decorator that sets the plot size using ``plt.gcf``.
 
     This size change should preserve the size of the fonts on the graphs,
     while increasing the size of the actual graphs.
