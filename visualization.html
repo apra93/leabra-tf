@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.73.ge412bff documentation</title>
+  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.73.gceced8e documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.73.ge412bff
+                0+untagged.73.gceced8e
               </div>
             
           
@@ -279,10 +279,10 @@ were stored as csv files, and then read in using <code class="docutils literal n
 would load the actual metrics as a long <code class="docutils literal notranslate"><span class="pre">str</span></code>. If the data is used upon
 generation, then it won’t be of type <code class="docutils literal notranslate"><span class="pre">str</span></code> and will just be used as-is.</p>
 <p>To plot the data, each of the metrics for each model are run using
-<code class="docutils literal notranslate"><span class="pre">literal_eval</span></code> to turn the data into <code class="docutils literal notranslate"><span class="pre">list``s</span> <span class="pre">if</span> <span class="pre">they</span> <span class="pre">are</span> <span class="pre">of</span> <span class="pre">type</span>
-<span class="pre">``str</span></code>, and then <code class="docutils literal notranslate"><span class="pre">dict``s,</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">is</span> <span class="pre">then</span> <span class="pre">subselected</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">desired</span>
-<span class="pre">number</span> <span class="pre">of</span> <span class="pre">epochs,</span> <span class="pre">and</span> <span class="pre">then</span> <span class="pre">compiled</span> <span class="pre">into</span> <span class="pre">a</span> <span class="pre">long-form</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">values.</span> <span class="pre">These</span>
-<span class="pre">values</span> <span class="pre">are</span> <span class="pre">then</span> <span class="pre">passed</span> <span class="pre">into</span> <span class="pre">``sns.lineplot</span></code> for the actual plots.</p>
+<code class="docutils literal notranslate"><span class="pre">literal_eval</span></code> to turn the data into <code class="docutils literal notranslate"><span class="pre">lists</span></code> if they are of type
+<code class="docutils literal notranslate"><span class="pre">str</span></code>, and then <code class="docutils literal notranslate"><span class="pre">dicts</span></code>, the data is then subselected for the desired
+number of epochs, and then compiled into a long-form list of values. These
+values are then passed into <code class="docutils literal notranslate"><span class="pre">sns.lineplot</span></code> for the actual plots.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code> for example usage.</p>
 <p>Note: Setting <code class="docutils literal notranslate"><span class="pre">model_average</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> for large sets of data will
 result in very long runtimes.</p>
