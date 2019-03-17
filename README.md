@@ -23,6 +23,11 @@
   <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/ee0d0724c19b416aa84b5ce297cbeaca.svg?logo=codacy&style=for-the-badge"> 
   </a>
   
+  <!-- License -->
+  <a href="https://github.com/apra93/leabra-tf/blob/master/LICENSE">
+  <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge">
+  </a>
+  
 </div>
   <!-- Add in a break between the badges and the next section. Will likely not be necessary if there is a header after this -->
 
