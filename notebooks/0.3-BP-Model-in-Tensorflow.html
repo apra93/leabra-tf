@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.3 BP Model in Tensorflow &mdash; Leabra Tensorflow 0+untagged.73.gceced8e documentation</title>
+  <title>0.3 BP Model in Tensorflow &mdash; Leabra Tensorflow 0+untagged.73.g4e69229 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.73.gceced8e
+                0+untagged.73.g4e69229
               </div>
             
           
@@ -131,7 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#The-Tensorflow-Pipeline">The Tensorflow Pipeline</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Variables">Variables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Datasets">Datasets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#O'Reilly-Model">O’Reilly Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#O’Reilly-Model">O’Reilly Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#The-Loss-Function">The Loss Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Metrics">Metrics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
@@ -733,8 +733,8 @@ Git branch : master
 </pre></div>
 </div>
 <p>With the main difference between models tested in nb-0.2.1 being the loss functions. The two most interesting models had the following training curves:</p>
-<p><a href="#id3"><span class="problematic" id="id4">|BCE\_SGD|</span></a></p>
-<p><a href="#id5"><span class="problematic" id="id6">|MSE\_SGD|</span></a></p>
+<p><img alt="BCE_SGD" src="../_images/nb0.2.1_bce_sgd_5000_epochs.png" /></p>
+<p><img alt="MSE_SGD" src="../_images/nb0.2.1_mse_sgd_5000_epochs.png" /></p>
 <p>Some things to note are that the models were trained to 10 times the number of epochs as O’Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model’s performance would have looked like.</p>
 </div>
 </div>
@@ -840,8 +840,8 @@ Git branch : master
 </div>
 </div>
 </div>
-<div class="section" id="O'Reilly-Model">
-<h3>O’Reilly Model<a class="headerlink" href="#O'Reilly-Model" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="O’Reilly-Model">
+<h3>O’Reilly Model<a class="headerlink" href="#O’Reilly-Model" title="Permalink to this headline">¶</a></h3>
 <p>The architecture is the same as before, with one slight change. The output layer no longer has the sigmoid activation, but only because it is baked into the loss function <code class="docutils literal notranslate"><span class="pre">tf.nn.sigmoid_cross_entropy_with_logits</span></code>, which naturally takes in logits.</p>
 <p>Note that when instantiating the model, <code class="docutils literal notranslate"><span class="pre">x</span></code> is passed in as the inputs.</p>
 <div class="nbinput nblast docutils container">
