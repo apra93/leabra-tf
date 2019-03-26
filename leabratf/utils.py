@@ -225,3 +225,14 @@ def set_plot_size(size=None):
         return func_wrapper
     return size_decorator
 
+def doublewrap(function):
+    """A decorator decorator, allowing to use the decorator to be used without
+    parentheses if no arguments are provided. All arguments must be optional.
+    """
+    @wraps(function)
+    def decorator(*args, **kwargs):
+        if len(args) == 1 and len(kwargs) == 0 and callable(args[0]):
+            return function(args[0])
+        else:
+            return lambda wrapee: function(wrapee, *args, **kwargs)
+    return decorator
