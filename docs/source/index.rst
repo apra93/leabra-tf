@@ -33,6 +33,7 @@ Contents:
 
    visualization
    utils
+   tfutils
 
 .. toctree::
    :maxdepth: 1
