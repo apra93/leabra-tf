@@ -130,6 +130,7 @@
 ./_sources/notebooks/0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.ipynb.txt
 ./_sources/notebooks/0.6-Hebbian-Learning.ipynb.txt
 ./_sources/release_schedule.rst.txt
+./_sources/tfutils.rst.txt
 ./_sources/utils.rst.txt
 ./_sources/visualization.rst.txt
 ./_static/ajax-loader.gif
@@ -211,5 +212,6 @@
 ./release_schedule.html
 ./search.html
 ./searchindex.js
+./tfutils.html
 ./utils.html
 ./visualization.html

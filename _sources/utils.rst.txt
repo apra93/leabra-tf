@@ -14,3 +14,5 @@ Utility functions used throughout the project.
 .. autofunction:: leabratf.utils.flatten
 
 .. autofunction:: leabratf.utils.set_plot_size
+
+.. autofunction:: leabratf.utils.doublewrap   
