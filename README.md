@@ -7,24 +7,25 @@
 <!-- </p> -->
 
 <div align="center">
+
   <!-- Build Status -->
   <a href="https://travis-ci.org/apra93/leabra-tf">
-  <img alt="Travis (.org)" src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=flat-square">
+  <img alt="Travis (.org)" src="https://img.shields.io/travis/apra93/leabra-tf.svg?logo=travis&style=for-the-badge">
   </a>
   
   <!-- Test Coverage -->
   <a href="https://codecov.io/gh/apra93/leabra-tf">
-  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/apra93/leabra-tf.svg?logo=codecov&style=flat-square">
+  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/apra93/leabra-tf.svg?logo=codecov&style=for-the-badge">
   </a>
   
   <!-- Code Grade -->
   <a href="https://app.codacy.com/project/apra93/leabra-tf/dashboard">
-  <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/ee0d0724c19b416aa84b5ce297cbeaca.svg?logo=codacy&style=flat-square"> 
+  <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/ee0d0724c19b416aa84b5ce297cbeaca.svg?logo=codacy&style=for-the-badge"> 
   </a>
   
   <!-- License -->
   <a href="https://github.com/apra93/leabra-tf/blob/master/LICENSE">
-  <img alt="MIT License" src="https://img.shields.io/badge/license-MIT*-blue.svg?style=flat-square">
+  <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge">
   </a>
   
 </div>
