@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.4 Exploring Different Learning Rates &mdash; Leabra Tensorflow 0+untagged.73.g4f81762 documentation</title>
+  <title>0.6 Hebbian Learning &mdash; Leabra Tensorflow 0+untagged.73.g4f81762 documentation</title>
   
 
   
@@ -37,8 +37,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="0.4.1 Exploring Different Optimizers" href="0.4.1-Exploring-Different-Optimizers.html" />
-    <link rel="prev" title="0.3.1 Comparing Accuracy Metrics" href="0.3.1-Comparing-Accuracy-Metrics.html" /> 
+    <link rel="prev" title="0.5 Adam Optimizer Learning Rate Tuning and Dropout" href="0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -110,7 +109,10 @@
 <li class="toctree-l1"><a class="reference internal" href="0.2.1-Iterating-the-BP-Model-on-GPUs.html">0.2.1 Iterating the BP Model on GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.3.1-Comparing-Accuracy-Metrics.html">0.3.1 Comparing Accuracy Metrics</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0.4 Exploring Different Learning Rates</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="0.4-Exploring-Different-Learning-Rates.html">0.4 Exploring Different Learning Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.4.1-Exploring-Different-Optimizers.html">0.4.1 Exploring Different Optimizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html">0.5 Adam Optimizer Learning Rate Tuning and Dropout</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.6 Hebbian Learning</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
@@ -131,32 +133,16 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Setting-Up-the-Graph">Setting Up the Graph</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Make-the-Datasets">Make the Datasets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#TF-Variables">TF Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Model,-Loss-Function,-and-Metrics">Model, Loss Function, and Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Model-Class">Model Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Instantiate-all-the-Ops">Instantiate all the Ops</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Defining-the-Training-Function">Defining the Training Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Baseline-metrics">Baseline metrics</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Getting-the-Metrics-for-Different-Learning-Rates">Getting the Metrics for Different Learning Rates</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Saving-the-Data-(If-it-Doesn’t-Exist)">Saving the Data (If it Doesn’t Exist)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#The-Legend">The Legend</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Training-Set-Metrics">Training Set Metrics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Validation-Set-Metrics">Validation Set Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Hebbian-Weight-Update">Hebbian Weight Update</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Plotting-all-the-Learning-Rates-for-500-Epochs">Plotting all the Learning Rates for 500 Epochs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Learning-Rate-of-0.01">Learning Rate of 0.01</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Learning-Rates-of-0.001,-0.0033,-0.033,-and-0.1">Learning Rates of 0.001, 0.0033, 0.033, and 0.1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Learning-Rates-of-0.33-and-1.0">Learning Rates of 0.33 and 1.0</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="0.4.1-Exploring-Different-Optimizers.html">0.4.1 Exploring Different Optimizers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html">0.5 Adam Optimizer Learning Rate Tuning and Dropout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="0.6-Hebbian-Learning.html">0.6 Hebbian Learning</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Project Links</span></p>
 <ul>
@@ -210,13 +196,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>0.4 Exploring Different Learning Rates</li>
+      <li>0.6 Hebbian Learning</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/0.4-Exploring-Different-Learning-Rates.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/0.6-Hebbian-Learning.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -451,9 +437,8 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="0.4-Exploring-Different-Learning-Rates">
-<h1>0.4 Exploring Different Learning Rates<a class="headerlink" href="#0.4-Exploring-Different-Learning-Rates" title="Permalink to this headline">¶</a></h1>
-<p>Given the different accuracy metrics obtained from <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code>, let’s see the effect of using different learning rates on those metrics.</p>
+<div class="section" id="0.6-Hebbian-Learning">
+<h1>0.6 Hebbian Learning<a class="headerlink" href="#0.6-Hebbian-Learning" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Boilerplate">
 <h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
 <p>The following subsections are largely boilerplate code, so skip around as needed.</p>
@@ -477,24 +462,24 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Tue Mar 12 2019 14:35:36
+Mon Mar 25 2019 23:48:17
 
 CPython 3.6.8
 IPython 7.3.0
 
 numpy 1.16.2
-matplotlib 3.0.3
+matplotlib 3.0.2
 seaborn 0.9.0
-tensorflow 1.12.0
+tensorflow 1.10.0
 
 compiler   : GCC 7.3.0
 system     : Linux
-release    : 4.4.0-130-generic
+release    : 4.18.0-16-generic
 machine    : x86_64
 processor  : x86_64
-CPU cores  : 12
+CPU cores  : 8
 interpreter: 64bit
-Git hash   : d7609f445c05ff8c14045a9568ead28686c141bb
+Git hash   : 100d2741e0dadbc8df124ba2675596a49345a572
 Git branch : master
 </pre></div></div>
 </div>
@@ -533,11 +518,13 @@ Git branch : master
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Standard library imports</span>
-<span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 <span class="c1"># Third party</span>
+<span class="kn">import</span> <span class="nn">IPython</span> <span class="k">as</span> <span class="nn">ipy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -548,11 +535,14 @@ Git branch : master
 </div>
 <p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Task script</span>
+<span></span><span class="c1"># Import the whole module</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf
+<span class="kn">import</span> <span class="nn">leabratf</span> <span class="k">as</span> <span class="nn">ltf</span>
+<span class="c1"># Task script</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.combigen
 <span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.combigen</span> <span class="k">as</span> <span class="nn">cg</span>
 <span class="c1"># Visualization for the task</span>
@@ -564,6 +554,10 @@ Git branch : master
 <span class="c1"># Utility functions</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.utils
 <span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
+<span class="c1"># Tensorflow Utility functions</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.tfutils
+<span class="kn">from</span> <span class="nn">leabratf.tfutils</span> <span class="k">import</span> <span class="n">lazy_property</span>
+<span class="c1"># Constants</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.constants
 <span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_DATA_PROC</span>
 </pre></div>
@@ -596,8 +590,6 @@ Git branch : master
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;leabratf&#39;</span><span class="p">)</span>
 <span class="c1"># Don&#39;t propagate messages</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
-
-<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -626,7 +618,7 @@ Git branch : master
 <div class="section" id="Data-Parameters">
 <h4>Data Parameters<a class="headerlink" href="#Data-Parameters" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -645,7 +637,7 @@ Git branch : master
 <div class="section" id="Datasets">
 <h4>Datasets<a class="headerlink" href="#Datasets" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -665,12 +657,12 @@ Git branch : master
 <div class="section" id="Network-Parameters">
 <h4>Network Parameters<a class="headerlink" href="#Network-Parameters" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Learning rate - This will be varied in this notebook</span>
-<span class="c1"># ALPHA = 0.01</span>
+<span></span><span class="c1"># Learning rate</span>
+<span class="n">ALPHA</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="c1"># Batch size</span>
 <span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Number of parameters in the inputs</span>
@@ -686,7 +678,7 @@ Git branch : master
 <div class="section" id="Training-Parameters">
 <h4>Training Parameters<a class="headerlink" href="#Training-Parameters" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -709,7 +701,7 @@ Git branch : master
 <h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
 <p>Quickly remind ourselves what the task looks like before diving in.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -722,7 +714,7 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_32_0.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_32_0.png" />
+<img alt="../_images/notebooks_0.6-Hebbian-Learning_32_0.png" src="../_images/notebooks_0.6-Hebbian-Learning_32_0.png" />
 </div>
 </div>
 </div>
@@ -731,12 +723,14 @@ Git branch : master
 <h2>Setting Up the Graph<a class="headerlink" href="#Setting-Up-the-Graph" title="Permalink to this headline">¶</a></h2>
 <p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Cleanup any residual nodes</span>
 <span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+
+<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[]</span>
 </pre></div>
 </div>
 </div>
@@ -744,11 +738,11 @@ Git branch : master
 <h3>Make the Datasets<a class="headerlink" href="#Make-the-Datasets" title="Permalink to this headline">¶</a></h3>
 <p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># The first step of the setup is that each of the datasets (training, validation, and</span>
     <span class="c1"># testing) are turned into their own `Dataset` objects.</span>
     <span class="c1"># Training dataset</span>
@@ -756,10 +750,10 @@ Git branch : master
         <span class="p">(</span><span class="n">X_TRAIN</span><span class="p">,</span> <span class="n">Y_TRAIN</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
     <span class="c1"># Validation dataset</span>
     <span class="n">dataset_val</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">X_VAL</span><span class="p">,</span> <span class="n">Y_VAL</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">N_VAL</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">X_VAL</span><span class="p">,</span> <span class="n">Y_VAL</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
     <span class="c1"># Testing dataset</span>
     <span class="n">dataset_test</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">X_TEST</span><span class="p">,</span> <span class="n">Y_TEST</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">N_TEST</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">X_TEST</span><span class="p">,</span> <span class="n">Y_TEST</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
 
     <span class="c1"># Next, let&#39;s define the iterators for each of the datasets, and then add their</span>
     <span class="c1"># initializations to the `init_ops` list.</span>
@@ -773,6 +767,7 @@ Git branch : master
     <span class="n">iterators</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">]</span>
 
     <span class="c1"># Add the initiatlizations to the init opts</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">train_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">val_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">test_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">]</span>
 
     <span class="c1"># And finally, the interesting part. Rather than creating separate next elements for</span>
@@ -799,79 +794,82 @@ Git branch : master
 </div>
 </div>
 </div>
-<div class="section" id="TF-Variables">
-<h3>TF Variables<a class="headerlink" href="#TF-Variables" title="Permalink to this headline">¶</a></h3>
-<p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
-<p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
+<div class="section" id="Model-Class">
+<h3>Model Class<a class="headerlink" href="#Model-Class" title="Permalink to this headline">¶</a></h3>
+<p>An implementation change that will be made going forward is to have the model components in a class.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Weights and biases</span>
-<span class="n">weights</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">],</span>
-                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
-    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">],</span>
-                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
-<span class="p">}</span>
-<span class="n">biases</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">],</span>
-                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
-    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_OUTPUTS</span><span class="p">],</span>
-                      <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
-<span class="p">}</span>
+<span></span><span class="k">class</span> <span class="nc">OReillyModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;or_model&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span>
+                                    <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">],</span>
+                                    <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
+                            <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                                    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span>
+                                    <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">],</span>
+                                    <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
+                            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">biases</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span>
+                                <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">],</span>
+                                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
+                            <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span>
+                                <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_OUTPUTS</span><span class="p">],</span>
+                                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
+                            <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logits</span>
 
-<span class="c1"># List for initialization operations</span>
-<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()]</span>
+    <span class="nd">@lazy_property</span>
+    <span class="k">def</span> <span class="nf">logits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Logits lazy property that returns the logits of the model&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="c1"># Reshape for hidden layer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inp_reshaped</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_INPUTS</span><span class="p">])</span>
+            <span class="c1"># Single hidden layer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h1_layer_logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inp_reshaped</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">]))</span>
+            <span class="c1"># Output layer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">out_layer_logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h1_layer_logits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">])</span>
+            <span class="c1"># Reshape for labels</span>
+            <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_layer_logits</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">STACK</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">,</span> <span class="n">DIMS</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Model,-Loss-Function,-and-Metrics">
-<h3>Model, Loss Function, and Metrics<a class="headerlink" href="#Model,-Loss-Function,-and-Metrics" title="Permalink to this headline">¶</a></h3>
-<p>The architecture is the same as previous notebooks. See nb-0.3 for more details.</p>
+<div class="section" id="Instantiate-all-the-Ops">
+<h3>Instantiate all the Ops<a class="headerlink" href="#Instantiate-all-the-Ops" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">oreilly_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
-    <span class="c1"># Reshape for hidden layer</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_INPUTS</span><span class="p">])</span>
-    <span class="c1"># Single hidden layer</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">]))</span>
-    <span class="c1"># Output layer</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">])</span>
-    <span class="c1"># Reshape for labels</span>
-    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">STACK</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">,</span> <span class="n">DIMS</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
     <span class="c1"># Get the relevant dataset nodes</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
-
     <span class="c1"># Build the model</span>
-    <span class="n">logits</span> <span class="o">=</span> <span class="n">oreilly_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">OReillyModel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;or_model&#39;</span><span class="p">)</span>
+    <span class="c1"># Grab the logits</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">logits</span>
+
     <span class="c1"># Ensure y is cast to the same type as logits</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
+    <span class="c1"># We will keep this in for now</span>
     <span class="c1"># Define alpha as placeholder variable</span>
     <span class="n">alpha_ph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
 
     <span class="c1"># Define loss and optimizer</span>
     <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
         <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">alpha_ph</span><span class="p">)</span>
-
-    <span class="c1"># train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())</span>
-    <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
 
     <span class="c1"># Define some intermediate nodes</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
@@ -891,6 +889,9 @@ Git branch : master
     <span class="n">slot_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">slot_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
     <span class="c1"># Sample Accuracy</span>
     <span class="n">sample_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+
+    <span class="c1"># Train op</span>
+    <span class="n">train_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -899,7 +900,7 @@ Git branch : master
 <h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
 <p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -921,11 +922,12 @@ Git branch : master
 <h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">train_with_lr</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">,</span>
+          <span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># Ensure this is an int</span>
     <span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
     <span class="c1"># Dict with the various metrics we care about</span>
@@ -933,6 +935,8 @@ Git branch : master
                <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">:[],</span>
                <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">:[]}</span>
     <span class="c1"># Run the initialization ops</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">(),</span> <span class="n">tf</span><span class="o">.</span><span class="n">local_variables_initializer</span><span class="p">()]</span>
     <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
     <span class="c1"># Define training and validation handlers</span>
     <span class="n">training_handle</span><span class="p">,</span> <span class="n">validation_handle</span><span class="p">,</span> <span class="n">testing_handle</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">string_handle</span><span class="p">()</span>
@@ -975,27 +979,21 @@ Git branch : master
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="Getting-the-Metrics-for-Different-Learning-Rates">
-<h2>Getting the Metrics for Different Learning Rates<a class="headerlink" href="#Getting-the-Metrics-for-Different-Learning-Rates" title="Permalink to this headline">¶</a></h2>
-<p>Let’s now run the function defined with two learning rates smaller than what is standardly used, and two larger.</p>
+<div class="section" id="Baseline-metrics">
+<h3>Baseline metrics<a class="headerlink" href="#Baseline-metrics" title="Permalink to this headline">¶</a></h3>
+<p>Just as a sanity check, let’s run the new class model with a learning rate of 0.1 so we can get good results relatively quickly.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
-<span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.0033</span><span class="p">,</span> <span class="mf">0.033</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
-<span class="n">alpha_strs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">]</span>
-<span class="n">alpha_metrics</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">alpha_str</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">alpha_strs</span><span class="p">,</span> <span class="n">alphas</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training using an alpha of </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
+<span></span><span class="k">def</span> <span class="nf">exp_test</span><span class="p">():</span>
+    <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+    <span class="n">metrics_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_MODELS</span><span class="p">):</span>
-        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_with_lr</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed training for alpha of </span><span class="si">{0}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
-    <span class="n">alpha_metrics</span><span class="p">[</span><span class="n">alpha_str</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span>
+        <span class="n">metrics_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">metrics_list</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">exp_test</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1004,440 +1002,285 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Starting training using an alpha of 0.001
-Begining training on model 0
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 1
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 2
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 3
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 4
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 5
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 6
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 7
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 8
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 9
-Optimization Finished! Testing Sample Accuracy: 0.0
-Completed training for alpha of 0.001!
-
-Starting training using an alpha of 0.0033
-Begining training on model 0
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 1
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 2
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 3
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 4
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 5
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 6
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 7
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 8
-Optimization Finished! Testing Sample Accuracy: 0.0
-Begining training on model 9
-Optimization Finished! Testing Sample Accuracy: 0.0
-Completed training for alpha of 0.0033!
-
-Starting training using an alpha of 0.033
-Begining training on model 0
-Optimization Finished! Testing Sample Accuracy: 0.088
-Begining training on model 1
-Optimization Finished! Testing Sample Accuracy: 0.09
-Begining training on model 2
-Optimization Finished! Testing Sample Accuracy: 0.086
-Begining training on model 3
-Optimization Finished! Testing Sample Accuracy: 0.092
-Begining training on model 4
-Optimization Finished! Testing Sample Accuracy: 0.076
-Begining training on model 5
-Optimization Finished! Testing Sample Accuracy: 0.078
-Begining training on model 6
-Optimization Finished! Testing Sample Accuracy: 0.084
-Begining training on model 7
-Optimization Finished! Testing Sample Accuracy: 0.082
-Begining training on model 8
-Optimization Finished! Testing Sample Accuracy: 0.096
-Begining training on model 9
-Optimization Finished! Testing Sample Accuracy: 0.074
-Completed training for alpha of 0.033!
-
-Starting training using an alpha of 0.1
-Begining training on model 0
+Optimization Finished! Testing Sample Accuracy: 0.294
+Optimization Finished! Testing Sample Accuracy: 0.286
+Optimization Finished! Testing Sample Accuracy: 0.282
+Optimization Finished! Testing Sample Accuracy: 0.296
 Optimization Finished! Testing Sample Accuracy: 0.306
-Begining training on model 1
-Optimization Finished! Testing Sample Accuracy: 0.3
-Begining training on model 2
+Optimization Finished! Testing Sample Accuracy: 0.252
 Optimization Finished! Testing Sample Accuracy: 0.304
-Begining training on model 3
-Optimization Finished! Testing Sample Accuracy: 0.3
-Begining training on model 4
-Optimization Finished! Testing Sample Accuracy: 0.298
-Begining training on model 5
+Optimization Finished! Testing Sample Accuracy: 0.276
+Optimization Finished! Testing Sample Accuracy: 0.29
+Optimization Finished! Testing Sample Accuracy: 0.294
 </pre></div></div>
 </div>
-<p>The training output above appears to not have completed, but this is because the jupyter-lab client was was shut down, leaving the host to continue processing. This means that output to the cell was suspended.</p>
-<div class="section" id="Saving-the-Data-(If-it-Doesn’t-Exist)">
-<h3>Saving the Data (If it Doesn’t Exist)<a class="headerlink" href="#Saving-the-Data-(If-it-Doesn’t-Exist)" title="Permalink to this headline">¶</a></h3>
-<p>Let’s save the data we got above if it doesn’t already exist. First make the learning rate directory if it doesn’t exist.</p>
+</div>
+</div>
+<div class="section" id="Hebbian-Weight-Update">
+<h2>Hebbian Weight Update<a class="headerlink" href="#Hebbian-Weight-Update" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[164]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Make this directory if it doesn&#39;t exist</span>
-<span class="n">learning_rate_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span> <span class="s1">&#39;learning_rates&#39;</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">learning_rate_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-    <span class="n">learning_rate_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+<span></span><span class="c1"># Cleanup any residual nodes</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+
+<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[]</span>
 </pre></div>
 </div>
 </div>
-<p>Now loop through each of the training set, check if there is already a file named that, and then selectively save it.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[165]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">class</span> <span class="nc">HebbianModel</span><span class="p">(</span><span class="n">OReillyModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;hebb_model&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+
+    <span class="k">def</span> <span class="nf">get_hebbian_weight_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Weight update according to O&#39;Reilly.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="c1"># w_h1 delta</span>
+            <span class="n">x_plus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ltf</span><span class="o">.</span><span class="n">tfutils</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inp_reshaped</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">]),</span>
+                           <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">])</span>
+            <span class="n">y_plus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h1_layer_logits</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_INPUTS</span><span class="p">]),</span>
+                           <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_h1_delta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span>
+                <span class="n">y_plus</span><span class="p">,</span> <span class="n">x_plus</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+            <span class="c1"># w_out delta</span>
+            <span class="n">x_plus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ltf</span><span class="o">.</span><span class="n">tfutils</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h1_layer_logits</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">]),</span>
+                           <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">])</span>
+            <span class="n">y_plus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_layer_logits</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">]),</span>
+                           <span class="p">[</span><span class="mi">1</span><span class="p">,</span>  <span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_out_delta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span>
+                <span class="n">y_plus</span><span class="p">,</span> <span class="n">x_plus</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">w_h1_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_out_delta</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">hebbian_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hebb_assign_h1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">w_h1_delta</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hebb_assign_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">w_out_delta</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">hebb_assign_h1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hebb_assign_out</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[166]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+    <span class="c1"># Get the relevant dataset nodes</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
+    <span class="c1"># Build the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">HebbianModel</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Grab the logits</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">logits</span>
+
+    <span class="c1"># Ensure y is cast to the same type as logits</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="c1"># We will keep this in for now</span>
+    <span class="c1"># Define alpha as placeholder variable</span>
+    <span class="n">alpha_ph</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+
+    <span class="c1"># Define loss and optimizer</span>
+    <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
+        <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
+
+    <span class="c1"># Define some intermediate nodes</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+    <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+    <span class="n">equal_labels_and_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rounded_predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="c1"># O&#39;Reilly Accuracy</span>
+    <span class="n">axis_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">slot_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">axis_acc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">sample_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">slot_acc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Elemental Accuracy</span>
+    <span class="n">el_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+    <span class="c1"># Axis Accuracy</span>
+    <span class="n">axis_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">axis_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+    <span class="c1"># Slot Accuracy</span>
+    <span class="n">slot_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">slot_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+    <span class="c1"># Sample Accuracy</span>
+    <span class="n">sample_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))</span>
+
+    <span class="c1"># Train op</span>
+    <span class="n">train_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+
+    <span class="c1"># Hebbian ops</span>
+    <span class="n">hebb_updates</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_hebbian_weight_update</span><span class="p">()</span>
+    <span class="n">hebb_assigns</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">hebbian_update</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[175]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">train_hebbian</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">,</span>
+          <span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># Ensure this is an int</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
+    <span class="c1"># Dict with the various metrics we care about</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;el_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;ax_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;sl_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;sm_acc&#39;</span><span class="p">:[],</span>
+               <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">:[],</span>
+               <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">:[]}</span>
+    <span class="c1"># Run the initialization ops</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">(),</span> <span class="n">tf</span><span class="o">.</span><span class="n">local_variables_initializer</span><span class="p">()]</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
+    <span class="c1"># Define training and validation handlers</span>
+    <span class="n">training_handle</span><span class="p">,</span> <span class="n">validation_handle</span><span class="p">,</span> <span class="n">testing_handle</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">string_handle</span><span class="p">()</span>
+                                                                   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterators</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="n">N_TRAIN</span><span class="p">])</span>
+        <span class="c1"># Run the training steps</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TRAIN</span><span class="p">):</span>
+            <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">ep_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sl_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_ax_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sm_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="p">[</span><span class="o">*</span><span class="n">hebb_updates</span><span class="p">,</span>
+                 <span class="n">train_op</span><span class="p">,</span>
+                 <span class="o">*</span><span class="n">hebb_assigns</span><span class="p">,</span>
+                 <span class="n">loss_op</span><span class="p">,</span>
+                 <span class="n">el_acc_op</span><span class="p">,</span>
+                 <span class="n">axis_acc_op</span><span class="p">,</span>
+                 <span class="n">slot_acc_op</span><span class="p">,</span>
+                 <span class="n">sample_acc_op</span><span class="p">],</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">,</span> <span class="n">alpha_ph</span><span class="p">:</span> <span class="n">lr</span><span class="p">})</span>
+
+        <span class="c1"># Get means for the epoch</span>
+        <span class="n">epoch_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span><span class="p">),</span>
+                                  <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="n">N_TRAIN</span><span class="p">])</span>
+        <span class="c1"># Run the training steps</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_VAL</span><span class="p">):</span>
+            <span class="n">ep_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sl_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_ax_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sm_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">loss_op</span><span class="p">,</span>
+                 <span class="n">el_acc_op</span><span class="p">,</span>
+                 <span class="n">axis_acc_op</span><span class="p">,</span>
+                 <span class="n">slot_acc_op</span><span class="p">,</span>
+                 <span class="n">sample_acc_op</span><span class="p">],</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">validation_handle</span><span class="p">})</span>
+
+        <span class="c1"># Get means for the epoch</span>
+        <span class="n">val_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span><span class="p">),</span>
+                                  <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1">#         # Record</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">epoch_data</span> <span class="o">+</span> <span class="n">val_data</span><span class="p">):</span>
+            <span class="n">metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Selectively display the epoch number</span>
+        <span class="k">if</span> <span class="n">n_updates</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">epochs</span> <span class="o">/</span> <span class="n">n_updates</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;Completed epoch </span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">. Metrics:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;                     Loss   Sample Accuracy   Elem Accuracy</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;    Epoch:      </span><span class="si">{2:10.4f}</span><span class="s2">   </span><span class="si">{3:10.4f}</span><span class="s2">   </span><span class="si">{4:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                   <span class="s2">&quot;    Validation: </span><span class="si">{5:10.4f}</span><span class="s2">   </span><span class="si">{6:10.4f}</span><span class="s2">   </span><span class="si">{7:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">epoch_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">epoch_data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">epoch_data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">val_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">w_h1_delta</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">validation_handle</span><span class="p">}))</span>
+
+    <span class="c1"># Calculate accuracy for test images</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished! Testing Sample Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">sample_acc_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
+    <span class="k">return</span> <span class="n">metrics</span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[100]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[177]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">str_alpha</span><span class="p">,</span> <span class="n">df_met</span> <span class="ow">in</span> <span class="n">df_alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="c1"># Grab the exp params</span>
-    <span class="n">n_models</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">df_met</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">n_epochs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_met</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="c1"># Create a dict containing different keys and values if they differ</span>
-    <span class="c1"># from the default exp</span>
-    <span class="n">file_name_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="n">n_models</span> <span class="o">!=</span> <span class="n">N_MODELS</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_models</span>
-    <span class="k">if</span> <span class="n">n_epochs</span> <span class="o">!=</span> <span class="n">EPOCHS</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_epochs</span>
-    <span class="c1"># Add the final value that is different</span>
-    <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">str_alpha</span>
-
-    <span class="c1"># Create the filename and path object</span>
-    <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">file_name_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">file_name</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">val</span><span class="p">,</span> <span class="n">key</span><span class="p">])</span>
-    <span class="n">file_name</span> <span class="o">+=</span> <span class="s1">&#39;.csv&#39;</span>
-    <span class="n">lr_exp_file</span> <span class="o">=</span> <span class="n">learning_rate_dir</span> <span class="o">/</span> <span class="n">file_name</span>
-
-    <span class="c1"># Save the df if the file does not exist</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">lr_exp_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">df_met</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_exp_file</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved df to &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_exp_file</span><span class="p">)))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">{0}</span><span class="s2">&#39; present, skipping.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_exp_file</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/learning_rates/0.001_lr.csv&#39;
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/learning_rates/0.0033_lr.csv&#39;
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/learning_rates/0.033_lr.csv&#39;
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/learning_rates/0.1_lr.csv&#39;
-</pre></div></div>
-</div>
-<p>In the event that the data needs to be reloaded (for example if the kernel needs to be restarted), I have the data saved locally and can be reloaded using the following lines:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_PROC</span>
-<span class="n">learning_rate_dir</span> <span class="o">=</span> <span class="n">DIR_PROC</span> <span class="o">/</span> <span class="s1">&#39;learning_rates&#39;</span>
-<span class="n">lr_metrics_dict</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">alpha_strs</span><span class="p">:</span>
-    <span class="n">lr_metrics_dict</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">learning_rate_dir</span> <span class="o">/</span> <span class="s1">&#39;lr_</span><span class="si">{0}</span><span class="s1">.csv&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>One last useful piece of data to collect is to create a symbolic link to the data collected in <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code> and use that as the data for the model trained using a learning rate of 0.01. So let’s create a symbolic link to it that preserves the naming scheme we have for this notebook.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[101]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Directory that has the training set data</span>
-<span class="n">training_set_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span> <span class="s1">&#39;training_set_sizes&#39;</span>
-<span class="c1"># This should exist</span>
-<span class="k">assert</span> <span class="n">training_set_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
-
-<span class="c1"># Now grab the file that contains the desired data</span>
-<span class="n">training_set_lr_file</span> <span class="o">=</span> <span class="n">training_set_dir</span> <span class="o">/</span> <span class="s1">&#39;10_models_25000_epochs_100_training_samples.csv&#39;</span>
-<span class="c1"># This should also exist</span>
-<span class="k">assert</span> <span class="n">training_set_lr_file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
-
-<span class="c1"># Build the filename we want to use for the symbolic link</span>
-<span class="n">file_path</span> <span class="o">=</span> <span class="n">learning_rate_dir</span> <span class="o">/</span> <span class="s2">&quot;25000_epochs_0.01_lr.csv&quot;</span>
-
-<span class="c1"># Create the sym link if the file does not exist</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">file_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-    <span class="n">file_path</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">training_set_lr_file</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Created symlink from </span><span class="si">{0}</span><span class="s2"> to </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">training_set_lr_file</span><span class="p">)))</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">{0}</span><span class="s2">&#39; present, skipping.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Created symlink from /home/abdullah_rashed/work/projects/leabra-tf/data/processed/learning_rates/25000_epochs_0.01_lr.csv to /home/abdullah_rashed/work/projects/leabra-tf/data/processed/training_set_sizes/10_models_25000_epochs_100_training_samples.csv
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="The-Legend">
-<h3>The Legend<a class="headerlink" href="#The-Legend" title="Permalink to this headline">¶</a></h3>
-<p>Before plotting everything, let’s remind ourselves of the metrics legend. This is a direct copy from <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code>, so skip as needed.</p>
-<div class="section" id="Training-Set-Metrics">
-<h4>Training Set Metrics<a class="headerlink" href="#Training-Set-Metrics" title="Permalink to this headline">¶</a></h4>
-<p>Metrics obtained every epoch from from performance on the training set.</p>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">loss</span></code> - Loss for the training set</li>
-<li><code class="docutils literal notranslate"><span class="pre">el_acc</span></code> - Element-wise accuracy between predictions and labels for the training set</li>
-<li><code class="docutils literal notranslate"><span class="pre">ax_acc</span></code> - Axis accuracy for each slot in each sample between predictions and labels for the training set. Score per sample goes in eighth steps between 0.0 and 1.0. Every correct axis in every slot contributes 0.125 to the the overall accuracy</li>
-<li><code class="docutils literal notranslate"><span class="pre">sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the training set. Score per sample goes in quarter steps between 0.0 and 1.0. Any slot that has all elements correct contributes 0.25 to the score</li>
-<li><code class="docutils literal notranslate"><span class="pre">sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. Score per sample is binary - model must get every element correct to receive 1.0</li>
-</ul>
-</div>
-<div class="section" id="Validation-Set-Metrics">
-<h4>Validation Set Metrics<a class="headerlink" href="#Validation-Set-Metrics" title="Permalink to this headline">¶</a></h4>
-<p>Metrics obtained every epoch from from performance on the validation set.</p>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">val_loss</span></code> - Loss for the validation set for a particular epoch</li>
-<li><code class="docutils literal notranslate"><span class="pre">val_el_acc</span></code> - Element-wise accuracy between predictions and labels for the validation set. See above for details</li>
-<li><code class="docutils literal notranslate"><span class="pre">val_sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the validation set. See above for details</li>
-<li><code class="docutils literal notranslate"><span class="pre">val_sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. See above for details</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="section" id="Plotting-all-the-Learning-Rates-for-500-Epochs">
-<h2>Plotting all the Learning Rates for 500 Epochs<a class="headerlink" href="#Plotting-all-the-Learning-Rates-for-500-Epochs" title="Permalink to this headline">¶</a></h2>
-<p>Now let’s plot all the training curves for the different learning rates. Note that the plotting function used here is more or less the same function used in <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code> that was made more general and then migrated into the repo.</p>
-<div class="section" id="Learning-Rate-of-0.01">
-<h3>Learning Rate of 0.01<a class="headerlink" href="#Learning-Rate-of-0.01" title="Permalink to this headline">¶</a></h3>
-<p>Just to remind outselves of what the previous training curves looked like, let’s plot this first. Feel free to skip to the next sections.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[102]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Load the data</span>
-<span class="n">df_or_lr_metric</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">df_or_lr_metric</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training Curves with Learning Rate of 0.01&#39;</span><span class="p">)</span>
+<span></span><span class="k">def</span> <span class="nf">exp_test</span><span class="p">():</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+    <span class="n">metrics_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">metrics_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_hebbian</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">metrics_list</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">exp_test</span><span class="p">()</span>
+<span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training Curves&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_59_0.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_59_0.png" />
-</div>
-</div>
-<p>And to make a more direct comparison, let’s just plot the first 500 epochs.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[103]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">df_or_lr_metric</span><span class="p">,</span>
-                            <span class="n">epochs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-                            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training Curves with Learning Rate of 0.01&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_61_0.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_61_0.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Learning-Rates-of-0.001,-0.0033,-0.033,-and-0.1">
-<h3>Learning Rates of 0.001, 0.0033, 0.033, and 0.1<a class="headerlink" href="#Learning-Rates-of-0.001,-0.0033,-0.033,-and-0.1" title="Permalink to this headline">¶</a></h3>
-<p>This first set will have four different learning rates, two on each side of the O’Reilly learning rate in multiplicative steps of (roughly) three. The models were trained on 100 samples for 500 epochs, the validation is calculated on 50 samples, the optimizer is stochastic gradient descent</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[99]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">str_alpha</span><span class="p">,</span> <span class="n">df_met</span> <span class="ow">in</span> <span class="n">df_alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">df_met</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training Curves with Learning Rate of </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">str_alpha</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
 <div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_0.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_0.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_1.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_1.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_2.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_2.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_3.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_63_3.png" />
-</div>
-</div>
-</div>
-<div class="section" id="Learning-Rates-of-0.33-and-1.0">
-<h3>Learning Rates of 0.33 and 1.0<a class="headerlink" href="#Learning-Rates-of-0.33-and-1.0" title="Permalink to this headline">¶</a></h3>
-<p>It seemed from the previous plots that the the larger the learning rate, the better the model performed. So let’s just plot out the training curves for 0.33 and 1.0 for completeness.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[104]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
-<span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
-<span class="n">alpha_strs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">]</span>
-<span class="n">alpha_metrics</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">alpha_str</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">alpha_strs</span><span class="p">,</span> <span class="n">alphas</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training using an alpha of </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_MODELS</span><span class="p">):</span>
-        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_with_lr</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed training for alpha of </span><span class="si">{0}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
-    <span class="n">alpha_metrics</span><span class="p">[</span><span class="n">alpha_str</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Starting training using an alpha of 0.33
-Optimization Finished! Testing Sample Accuracy: 0.466
-Optimization Finished! Testing Sample Accuracy: 0.442
-Optimization Finished! Testing Sample Accuracy: 0.438
-Optimization Finished! Testing Sample Accuracy: 0.454
-Optimization Finished! Testing Sample Accuracy: 0.452
-Optimization Finished! Testing Sample Accuracy: 0.444
-Optimization Finished! Testing Sample Accuracy: 0.448
-Optimization Finished! Testing Sample Accuracy: 0.476
-Optimization Finished! Testing Sample Accuracy: 0.432
-Optimization Finished! Testing Sample Accuracy: 0.442
-Completed training for alpha of 0.33!
+Completed epoch 1/500. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.5216       0.0000       0.7806
+    Validation:     0.2468       0.0000       0.4012
 
-Starting training using an alpha of 1.0
-Optimization Finished! Testing Sample Accuracy: 0.518
-Optimization Finished! Testing Sample Accuracy: 0.544
-Optimization Finished! Testing Sample Accuracy: 0.508
-Optimization Finished! Testing Sample Accuracy: 0.514
-Optimization Finished! Testing Sample Accuracy: 0.56
-Optimization Finished! Testing Sample Accuracy: 0.524
-Optimization Finished! Testing Sample Accuracy: 0.534
-Optimization Finished! Testing Sample Accuracy: 0.534
-Optimization Finished! Testing Sample Accuracy: 0.534
-Optimization Finished! Testing Sample Accuracy: 0.536
-Completed training for alpha of 1.0!
+[array([[ 0.11603113, -0.03034082,  0.14950062, ..., -0.03549043,
+         0.02167246, -0.14002205],
+       [ 0.14448103, -0.03981291, -0.11713367, ...,  0.06386729,
+        -0.19053303,  0.13540429],
+       [-0.09896538,  0.13133489, -0.00564499, ..., -0.17392659,
+        -0.16468258, -0.09899872],
+       ...,
+       [ 0.0606298 , -0.06557979,  0.15403122, ..., -0.1227987 ,
+         0.03715883,  0.11385176],
+       [ 0.11037663, -0.04466212, -0.0576346 , ...,  0.11619173,
+         0.03535512,  0.07481437],
+       [-0.08490437, -0.10857745, -0.00773236, ...,  0.03796524,
+        -0.0700201 , -0.0321959 ]], dtype=float32), array([[ 0.42296615,  0.5351013 ,  0.5849154 , ...,  0.1953448 ,
+         0.33634156,  0.4222027 ],
+       [ 0.4093533 ,  0.5400206 ,  0.76828825, ...,  0.17660104,
+         0.4092962 ,  0.32019964],
+       [ 0.52583885,  0.451136  ,  0.69161403, ...,  0.22146074,
+         0.40040904,  0.40700987],
+       ...,
+       [ 0.44947487,  0.5534024 ,  0.58179957, ...,  0.21181548,
+         0.33101746,  0.32818154],
+       [-0.0528136 ,  0.023195  ,  0.03963714, ..., -0.02191952,
+        -0.01215482, -0.02770721],
+       [ 0.0406255 ,  0.05638904,  0.00531779, ..., -0.00716213,
+         0.02407238,  0.01192363]], dtype=float32)]
+Completed epoch 500/500. Metrics:
+                     Loss   Sample Accuracy   Elem Accuracy
+    Epoch:          0.2644       0.0000       0.8872
+    Validation:     0.2373       0.0000       0.4019
 
-CPU times: user 51min 52s, sys: 10min 39s, total: 1h 2min 32s
-Wall time: 24min 18s
+[array([[ 1.2369571e+02,  1.3523758e+01,  2.5375116e+02, ...,
+        -8.5641931e+02,  9.1100359e+00, -2.1227798e+01],
+       [ 2.8901849e+02, -1.4265539e+01, -5.1414791e+01, ...,
+         7.0783501e+01, -6.4237421e+02,  4.2635925e+01],
+       [-1.5469206e+02,  4.9012989e+01,  1.3517978e+02, ...,
+        -1.2768906e+03, -5.7557910e+02, -2.3373791e+01],
+       ...,
+       [-1.1925593e+02, -9.9905596e+00,  4.1940698e+02, ...,
+        -7.5233838e+02, -7.4392731e+01,  1.1900630e+01],
+       [ 1.3777391e+01, -3.0503260e+01, -3.4951443e+02, ...,
+         5.3242206e+02,  5.0012573e+01,  3.7811160e-01],
+       [-4.1634544e+01, -6.9082130e+01, -6.2593298e+02, ...,
+        -1.0003271e+02, -2.6835791e+02, -8.5801735e+00]], dtype=float32), array([[-0., -0., -0., ...,  0., -0.,  0.],
+       [-0.,  0.,  0., ..., -0.,  0., -0.],
+       [ 0., -0., -0., ...,  0.,  0.,  0.],
+       ...,
+       [ 0.,  0., -0., ...,  0.,  0., -0.],
+       [-0.,  0.,  0., ..., -0., -0.,  0.],
+       [ 0.,  0.,  0., ...,  0.,  0.,  0.]], dtype=float32)]
+Optimization Finished! Testing Sample Accuracy: 0.0
 </pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[105]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">str_alpha</span><span class="p">,</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">df_met</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">met</span><span class="p">)</span>
-    <span class="c1"># Grab the exp params</span>
-    <span class="n">n_models</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">df_met</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">n_epochs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_met</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="c1"># Create a dict containing different keys and values if they differ</span>
-    <span class="c1"># from the default exp</span>
-    <span class="n">file_name_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="n">n_models</span> <span class="o">!=</span> <span class="n">N_MODELS</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;models&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_models</span>
-    <span class="k">if</span> <span class="n">n_epochs</span> <span class="o">!=</span> <span class="n">EPOCHS</span><span class="p">:</span>
-        <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_epochs</span>
-    <span class="c1"># Add the final value that is different</span>
-    <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">str_alpha</span>
-
-    <span class="c1"># Create the filename and path object</span>
-    <span class="n">file_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">file_name_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">file_name</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">val</span><span class="p">,</span> <span class="n">key</span><span class="p">])</span>
-    <span class="n">file_name</span> <span class="o">+=</span> <span class="s1">&#39;.csv&#39;</span>
-    <span class="n">lr_exp_file</span> <span class="o">=</span> <span class="n">learning_rate_dir</span> <span class="o">/</span> <span class="n">file_name</span>
-
-    <span class="c1"># Save the df if the file does not exist</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">lr_exp_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">df_met</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_exp_file</span><span class="p">))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved df to &#39;</span><span class="si">{0}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_exp_file</span><span class="p">)))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">{0}</span><span class="s2">&#39; present, skipping.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_exp_file</span><span class="p">)))</span>
-</pre></div>
-</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/learning_rates/0.33_lr.csv&#39;
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/learning_rates/1.0_lr.csv&#39;
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[106]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">str_alpha</span><span class="p">,</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">alpha_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">met</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training Curves with Learning Rate of </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">str_alpha</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_67_0.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_67_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_67_1.png" src="../_images/notebooks_0.4-Exploring-Different-Learning-Rates_67_1.png" />
+<img alt="../_images/notebooks_0.6-Hebbian-Learning_52_1.png" src="../_images/notebooks_0.6-Hebbian-Learning_52_1.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1451,7 +1294,6 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/le
 </div>
 </div>
 </div>
-</div>
 
 
            </div>
@@ -1461,10 +1303,8 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/le
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="0.4.1-Exploring-Different-Optimizers.html" class="btn btn-neutral float-right" title="0.4.1 Exploring Different Optimizers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="0.3.1-Comparing-Accuracy-Metrics.html" class="btn btn-neutral float-left" title="0.3.1 Comparing Accuracy Metrics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html" class="btn btn-neutral float-left" title="0.5 Adam Optimizer Learning Rate Tuning and Dropout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
