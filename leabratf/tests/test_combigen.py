@@ -118,5 +118,5 @@ def test_nonuniformly_sampled_labels_return_the_correct_statistics():
     # Assert the different pair-wise sums are as expected of the stats defined
     # above.
     for l, m in zip(line_stats, means):
-        assert np.isclose(means[0]*l, m, atol=slots*0.05/5)
+        assert np.isclose(means[0]*l, m, atol=slots*0.05)
 
