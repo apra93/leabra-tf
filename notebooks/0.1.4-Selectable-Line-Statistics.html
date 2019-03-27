@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.1.4 Selectable Line Statistics &mdash; Leabra Tensorflow 0+untagged.73.gc8155e2 documentation</title>
+  <title>0.1.4 Selectable Line Statistics &mdash; Leabra Tensorflow 0+untagged.73.g29f0642 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.73.gc8155e2
+                0+untagged.73.g29f0642
               </div>
             
           
@@ -941,11 +941,11 @@ Git branch : master
 <h3>Uniform Sampling<a class="headerlink" href="#Uniform-Sampling" title="Permalink to this headline">¶</a></h3>
 <p>A quick way is to create labels with one <code class="docutils literal notranslate"><span class="pre">n_sample</span></code> and <code class="docutils literal notranslate"><span class="pre">dims</span></code>, but <code class="docutils literal notranslate"><span class="pre">N</span></code> numbers of <code class="docutils literal notranslate"><span class="pre">slots</span></code>, which we can then use to compute a sum accross the <code class="docutils literal notranslate"><span class="pre">slots</span></code> axis. What we expect to see is as <code class="docutils literal notranslate"><span class="pre">N</span></code> gets large, the sums all become increasingly similar.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[154]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[170]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">slots</span> <span class="o">=</span> <span class="mi">1000</span>
+<span></span><span class="n">slots</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="c1"># Create an array containing all the sums of labels with `dims` dimensions.</span>
 <span class="n">y_tests</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -956,7 +956,7 @@ Git branch : master
 <span class="c1"># Assert the standard deviation of the means of the sums is less than 1 percent of the total</span>
 <span class="c1"># number of dimensions used.</span>
 <span class="k">assert</span> <span class="n">slots</span> <span class="o">*</span> <span class="mf">0.01</span> <span class="o">&gt;</span> <span class="n">y_tests</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">y_tests</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_tests</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -965,11 +965,7 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[[200.42]
-  [200.12]
-  [199.88]
-  [201.52]
-  [198.06]]]
+0.2630589287593186
 </pre></div></div>
 </div>
 <p>As expected they are all quite similar and do not vary much.</p>
@@ -1014,38 +1010,6 @@ Git branch : master
 </pre></div></div>
 </div>
 <p>Now let’s run a couple tests on this.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[277]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pytest</span>
-
-<span class="c1"># Test for integer n_line inputs</span>
-<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">generate_labels_n_lines_checked_inputs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_lines</span><span class="o">=</span><span class="n">line</span><span class="p">)</span>
-    <span class="c1"># Ensure the sums are exactly what we expect them to be at each combination</span>
-    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span>
-                          <span class="p">[</span><span class="n">line_1</span><span class="o">*</span><span class="n">stack</span><span class="o">*</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">line_2</span><span class="o">*</span><span class="n">stack</span><span class="o">*</span><span class="n">n_samples</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Passed 1!&#39;</span><span class="p">)</span>
-
-<span class="c1"># Test that it raises an input error on invalid inputs</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-        <span class="n">generate_labels_n_lines_checked_inputs</span><span class="p">(</span><span class="n">n_lines</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">i</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Passed 2!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Passed 1!
-Passed 2!
-</pre></div></div>
-</div>
 </div>
 </div>
 </div>
