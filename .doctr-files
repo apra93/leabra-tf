@@ -22,6 +22,21 @@
 ./_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_1.png
 ./_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_2.png
 ./_images/notebooks_0.1.3-Specifying-the-Number-of-Lines_28_3.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_20_0.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_22_0.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_28_0.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_30_1.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_30_3.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_30_5.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_32_0.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_32_1.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_32_2.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_34_0.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_34_1.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_34_2.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_36_0.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_36_1.png
+./_images/notebooks_0.1.4-Selectable-Line-Statistics_36_2.png
 ./_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_22_0.png
 ./_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_29_0.png
 ./_images/notebooks_0.2-Running-a-Basic-Model-on-Combigen_29_1.png
@@ -121,6 +136,7 @@
 ./_sources/notebooks/0.1.1-Combigen-All-True-Bug-Fix.ipynb.txt
 ./_sources/notebooks/0.1.2-Combigen-Stacks.ipynb.txt
 ./_sources/notebooks/0.1.3-Specifying-the-Number-of-Lines.ipynb.txt
+./_sources/notebooks/0.1.4-Selectable-Line-Statistics.ipynb.txt
 ./_sources/notebooks/0.2-Running-a-Basic-Model-on-Combigen.ipynb.txt
 ./_sources/notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.ipynb.txt
 ./_sources/notebooks/0.3-BP-Model-in-Tensorflow.ipynb.txt
@@ -200,6 +216,7 @@
 ./notebooks/0.1.1-Combigen-All-True-Bug-Fix.html
 ./notebooks/0.1.2-Combigen-Stacks.html
 ./notebooks/0.1.3-Specifying-the-Number-of-Lines.html
+./notebooks/0.1.4-Selectable-Line-Statistics.html
 ./notebooks/0.2-Running-a-Basic-Model-on-Combigen.html
 ./notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.html
 ./notebooks/0.3-BP-Model-in-Tensorflow.html
