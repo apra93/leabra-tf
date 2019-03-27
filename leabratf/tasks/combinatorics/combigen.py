@@ -4,11 +4,13 @@ import logging
 
 import numpy as np
 
-from leabratf.utils import as_list
+from leabratf.utils import as_list, flatten
 
 logger = logging.getLogger(__file__)
 
-def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=None):
+
+def generate_labels(n_samples=1, slots=4, size=5, dims=2, n_lines=2,
+                    line_stats=None):
     """Returns an array of labels to construct the data from.
 
     Parameters
@@ -16,8 +18,8 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=None):
     n_samples : int, optional
     	Number of samples to return.
 
-    stack : int, optional
-    	Number of labels per stack.
+    slots : int, optional
+    	Number of slots per sample.
 
     size : int, optional
     	Size of the nxn matrix to use for the task.
@@ -28,6 +30,9 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=None):
     n_lines : list or int, optional
     	Number of lines to have on each axis. If an int is provided, then it is
     	used for each axis.
+
+    line_stats : list or None, optional
+    	Statistics for sampling from the ``size x dims`` elements.
     
     Returns
     -------
@@ -38,34 +43,39 @@ def generate_labels(n_samples=1, stack=4, size=5, dims=2, n_lines=None):
     ------
     ValueError
     	If ``dims`` does not match the number of lines provided (assuming more
-    	than one number was provided for it)
+    	than one number was provided for it)    
     """
-    # Ensure this is a list
-    n_lines = as_list(n_lines) if n_lines else [1,1]
-    # If one number is passed in for n_lines and there is more than 1 dim, then
-    # assume that they should both be set to the value of n_lines.
-    if len(n_lines) == 1 and dims != 1:
-        n_lines *= dims
-    # Ensure dims and `len(n_lines)` is the same
-    if dims != len(n_lines):
-        raise ValueError('Value for dims must match len(n_lines)')
-    
+    # Ensure `n_lines` is an int
+    n_lines = int(n_lines)
+    # This will be useful going forward
+    n_idx = size * dims
+    # It must be less than the number of available indices
+    if n_lines >= n_idx:
+        raise ValueError('n_lines must be less than size * dims.')
+        
+    # Normalize `line_stats` to sum to 1 if it isn't already
+    if line_stats is not None:
+        line_stats = flatten(line_stats)
+        if sum(line_stats) != 1.0:
+            line_stats = np.array(line_stats) / sum(line_stats)
+        
     # Generate a zero array to fill with 1s
-    raw_labels = np.zeros((n_samples, stack, size, dims))
-
+    raw_labels = np.zeros((n_samples, slots, n_idx))
+    
     # Create a list of length `dims` that contains arrays with the indices which
     # to set the value to 1. Each array is of shape `n_samples` by `stack` by
     # `n_line[i]` where `i` is the line index.
-    arg_ones = [np.array([np.random.choice(range(size), line, replace=False)
-                          for _ in range(n_samples*stack)])
-                .reshape((n_samples,stack,line))
-                for line in n_lines]
+    arg_ones = np.array([np.random.choice(range(n_idx), 
+                                          n_lines, 
+                                          replace=False,
+                                          p=line_stats)
+                         for _ in range(n_samples * slots)]).reshape(
+        (n_samples, slots, n_lines))
 
     # Use the index arrays created above to set the desired indices of the
     # zero-array to be 1 for each dim in dims.
-    for dim, arg_one in enumerate(arg_ones):
-        np.put_along_axis(raw_labels[:,:,:,dim], arg_one, values=1, axis=2)
-    return raw_labels
+    np.put_along_axis(raw_labels, arg_ones, values=1, axis=2)
+    return raw_labels.reshape((n_samples, slots, size, dims), order='F')
 
 def inverse_transform_single_sample(y):
     """Turns the inputted nxn array into the nx2 array
