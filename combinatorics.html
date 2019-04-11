@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.71.g2dce2bc documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.69.g000435e documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.71.g2dce2bc
+                0+untagged.69.g000435e
               </div>
             
           
@@ -96,7 +96,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#desiderata">Desiderata</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#combigen-functions">Combigen Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-experimental-configuration">Default Experimental Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combigen-task-functions">Combigen Task Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dataset-generation">Dataset Generation</a></li>
 </ul>
 </li>
 </ul>
@@ -269,8 +271,70 @@ models.</li>
 <li><a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan, P., &amp; Zemel, R. S. (1995). Competition and multiple cause models</a></li>
 </ul>
 <!-- Markdown References --></div>
-<div class="section" id="combigen-functions">
-<h2>Combigen Functions<a class="headerlink" href="#combigen-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="default-experimental-configuration">
+<h2>Default Experimental Configuration<a class="headerlink" href="#default-experimental-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Below is the default experimental conditions used for the task. Variables
+pertaining to the task itself are likely pulled straight from the paper.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;File to store the default experimental configuration.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Combigen Task Variables</span>
+
+<span class="c1"># Number of slots in a training set</span>
+<span class="n">slots</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="c1"># Size of each axis in the input array</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1"># Number of axes to use per slot</span>
+<span class="n">dims</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Number of lines per slot </span>
+<span class="n">n_lines</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Line frequency statistics</span>
+<span class="n">line_stats</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="c1"># Data Parameters</span>
+
+<span class="c1"># Number of epochs to train for</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="c1"># Number of samples in the training set</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># Number of samples in the validation set</span>
+<span class="n">n_val</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1"># Number of samples in the testing set</span>
+<span class="n">n_test</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="c1"># Network parameters</span>
+
+<span class="c1"># Learning rate</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="c1"># Batch size</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Number of parameters in the inputs</span>
+<span class="n">n_inputs</span> <span class="o">=</span> <span class="n">slots</span> <span class="o">*</span> <span class="n">size</span> <span class="o">**</span> <span class="n">dims</span>
+<span class="c1"># Number of hidden units</span>
+<span class="n">n_hidden_1</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># Number of parameters in the labels</span>
+<span class="n">n_outputs</span> <span class="o">=</span> <span class="n">slots</span> <span class="o">*</span> <span class="n">size</span> <span class="o">*</span> <span class="n">dims</span>
+
+<span class="c1"># Training Parameters</span>
+
+<span class="c1"># Number of times to print an update</span>
+<span class="n">n_updates</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Which device to train on</span>
+<span class="n">tf_device</span> <span class="o">=</span> <span class="s1">&#39;/cpu:0&#39;</span>
+<span class="c1"># Number of models to train with</span>
+<span class="n">n_models</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># Recompute the model accuracy after this many epochs</span>
+<span class="n">n_epochs_acc</span> <span class="o">=</span> <span class="mi">25</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="combigen-task-functions">
+<h2>Combigen Task Functions<a class="headerlink" href="#combigen-task-functions" title="Permalink to this headline">¶</a></h2>
+<p>These are the lower level task generation functions used to put together the
+arrays used for inputs and labels.</p>
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.combigen.generate_labels">
 <code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">generate_labels</code><span class="sig-paren">(</span><em>n_samples=1</em>, <em>slots=4</em>, <em>size=5</em>, <em>dims=2</em>, <em>n_lines=2</em>, <em>line_stats=None</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.generate_labels" title="Permalink to this definition">¶</a></dt>
@@ -335,6 +399,152 @@ samples.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>X</strong> – The <code class="docutils literal notranslate"><span class="pre">X</span></code> that would have generated the inputted <code class="docutils literal notranslate"><span class="pre">y</span></code>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.array (nxn)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="dataset-generation">
+<h2>Dataset Generation<a class="headerlink" href="#dataset-generation" title="Permalink to this headline">¶</a></h2>
+<p>Below are the functions used to actually generate the datasets used by the
+models.</p>
+<dl class="function">
+<dt id="leabratf.tasks.combinatorics.make_datasets.generate_combigen_x_y_dataset">
+<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_combigen_x_y_dataset</code><span class="sig-paren">(</span><em>n_samples=100</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_x_y_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to generate X and y pairs for the combigen task.</p>
+<p>Convenience function that runs <code class="docutils literal notranslate"><span class="pre">cg.generate_labels</span></code> followed by
+<code class="docutils literal notranslate"><span class="pre">cg.inverse_transform</span></code> to creat the <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> pairs for the data.
+The only change is that now the default number of samples is defined as
+<code class="docutils literal notranslate"><span class="pre">n_train</span></code> from <code class="docutils literal notranslate"><span class="pre">default_configuration.py</span></code>.</p>
+<p>See documentation for <code class="docutils literal notranslate"><span class="pre">cg.generate_labels</span></code> for all passable arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to produce for X and Y.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>x</strong> (<em>np.array</em>) – The <code class="docutils literal notranslate"><span class="pre">X</span></code> that would have generated the inputted <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
+<li><strong>y</strong> (<em>np.array</em>) – Labels for the generated <code class="docutils literal notranslate"><span class="pre">X</span></code> array.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.tasks.combinatorics.make_datasets.generate_combigen_datasets">
+<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_combigen_datasets</code><span class="sig-paren">(</span><em>n_samples_train=100, n_lines_train=2, line_stats_train=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], n_samples_val=50, n_lines_val=2, line_stats_val=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], n_samples_test=500, n_lines_test=2, line_stats_test=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], *args, **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_datasets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the training, validation, and testing set data.</p>
+<p>Higher level wrapper that organizes the dataset into the expected groups of
+training, validation, and testing sets. Default values are defined in
+<code class="docutils literal notranslate"><span class="pre">default_configuration.py</span></code>.</p>
+<p>Parameters that should not be varied between the three datasets (slots,
+size, etc.) are included as star args and kwargs, while the rest that can
+be varied are given their own variables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n_samples_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the training data.</li>
+<li><strong>n_lines_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the training data.</li>
+<li><strong>line_stats_train</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
+training data.</li>
+<li><strong>n_samples_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the validation data.</li>
+<li><strong>n_lines_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the validation data.</li>
+<li><strong>line_stats_val</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
+validation data.</li>
+<li><strong>n_samples_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the testing data.</li>
+<li><strong>n_lines_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the testing data.</li>
+<li><strong>line_stats_test</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
+testing data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>train_data</strong> (<em>tuple, (X, y)</em>) – Training data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
+<li><strong>val_data</strong> (<em>tuple, (X, y)</em>) – Validation data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
+<li><strong>test_data</strong> (<em>tuple, (X, y)</em>) – Testing data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.tasks.combinatorics.make_datasets.generate_iters_inits_and_handle">
+<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_iters_inits_and_handle</code><span class="sig-paren">(</span><em>tf_datasets</em>, <em>init_ops=None</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_iters_inits_and_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the iterators, initializers, and string handler for a list of
+<a href="#id1"><span class="problematic" id="id2">``</span></a>tf.Dataset``s.</p>
+<p>In order to allow for switching between different <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>, create a
+string handler tensor that will swap out what values are in the <code class="docutils literal notranslate"><span class="pre">x</span></code> and
+<code class="docutils literal notranslate"><span class="pre">y</span></code> tensors.</p>
+<p>To change between datasets, get the string handle returned by the
+<code class="docutils literal notranslate"><span class="pre">string_handle()</span></code> method of each iterator, and then pass it into the
+placeholder tensor, <code class="docutils literal notranslate"><span class="pre">handle</span></code>, through the feed dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tf_datasets</strong> (<em>list</em>) – List of <code class="docutils literal notranslate"><span class="pre">tf.Datasets</span></code> to get the relevant iterators and initializers
+for.</li>
+<li><strong>init_ops</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of initial operations to perform. Will have initializer operations
+added to it.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>x</strong> (<em>tf.Tensor</em>) – Tensor that will contain each of the samples. Actual values will depend
+on the value of the string handler.</li>
+<li><strong>y</strong> (<em>tf.Tensor</em>) – Tensor that will contain each of the labels. Actual values will depend
+on the value of the string handler.</li>
+<li><strong>iterators</strong> (<em>list</em>) – List of dataset iterators that will be used to get the string handles.</li>
+<li><strong>handle</strong> (<em>tf.Tensor</em>) – String handler that will determine which dataset to load data from.</li>
+<li><strong>init_ops</strong> (<em>list</em>) – List of operations to run at the start of a <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> with
+initializers for each iterator.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="leabratf.tasks.combinatorics.make_datasets.generate_combigen_tf_datasets">
+<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_combigen_tf_datasets</code><span class="sig-paren">(</span><em>batch_size_train=1</em>, <em>batch_size_val=50</em>, <em>batch_size_test=500</em>, <em>init_ops=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_tf_datasets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the combigen <a href="#id3"><span class="problematic" id="id4">``</span></a>tf.Dataset``s necessary to run with tensorflow.</p>
+<p>Creates all the tensorflow nodes to properly set up the data pipeline, and
+returns the necessary variables. First generate the numpy arrays of the
+data, then convert them to <a href="#id5"><span class="problematic" id="id6">``</span></a>tf.Dataset``s with the specified batch size.</p>
+<p>Then get the iterators, initializers, and string handler, so it can be
+properly iterated through.</p>
+<p>Any extra arguments passed will be sent to <code class="docutils literal notranslate"><span class="pre">generate_combigen_datasets</span></code>,
+so see its documentation for more detail.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>batch_size_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the training datasets.</li>
+<li><strong>batch_size_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the validation datasets.</li>
+<li><strong>batch_size_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the testing datasets.</li>
+<li><strong>init_ops</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of operations to run at the start of a <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>combigen_tf_parameters</strong> – Tuple of the relevant components for the combigen task. See
+<code class="docutils literal notranslate"><span class="pre">generate_iters_inits_and_handle</span></code> for more detail.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple, (x, y, iterators, handle, init_ops)</p>
+</td>
 </tr>
 </tbody>
 </table>
