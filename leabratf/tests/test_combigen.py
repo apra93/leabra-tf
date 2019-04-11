@@ -58,7 +58,8 @@ test_arrays = list(zip(test_x, test_y))
                                     [10, 10, 10, 10]])
 def test_generate_labels_returns_correct_shapes(shapes):
     assert np.array_equal(
-        combigen.generate_labels(*shapes).shape, shapes)
+        combigen.generate_labels(*shapes).shape,
+        shapes)
 
 def test_inverse_transform():
     gen_X = combigen.inverse_transform(np.array(test_y))

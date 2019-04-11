@@ -15,7 +15,7 @@ def generate_labels(n_samples=1,
                     size=config.size,
                     dims=config.dims,
                     n_lines=config.n_lines,
-                    line_stats=config.line_stats):
+                    line_stats=None):
     """Returns an array of labels to construct the data from.
 
     Parameters
@@ -56,12 +56,20 @@ def generate_labels(n_samples=1,
     # It must be less than the number of available indices
     if n_lines >= n_idx:
         raise ValueError('n_lines must be less than size * dims.')
-        
+
+    # Get default value for line_stats if its None
+    if line_stats is None:
+        # Check if these are default conditions, ie n_idx is what ``config``
+        # would specify them to be.
+        if size == config.size and dims == config.dims:
+            line_stats = config.line_stats
+        # Otherwise, generate a uniform distribution with the appropriate length
+        else:
+            line_stats = [1] * size * dims
+
     # Normalize `line_stats` to sum to 1 if it isn't already
-    if line_stats is not None:
-        line_stats = flatten(line_stats)
-        if sum(line_stats) != 1.0:
-            line_stats = np.array(line_stats) / sum(line_stats)
+    line_stats = flatten(line_stats)
+    line_stats = np.array(line_stats) / sum(line_stats)
         
     # Generate a zero array to fill with 1s
     raw_labels = np.zeros((n_samples, slots, n_idx))
@@ -74,7 +82,7 @@ def generate_labels(n_samples=1,
                                           replace=False,
                                           p=line_stats)
                          for _ in range(n_samples * slots)]).reshape(
-        (n_samples, slots, n_lines))
+                                 (n_samples, slots, n_lines))
 
     # Use the index arrays created above to set the desired indices of the
     # zero-array to be 1 for each dim in dims.

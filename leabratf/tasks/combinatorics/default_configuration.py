@@ -12,7 +12,7 @@ size = 5
 # Number of axes to use per slot
 dims = 2
 # Number of lines per slot 
-lines = 2
+n_lines = 2
 # Line frequency statistics
 line_stats = [[1,1,1,1,1], [1,1,1,1,1]]
 

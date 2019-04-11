@@ -9,7 +9,7 @@ def test_combinatorial_default_configuration_imports():
 def test_combinatorial_default_configuration_attrs():
     import leabratf.tasks.combinatorics.default_configuration as config
     # Loop through each attribute given by dir and simply call it
-    for attr in dir(cfg):
+    for attr in dir(config):
         # Skip if its a dunder variable
         if '__' not in attr:
-            getattr(cfg, attr)    
+            getattr(config, attr)
