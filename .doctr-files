@@ -125,8 +125,12 @@
 ./_images/notebooks_0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout_66_4.png
 ./_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_33_0.png
 ./_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_39_0.png
+./_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_67_0.png
 ./_images/notebooks_0.6-Hebbian-Learning_32_0.png
 ./_images/notebooks_0.6-Hebbian-Learning_52_1.png
+./_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_32_0.png
+./_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_38_0.png
+./_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_0.png
 ./_sources/combinatorics.rst.txt
 ./_sources/commands.rst.txt
 ./_sources/data.rst.txt
@@ -148,6 +152,7 @@
 ./_sources/notebooks/0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.ipynb.txt
 ./_sources/notebooks/0.5.1-Adam-With-Non-Uniform-Task-Statistics.ipynb.txt
 ./_sources/notebooks/0.6-Hebbian-Learning.ipynb.txt
+./_sources/notebooks/0.7-Replicating-Results-with-the-Updated-Task.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/tfutils.rst.txt
 ./_sources/utils.rst.txt
@@ -229,6 +234,7 @@
 ./notebooks/0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html
 ./notebooks/0.5.1-Adam-With-Non-Uniform-Task-Statistics.html
 ./notebooks/0.6-Hebbian-Learning.html
+./notebooks/0.7-Replicating-Results-with-the-Updated-Task.html
 ./objects.inv
 ./release_schedule.html
 ./search.html

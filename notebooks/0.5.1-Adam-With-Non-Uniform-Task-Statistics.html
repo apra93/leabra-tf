@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.5.1 Adam with Non-Uniform Task Statistics &mdash; Leabra Tensorflow 0+untagged.73.gbeee5ef documentation</title>
+  <title>0.5.1 Adam with Non-Uniform Task Statistics &mdash; Leabra Tensorflow 0+untagged.73.ge7af0ec documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.73.gbeee5ef
+                0+untagged.73.ge7af0ec
               </div>
             
           
@@ -163,6 +163,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="0.6-Hebbian-Learning.html">0.6 Hebbian Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.7-Replicating-Results-with-the-Updated-Task.html">0.7 Replicating Results with the Updated Task</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Project Links</span></p>
 <ul>
@@ -1219,7 +1220,7 @@ Git branch : master
         <span class="k">if</span> <span class="n">exit</span><span class="p">:</span>
             <span class="k">break</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed &quot;Adam&quot; optimizer training with &quot;</span><span class="si">{0}</span><span class="s1">&quot; dataset!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stat</span><span class="p">))</span>
-        <span class="n">metrics_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+        <span class="n">metrics_dict</span><span class="p">[</span><span class="n">stat</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">metrics_dict</span>
 </pre></div>
 </div>
@@ -1295,7 +1296,77 @@ Git branch : master
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
-<span class="n">adam_stats_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">)</span>
+<span class="n">adam_stats_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting Adam optimizer training with &#34;uni&#34; dataset
+Encountered a KeyboardInterrupt. Starting a IPython Shell.
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34)
+Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
+IPython 7.3.0 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [1]:  quit
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continue training or skip current lr? [(Y)es/(N)o/(S)kip] Y
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Continuing training...
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Saving-the-Data">
+<h3>Saving the Data<a class="headerlink" href="#Saving-the-Data" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">train_stat_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span>  <span class="s1">&#39;new_task&#39;</span> <span class="o">/</span><span class="s1">&#39;training_set_statistics&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">train_stat_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">train_stat_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">stat_name</span><span class="p">,</span> <span class="n">stat_data</span> <span class="ow">in</span> <span class="n">adam_stats_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">stat_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0033</span><span class="p">,</span> <span class="n">train_stats</span><span class="o">=</span><span class="n">stat_name</span><span class="p">,</span>
+              <span class="n">exp_dir</span><span class="o">=</span><span class="n">train_stat_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1304,72 +1375,55 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Starting Adam optimizer training with &#34;uni&#34; dataset
-Optimization Finished! Testing Sample Accuracy: 0.3
-Optimization Finished! Testing Sample Accuracy: 0.322
-Optimization Finished! Testing Sample Accuracy: 0.338
-Optimization Finished! Testing Sample Accuracy: 0.302
-Optimization Finished! Testing Sample Accuracy: 0.342
-Optimization Finished! Testing Sample Accuracy: 0.33
-Optimization Finished! Testing Sample Accuracy: 0.348
-Optimization Finished! Testing Sample Accuracy: 0.316
-Optimization Finished! Testing Sample Accuracy: 0.302
-Optimization Finished! Testing Sample Accuracy: 0.334
-Completed &#34;Adam&#34; optimizer training with uni dataset!
-
-Starting Adam optimizer training with &#34;1e&#34; dataset
-Optimization Finished! Testing Sample Accuracy: 0.388
-Optimization Finished! Testing Sample Accuracy: 0.364
-Optimization Finished! Testing Sample Accuracy: 0.364
-Optimization Finished! Testing Sample Accuracy: 0.372
-Optimization Finished! Testing Sample Accuracy: 0.348
-Optimization Finished! Testing Sample Accuracy: 0.348
-Optimization Finished! Testing Sample Accuracy: 0.384
-Optimization Finished! Testing Sample Accuracy: 0.34
-Optimization Finished! Testing Sample Accuracy: 0.412
-Optimization Finished! Testing Sample Accuracy: 0.372
-Completed &#34;Adam&#34; optimizer training with 1e dataset!
-
-Starting Adam optimizer training with &#34;2e&#34; dataset
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/new_task/training_set_statistics/2500_epochs_0.0033_lr_adam_optimizer_0.0033_train_stats.csv&#39;
 </pre></div></div>
-</div>
-</div>
-<div class="section" id="Saving-the-Data">
-<h3>Saving the Data<a class="headerlink" href="#Saving-the-Data" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">train_stat_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span> <span class="s1">&#39;training_set_statistics&#39;</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">train_stat_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-    <span class="n">train_stat_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">stat_name</span><span class="p">,</span> <span class="n">stat_data</span> <span class="ow">in</span> <span class="n">adam_stats_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">save_data</span><span class="p">(</span><span class="n">stat_data</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.0033</span><span class="p">,</span> <span class="n">train_stats</span><span class="o">=</span><span class="n">stat_name</span><span class="p">,</span>
-              <span class="n">exp_dir</span><span class="o">=</span><span class="n">train_stat_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="Plots-for-LRs-Adam-with-the-Different-Statistics">
 <h3>Plots for LRs Adam with the Different Statistics<a class="headerlink" href="#Plots-for-LRs-Adam-with-the-Different-Statistics" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># for stat in stat_names:</span>
+    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_stats_metrics</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)],</span>
+                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with &quot;</span><span class="si">{0}</span><span class="s1">&quot; Dataset&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stat</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_67_0.png" src="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_67_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">adam_stats_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>dict_keys([&#39;0.0033&#39;])
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">stat_names</span><span class="p">:</span>
-    <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_stats_metrics</span><span class="p">[</span><span class="n">stat</span><span class="p">],</span>
-                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with &quot;</span><span class="si">{0}</span><span class="s1">&quot; Dataset&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stat</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span></span>
 </pre></div>
 </div>
 </div>

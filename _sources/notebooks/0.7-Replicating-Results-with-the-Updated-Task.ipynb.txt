@@ -4,7 +4,9 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# 0.5.1 Adam with Non-Uniform Task Statistics"
+    "# 0.7 Replicating Results with the Updated Task\n",
+    "\n",
+    "The final change made to the task shown in [nb-0.1.4](0.1.4-Selectable-Line-Statistics.ipynb) resulted in large changes to results found in previous notebooks. Let's redo the relevant previous analyses so everything is compiled in one place."
    ]
   },
   {
@@ -39,7 +41,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Wed Mar 27 2019 19:21:21 \n",
+      "Wed Apr 10 2019 18:40:29 \n",
       "\n",
       "CPython 3.6.8\n",
       "IPython 7.3.0\n",
@@ -56,7 +58,7 @@
       "processor  : x86_64\n",
       "CPU cores  : 12\n",
       "interpreter: 64bit\n",
-      "Git hash   : 011909eda0ee32591efe6f38dc3613d783e3b6c5\n",
+      "Git hash   : beee5efbe7218176d076a338e6367e2eb845aafb\n",
       "Git branch : master\n"
      ]
     }
@@ -243,7 +245,9 @@
     "# Number of axes to use per slot\n",
     "DIMS = 2\n",
     "# Number of lines per slot \n",
-    "LINES = 2"
+    "LINES = 2\n",
+    "# Line frequency statistics\n",
+    "LINE_STATS = [[1,1,1,1,1], [1,1,1,1,1]]"
    ]
   },
   {
@@ -280,27 +284,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 41,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Uniform, same as before. Not actually needed but here for \n",
-    "# comparative purposes\n",
-    "uniform = [[1,1,1,1,1], [1,1,1,1,1]]\n",
-    "# One element is twice as likely to occur as any other element \n",
-    "one_elem = [[2,1,1,1,1], [1,1,1,1,1]]\n",
-    "# Two elements are twice as likely to occur as any other element\n",
-    "two_elem = [[2,1,1,1,1], [1,1,1,1,2]]\n",
-    "# Half the elements are twice as likely to occur as the other half\n",
-    "half_elem = [[2,1,2,1,2], [1,2,1,2,1]]\n",
-    "\n",
-    "# String names for the stats\n",
-    "stat_names = ['uni', '1e', '2e', 'he']"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 10,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -309,49 +293,26 @@
     "                             slots=SLOTS, \n",
     "                             size=SIZE, \n",
     "                             dims=DIMS, \n",
-    "                             n_lines=LINES)\n",
+    "                             n_lines=LINES,\n",
+    "                             line_stats=LINE_STATS)\n",
     "X_TRAIN = cg.inverse_transform(Y_TRAIN)\n",
-    "\n",
-    "# Training Data - One elem\n",
-    "Y_TRAIN_1E = cg.generate_labels(n_samples=N_TRAIN, \n",
-    "                                slots=SLOTS, \n",
-    "                                size=SIZE, \n",
-    "                                dims=DIMS, \n",
-    "                                n_lines=LINES,\n",
-    "                                line_stats=one_elem)\n",
-    "X_TRAIN_1E = cg.inverse_transform(Y_TRAIN_1E)\n",
-    "\n",
-    "# Training Data - Two elem\n",
-    "Y_TRAIN_2E = cg.generate_labels(n_samples=N_TRAIN, \n",
-    "                                slots=SLOTS, \n",
-    "                                size=SIZE, \n",
-    "                                dims=DIMS, \n",
-    "                                n_lines=LINES,\n",
-    "                                line_stats=two_elem)\n",
-    "X_TRAIN_2E = cg.inverse_transform(Y_TRAIN_2E)\n",
-    "\n",
-    "# Training Data - Half elem\n",
-    "Y_TRAIN_HE = cg.generate_labels(n_samples=N_TRAIN, \n",
-    "                                slots=SLOTS, \n",
-    "                                size=SIZE, \n",
-    "                                dims=DIMS, \n",
-    "                                n_lines=LINES,\n",
-    "                                line_stats=half_elem)\n",
-    "X_TRAIN_HE = cg.inverse_transform(Y_TRAIN_HE)\n",
     "\n",
     "# Validation Data\n",
     "Y_VAL = cg.generate_labels(n_samples=N_VAL, \n",
     "                           slots=SLOTS,  \n",
     "                           size=SIZE, \n",
     "                           dims=DIMS, \n",
-    "                           n_lines=LINES)\n",
+    "                           n_lines=LINES,\n",
+    "                           line_stats=LINE_STATS)\n",
     "X_VAL = cg.inverse_transform(Y_VAL)\n",
+    "\n",
     "# Testing data\n",
     "Y_TEST = cg.generate_labels(n_samples=N_TEST, \n",
     "                            slots=SLOTS,  \n",
     "                            size=SIZE, \n",
     "                            dims=DIMS, \n",
-    "                            n_lines=LINES)\n",
+    "                            n_lines=LINES,\n",
+    "                            line_stats=LINE_STATS)\n",
     "X_TEST = cg.inverse_transform(Y_TEST)"
    ]
   },
@@ -364,12 +325,12 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": 11,
    "metadata": {},
    "outputs": [],
    "source": [
     "# Learning rate\n",
-    "ALPHA = 0.01\n",
+    "LR = 0.01\n",
     "# Batch size\n",
     "BATCH_SIZE = 1\n",
     "# Number of parameters in the inputs\n",
@@ -389,7 +350,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": 12,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -398,7 +359,9 @@
     "# Which device to train on\n",
     "TF_DEVICE = '/cpu:0'\n",
     "# Number of models to train with\n",
-    "N_MODELS = 10"
+    "N_MODELS = 10\n",
+    "# Recompute the model accuracy after this many epochs\n",
+    "N_EPOCHS_ACC = 25"
    ]
   },
   {
@@ -421,12 +384,12 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 13,
    "metadata": {},
    "outputs": [
     {
      "data": {
-      "image/png": "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\n",
+      "image/png": "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\n",
       "text/plain": [
        "<Figure size 432x288 with 40 Axes>"
       ]
@@ -460,7 +423,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 14,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -523,7 +486,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
+   "execution_count": 15,
    "metadata": {},
    "outputs": [
     {
@@ -555,7 +518,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 52,
+   "execution_count": 16,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -574,7 +537,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 53,
+   "execution_count": 17,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -584,15 +547,6 @@
     "    # Training dataset\n",
     "    dataset_train = tf.data.Dataset.from_tensor_slices(\n",
     "        (X_TRAIN, Y_TRAIN)).repeat().batch(BATCH_SIZE)\n",
-    "    # Training dataset - One Element\n",
-    "    dataset_train_1e = tf.data.Dataset.from_tensor_slices(\n",
-    "        (X_TRAIN_1E, Y_TRAIN_1E)).repeat().batch(BATCH_SIZE)\n",
-    "    # Training dataset - Two Element\n",
-    "    dataset_train_2e = tf.data.Dataset.from_tensor_slices(\n",
-    "        (X_TRAIN_2E, Y_TRAIN_2E)).repeat().batch(BATCH_SIZE)\n",
-    "    # Training dataset - Half element\n",
-    "    dataset_train_he = tf.data.Dataset.from_tensor_slices(\n",
-    "        (X_TRAIN_HE, Y_TRAIN_HE)).repeat().batch(BATCH_SIZE)\n",
     "    # Validation dataset\n",
     "    dataset_val = tf.data.Dataset.from_tensor_slices(\n",
     "        (X_VAL, Y_VAL)).repeat().batch(N_VAL)\n",
@@ -604,30 +558,18 @@
     "    # initializations to the `init_ops` list.\n",
     "    # Training iterator\n",
     "    train_iter = dataset_train.make_initializable_iterator()\n",
-    "    # Training iterator - One elem\n",
-    "    train_1e_iter = dataset_train_1e.make_initializable_iterator()\n",
-    "    # Training iterator - Two elem\n",
-    "    train_2e_iter = dataset_train_2e.make_initializable_iterator()\n",
-    "    # Training iterator - Half elem\n",
-    "    train_he_iter = dataset_train_he.make_initializable_iterator()\n",
     "    # Validation iterator\n",
     "    val_iter = dataset_val.make_initializable_iterator()\n",
     "    # Testing iterator\n",
     "    test_iter = dataset_test.make_initializable_iterator()\n",
     "    # Aggregate the iterators\n",
     "    iterators = [train_iter, \n",
-    "                 train_1e_iter,\n",
-    "                 train_2e_iter,\n",
-    "                 train_he_iter,\n",
     "                 val_iter, \n",
     "                 test_iter]\n",
     "\n",
     "    # Add the initiatlizations to the init opts\n",
     "    init_ops = init_ops or []\n",
     "    init_ops += [train_iter.initializer,\n",
-    "                 train_1e_iter.initializer,\n",
-    "                 train_2e_iter.initializer,\n",
-    "                 train_he_iter.initializer,\n",
     "                 val_iter.initializer, \n",
     "                 test_iter.initializer]\n",
     "    \n",
@@ -666,7 +608,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 54,
+   "execution_count": 18,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -698,7 +640,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 55,
+   "execution_count": 19,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -715,7 +657,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 56,
+   "execution_count": 20,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -741,7 +683,6 @@
     "    rounded_predictions = tf.round(predictions)\n",
     "    equal_labels_and_preds = tf.equal(rounded_predictions, labels)\n",
     "    \n",
-    "    \n",
     "    # O'Reilly Accuracy \n",
     "    axis_acc = tf.reduce_all(equal_labels_and_preds, axis=(2))\n",
     "    slot_acc = tf.reduce_all(axis_acc, axis=(2))\n",
@@ -758,17 +699,8 @@
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### Varying the Optimizer\n",
-    "\n",
-    "Let's create several different training operations."
-   ]
-  },
-  {
    "cell_type": "code",
-   "execution_count": 57,
+   "execution_count": 21,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -802,7 +734,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 58,
+   "execution_count": 22,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -822,33 +754,33 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Defining the Training Function\n",
+    "### Defining the Default Training Function\n",
     "\n",
     "Let's define a function that runs the training routine and accepts the number of epochs as the inputs."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 63,
+   "execution_count": 44,
    "metadata": {},
    "outputs": [],
    "source": [
-    "def train_stats(sess, lr=ALPHA, epochs=EPOCHS, n_updates=N_UPDATES,\n",
-    "                stats='uni', train_op=optimizer_dict['adam'], init_ops=None):\n",
+    "def train(sess, lr=LR, epochs=EPOCHS, n_updates=N_UPDATES,\n",
+    "          train_op=optimizer_dict['sgd'], init_ops=None):\n",
     "    # Ensure this is an int\n",
     "    epochs = int(epochs)\n",
     "    # Dict with the various metrics we care about\n",
     "    metrics = {'loss':[], 'el_acc':[], 'ax_acc':[], 'sl_acc':[], 'sm_acc':[], \n",
     "               'val_loss':[], 'val_el_acc':[], 'val_ax_acc':[], 'val_sl_acc':[], \n",
     "               'val_sm_acc':[]}\n",
+    "    # Dict for the ongoing accuracy metrics\n",
+    "    sample_accuracy = {}\n",
     "    # Run the initialization ops\n",
     "    init_ops = init_ops or []\n",
     "    init_ops += [tf.global_variables_initializer(), tf.local_variables_initializer()]\n",
     "    sess.run(init_ops)\n",
     "    # Define training and validation handlers\n",
-    "    *training_handles, validation_handle, testing_handle = sess.run([i.string_handle() \n",
-    "                                                                    for i in iterators])\n",
-    "    training_handle_dict = {key : handle for key, handle in zip(stat_names, training_handles)}\n",
+    "    training_handle, validation_handle, testing_handle = sess.run([i.string_handle() for i in iterators])\n",
     "    \n",
     "    for epoch in range(epochs):\n",
     "        ep_loss, ep_el_acc, ep_sl_acc, ep_ax_acc, ep_sm_acc = np.zeros([5, N_TRAIN])\n",
@@ -856,7 +788,7 @@
     "        for i in range(N_TRAIN):\n",
     "            _, ep_loss[i], ep_el_acc[i], ep_sl_acc[i], ep_ax_acc[i], ep_sm_acc[i] = sess.run(\n",
     "                [train_op, loss_op, el_acc_op, axis_acc_op, slot_acc_op, sample_acc_op],\n",
-    "                feed_dict={handle: training_handle_dict[stats], alpha_ph: lr})\n",
+    "                feed_dict={handle: training_handle, alpha_ph: lr})\n",
     "            \n",
     "        # Get means for the epoch\n",
     "        epoch_data = list(np.mean((ep_loss, ep_el_acc, ep_sl_acc, ep_ax_acc, ep_sm_acc), \n",
@@ -865,7 +797,10 @@
     "        # Calculate validation accuracy and loss\n",
     "        val_data = list(sess.run([loss_op, el_acc_op, axis_acc_op, slot_acc_op, sample_acc_op],\n",
     "                                 feed_dict={handle: validation_handle}))\n",
-    "        \n",
+    "#         # Selectively Calculate the accuracy\n",
+    "#         if not epoch % N_EPOCHS_ACC:\n",
+    "#             sample_accuracy[epoch] = sess.run(sample_acc_op, feed_dict={handle: testing_handle})\n",
+    "            \n",
     "        # Record\n",
     "        for key, value in zip(metrics.keys(), epoch_data + val_data):\n",
     "            metrics[key].append(value)\n",
@@ -882,48 +817,58 @@
     "    # Calculate accuracy for test images\n",
     "    print(\"Optimization Finished! Testing Sample Accuracy:\", sess.run(\n",
     "        sample_acc_op, feed_dict={handle: testing_handle}))\n",
-    "    return metrics"
+    "    return metrics #, sample_accuracy"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Utility Functions"
+    "## Different Learning Rates\n",
+    "\n",
+    "This section will be recreating the main results shown in [nb-0.4](0.4-Exploring-Different-Learning-Rates.ipynb)."
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Defining The Training Routine"
+    "### Defining The Experiment Function"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 68,
+   "execution_count": 47,
    "metadata": {},
    "outputs": [],
    "source": [
-    "def exp_stats(stats=stat_names, epochs=EPOCHS, train):\n",
+    "def exp_lr(lrs, epochs=EPOCHS):\n",
     "    sess = new_session()\n",
     "    metrics_dict = {}\n",
+    "    accuracy_df = pd.DataFrame(columns=lrs)\n",
     "    exit = False\n",
-    "    for stat in stats:\n",
-    "        print('Starting Adam optimizer training with \"{0}\" dataset'.format(stat))\n",
-    "        metrics = []\n",
+    "    for lr in lrs:\n",
+    "        print('Starting training with lr of {0}...'.format(str(lr)))\n",
+    "        metrics, accuracy = [], []\n",
     "        while len(metrics) < N_MODELS:\n",
     "            try:\n",
-    "                metrics.append(train_stats(sess, epochs=epochs, lr=0.0033, stats=stat,\n",
-    "                                           n_updates=0, init_ops=init_ops))\n",
+    "#                 train_metrics, accuracy_dict = train(\n",
+    "                train_metrics = train(\n",
+    "                    sess, \n",
+    "                    epochs=epochs, \n",
+    "                    lr=lr, \n",
+    "                    n_updates=0, \n",
+    "                    init_ops=init_ops)\n",
+    "                metrics.append(train_metrics)\n",
+    "#                 accuracy_df[lr] = pd.Series(accuracy_dict.values(), index=accuracy_dict.keys())\n",
     "\n",
     "            except KeyboardInterrupt:\n",
     "                print('Encountered a KeyboardInterrupt. Starting a IPython Shell.')\n",
     "                ipy.embed()\n",
     "                inp = ''\n",
-    "                while inp.lower() not in ['y', 'n', 's']:\n",
-    "                    inp = input(\"Continue training or skip current lr? [(Y)es/(N)o/(S)kip]\")\n",
-    "                if inp.lower() == 'y':\n",
+    "                while inp.lower() not in ['c', 'e', 's']:\n",
+    "                    inp = input(\"Continue training, exit, or skip current lr? [(C)ontinue/(E)xit/(S)kip]\")\n",
+    "                if inp.lower() == 'c':\n",
     "                    print('Continuing training...')\n",
     "                    continue\n",
     "                elif inp.lower() == 's':\n",
@@ -933,27 +878,62 @@
     "                    print('Exiting')\n",
     "                    exit = True\n",
     "                    break\n",
-    "        if exit:\n",
-    "            break\n",
-    "        print('Completed \"Adam\" optimizer training with \"{0}\" dataset!\\n'.format(stat))\n",
-    "        metrics_dict[stat] = pd.DataFrame(metrics)\n",
-    "    return metrics_dict"
+    "        if exit: break\n",
+    "        print('Completed training for lr of {0}'.format(str(lr)))\n",
+    "        metrics_dict[lr] = pd.DataFrame(metrics)\n",
+    "        \n",
+    "    return metrics_dict#, accuracy_df"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Save Data Routine"
+    "### Getting the Metrics"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 61,
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Starting training with lr of 0.01...\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.126\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.116\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.102\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.092\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.094\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.126\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.104\n",
+      "Optimization Finished! Testing Sample Accuracy: 0.082\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "lrs = [0.01]\n",
+    "# lr_metrics, lr_accuracy_df = exp_lr(lrs=lrs, epochs=5*EPOCHS)\n",
+    "lr_metrics = exp_lr(lrs=lrs, epochs=5*EPOCHS)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Saving the Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
    "metadata": {},
    "outputs": [],
    "source": [
-    "def save_data(metrics, n_models=None, lr=ALPHA, n_train=N_TRAIN, n_epochs=None, \n",
+    "def save_data(metrics, n_models=None, lr=LR, n_train=N_TRAIN, n_epochs=None, \n",
     "              optimizer='sgd', exp_dir=DIR_DATA_PROC, dryrun=False, train_stats='uni'):\n",
     "    df_metrics = metrics if isinstance(metrics, pd.DataFrame) else pd.DataFrame(metrics)\n",
     "    # Grab the exp params\n",
@@ -1004,112 +984,58 @@
    ]
   },
   {
-   "cell_type": "markdown",
+   "cell_type": "code",
+   "execution_count": null,
    "metadata": {},
+   "outputs": [],
    "source": [
-    "## Adam Optimizer with the Different Training Sets"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### Getting the Metrics"
+    "lr_dir = DIR_DATA_PROC /  'new_task' /'learning_rates'\n",
+    "assert lr_dir.exists()"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Starting Adam optimizer training with \"uni\" dataset\n",
-      "Encountered a KeyboardInterrupt. Starting a IPython Shell.\n",
-      "Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) \n",
-      "Type 'copyright', 'credits' or 'license' for more information\n",
-      "IPython 7.3.0 -- An enhanced Interactive Python. Type '?' for help.\n",
-      "\n"
-     ]
-    },
-    {
-     "name": "stdin",
-     "output_type": "stream",
-     "text": [
-      "In [1]:  quit\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "\n"
-     ]
-    },
-    {
-     "name": "stdin",
-     "output_type": "stream",
-     "text": [
-      "Continue training or skip current lr? [(Y)es/(N)o/(S)kip] Y\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Continuing training...\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
-    "%%time\n",
-    "adam_stats_metrics = exp_stats(epochs=5*EPOCHS)"
+    "for lr_val, lr_data in lr_metrics.items():\n",
+    "    save_data(lr_data, lr=lr_val, exp_dir=lr_dir, dryrun=True)"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Saving the Data\n"
+    "### Reading in the Rest of the Data"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 76,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
-    "train_stat_dir = DIR_DATA_PROC /  'new_task' /'training_set_statistics'\n",
-    "if not train_stat_dir.exists():\n",
-    "    train_stat_dir.mkdir()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 78,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Saved df to '/home/abdullah_rashed/work/projects/leabra-tf/data/processed/new_task/training_set_statistics/2500_epochs_0.0033_lr_adam_optimizer_0.0033_train_stats.csv'\n"
-     ]
-    }
-   ],
-   "source": [
-    "for stat_name, stat_data in adam_stats_metrics.items():\n",
-    "    save_data(stat_data, optimizer='Adam', lr=0.0033, train_stats=stat_name,\n",
-    "              exp_dir=train_stat_dir, dryrun=False)"
+    "for file in lr_dir.iterdir():\n",
+    "    file_name = file.stem\n",
+    "    # Split the string by underscores\n",
+    "    file_split_name = file_name.split('_')\n",
+    "    # Grab the key from the element thats one before the one we're after\n",
+    "    try:\n",
+    "        lr_key = file_split_name[file_split_name.index('lr')-1]\n",
+    "    # The isnt in the name, which means its a default \n",
+    "    except ValueError:\n",
+    "        lr_key = 0.01\n",
+    "    # Set the key value\n",
+    "    if lr_key not in lr_metrics.keys():\n",
+    "        lr_metrics[str(lr_key)] = pd.read_csv(str(file), index_col=0)"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "### Plots for LRs Adam with the Different Statistics"
+    "### Plots for SGD with the Different Learning Rates"
    ]
   },
   {
@@ -1129,30 +1055,77 @@
     }
    ],
    "source": [
-    "# for stat in stat_names:\n",
-    "    plt_metrics.plot_df_metrics(adam_stats_metrics[str(lr)], \n",
-    "                                title='Adam Training Curves with \"{0}\" Dataset'.format(stat))\n",
+    "for lr in lr_metrics.keys().sorted():\n",
+    "    plt_metrics.plot_df_metrics(lr_metrics[str(lr)], \n",
+    "                                title='Training Curves with lr {}'.format(str(lr)))\n",
     "    plt.show()"
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": 72,
+   "cell_type": "markdown",
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "dict_keys(['0.0033'])"
-      ]
-     },
-     "execution_count": 72,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
    "source": [
-    "adam_stats_metrics.keys()"
+    "## Adam Optimizer Learning Rates\n",
+    "\n",
+    "This section will recreate the main results shown in [nb-0.5](0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.ipynb)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Reading in the Adam LR Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# The data was saved using an incorrect naming scheme and was put in the 'different_optimizers' dir\n",
+    "adam_lr_dir = DIR_DATA_PROC /  'new_task' / 'different_optimizers'\n",
+    "assert adam_lr_dir.exists()\n",
+    "adam_lr_metrics = {}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for file in adam_lr_dir.iterdir():\n",
+    "    file_name = file.stem\n",
+    "    # Split the string by underscores\n",
+    "    file_split_name = file_name.split('_')\n",
+    "    # Grab the key from the element thats one before the one we're after\n",
+    "    try:\n",
+    "        adam_lr_key = file_split_name[file_split_name.index('lr')-1]\n",
+    "    # The isnt in the name, which means its a default \n",
+    "    except ValueError:\n",
+    "        adam_lr_key = 0.01\n",
+    "    # Set the key value\n",
+    "    adam_lr_metrics[str(adam_lr_key)] = pd.read_csv(str(file), index_col=0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Adam With different Learning Rates"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for lr in adam_lr_metrics.keys().sorted():\n",
+    "    plt_metrics.plot_df_metrics(adam_lr_metrics[str(lr)], \n",
+    "                                title='Adam Training Curves with lr {}'.format(str(lr)))\n",
+    "    plt.show()"
    ]
   },
   {
