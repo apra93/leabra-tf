@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.7 Replicating Results with the Updated Task &mdash; Leabra Tensorflow 0+untagged.73.ge7af0ec documentation</title>
+  <title>0.7 Replicating Results with the Updated Task &mdash; Leabra Tensorflow 0+untagged.73.gecbf775 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.73.ge7af0ec
+                0+untagged.73.gecbf775
               </div>
             
           
@@ -1177,7 +1177,7 @@ Git branch : master
 <div class="section" id="Getting-the-Metrics">
 <h3>Getting the Metrics<a class="headerlink" href="#Getting-the-Metrics" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1202,13 +1202,18 @@ Optimization Finished! Testing Sample Accuracy: 0.094
 Optimization Finished! Testing Sample Accuracy: 0.126
 Optimization Finished! Testing Sample Accuracy: 0.104
 Optimization Finished! Testing Sample Accuracy: 0.082
+Optimization Finished! Testing Sample Accuracy: 0.106
+Optimization Finished! Testing Sample Accuracy: 0.094
+Completed training for lr of 0.01
+CPU times: user 2h 48min 9s, sys: 28min 46s, total: 3h 16min 55s
+Wall time: 1h 11min 33s
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="Saving-the-Data">
 <h3>Saving the Data<a class="headerlink" href="#Saving-the-Data" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1232,7 +1237,7 @@ Optimization Finished! Testing Sample Accuracy: 0.082
     <span class="k">if</span> <span class="n">n_train</span> <span class="o">!=</span> <span class="n">N_TRAIN</span><span class="p">:</span>
         <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;ntrain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_train</span><span class="p">)</span>
     <span class="c1"># If we used a different learning rate</span>
-    <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ALPHA</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="o">!=</span> <span class="n">LR</span><span class="p">:</span>
         <span class="n">file_name_dict</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
     <span class="c1"># If we used a different optimizer</span>
     <span class="k">if</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;sgd&#39;</span><span class="p">:</span>
@@ -1264,7 +1269,7 @@ Optimization Finished! Testing Sample Accuracy: 0.082
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1273,25 +1278,34 @@ Optimization Finished! Testing Sample Accuracy: 0.082
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">for</span> <span class="n">lr_val</span><span class="p">,</span> <span class="n">lr_data</span> <span class="ow">in</span> <span class="n">lr_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">save_data</span><span class="p">(</span><span class="n">lr_data</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_val</span><span class="p">,</span> <span class="n">exp_dir</span><span class="o">=</span><span class="n">lr_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">save_data</span><span class="p">(</span><span class="n">lr_data</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr_val</span><span class="p">,</span> <span class="n">exp_dir</span><span class="o">=</span><span class="n">lr_dir</span><span class="p">,</span> <span class="n">dryrun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/new_task/learning_rates/2500_epochs.csv&#39;
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="Reading-in-the-Rest-of-the-Data">
 <h3>Reading in the Rest of the Data<a class="headerlink" href="#Reading-in-the-Rest-of-the-Data" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">lr_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+<span></span><span class="n">lr_metrics</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">lr_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
     <span class="n">file_name</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">stem</span>
     <span class="c1"># Split the string by underscores</span>
     <span class="n">file_split_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
@@ -1311,22 +1325,43 @@ Optimization Finished! Testing Sample Accuracy: 0.082
 <div class="section" id="Plots-for-SGD-with-the-Different-Learning-Rates">
 <h3>Plots for SGD with the Different Learning Rates<a class="headerlink" href="#Plots-for-SGD-with-the-Different-Learning-Rates" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lr_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="o">.</span><span class="n">sorted</span><span class="p">():</span>
+<span></span><span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span> <span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">lr_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()]):</span>
     <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">lr_metrics</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)],</span>
                                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training Curves with lr </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_0.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_1.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_2.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_3.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_3.png" />
 </div>
 </div>
 </div>
@@ -1337,7 +1372,7 @@ Optimization Finished! Testing Sample Accuracy: 0.082
 <div class="section" id="Reading-in-the-Adam-LR-Data">
 <h3>Reading in the Adam LR Data<a class="headerlink" href="#Reading-in-the-Adam-LR-Data" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1349,7 +1384,7 @@ Optimization Finished! Testing Sample Accuracy: 0.082
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1371,16 +1406,51 @@ Optimization Finished! Testing Sample Accuracy: 0.082
 </div>
 <div class="section" id="Adam-With-different-Learning-Rates">
 <h3>Adam With different Learning Rates<a class="headerlink" href="#Adam-With-different-Learning-Rates" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="n">adam_lr_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="o">.</span><span class="n">sorted</span><span class="p">():</span>
+<span></span><span class="k">for</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">adam_lr_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
     <span class="n">plt_metrics</span><span class="o">.</span><span class="n">plot_df_metrics</span><span class="p">(</span><span class="n">adam_lr_metrics</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)],</span>
                                 <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adam Training Curves with lr </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr</span><span class="p">)))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_0.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_1.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_2.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_3.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_3.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_4.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_4.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
