@@ -1,4 +1,5 @@
 """File to store the default experimental configuration."""
+
 import logging
 
 logger = logging.getLogger(__name__)
