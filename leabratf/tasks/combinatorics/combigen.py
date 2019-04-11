@@ -4,13 +4,18 @@ import logging
 
 import numpy as np
 
+import leabratf.tasks.combinatorics.default_configuration as config
 from leabratf.utils import as_list, flatten
 
 logger = logging.getLogger(__file__)
 
 
-def generate_labels(n_samples=1, slots=4, size=5, dims=2, n_lines=2,
-                    line_stats=None):
+def generate_labels(n_samples=1,
+                    slots=config.slots,
+                    size=config.size,
+                    dims=config.dims,
+                    n_lines=config.n_lines,
+                    line_stats=config.line_stats):
     """Returns an array of labels to construct the data from.
 
     Parameters
@@ -27,9 +32,8 @@ def generate_labels(n_samples=1, slots=4, size=5, dims=2, n_lines=2,
     dims : int, optional
     	Number of dimensions for the task.
 
-    n_lines : list or int, optional
-    	Number of lines to have on each axis. If an int is provided, then it is
-    	used for each axis.
+    n_lines : int, optional
+    	Total number of lines to have per sample.
 
     line_stats : list or None, optional
     	Statistics for sampling from the ``size x dims`` elements.
