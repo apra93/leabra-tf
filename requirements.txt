@@ -8,3 +8,4 @@ seaborn
 watermark
 tqdm
 tensorflow
+pstar
