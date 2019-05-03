@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.64.g56294bc documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.63.ga5c4bdc documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.64.g56294bc
+                0+untagged.63.ga5c4bdc
               </div>
             
           
@@ -231,44 +231,44 @@ paper.</p>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Combinatorial structure is implemented by having <em>four</em> different input-output
-slots.</li>
-<li>The output mapping for a given slot depends only on the corresponding input
+<li><p>Combinatorial structure is implemented by having <em>four</em> different input-output
+slots.</p></li>
+<li><p>The output mapping for a given slot depends only on the corresponding input
 pattern for that slot (see <a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, 1993</a>; <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle &amp; Cottrell, 1996</a>,
-for similar tasks).</li>
-<li>Each slow has a vocabulary of input-output mappings.</li>
-<li>Input vocabulary consists of all 45 combinations of 5 horizontal and 5
-vertical bars in a 5x5 grid.</li>
-<li>Output mapping is a localist identification of the two input bars (similar to
+for similar tasks).</p></li>
+<li><p>Each slow has a vocabulary of input-output mappings.</p></li>
+<li><p>Input vocabulary consists of all 45 combinations of 5 horizontal and 5
+vertical bars in a 5x5 grid.</p></li>
+<li><p>Output mapping is a localist identification of the two input bars (similar to
 bar tasks used by <a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02331346">Foldiak, 1990</a>; <a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51">Saund, 1995</a>; <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, 1993</a>;
-<a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan &amp; Zemel, 1995</a>).</li>
-<li>Total number of distinct input patterns is approximately 4.1 million.</li>
-<li>Models are intended only to train on 100 randomly constructed examples, and
-then test on an arbitraily large testing set (500 in the paper).</li>
-<li>Error criterion is scored such that each output unit has to be on the right
-side of 0.5 according to the correct target pattern.</li>
+<a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan &amp; Zemel, 1995</a>).</p></li>
+<li><p>Total number of distinct input patterns is approximately 4.1 million.</p></li>
+<li><p>Models are intended only to train on 100 randomly constructed examples, and
+then test on an arbitraily large testing set (500 in the paper).</p></li>
+<li><p>Error criterion is scored such that each output unit has to be on the right
+side of 0.5 according to the correct target pattern.</p></li>
 </ul>
 </div>
 <div class="section" id="desiderata">
 <h2>Desiderata<a class="headerlink" href="#desiderata" title="Permalink to this headline">¶</a></h2>
 <p>The paper described the task as having several desiderata.</p>
 <ul class="simple">
-<li>It has a simple combinatorial structure that allows for novel inputs to be
-composed from a small vocabulary of features.</li>
-<li>There is some interesting substructure to the vocabulary mapping at each slot.</li>
-<li>The structure of the task should be apparent in the weight patterns of the
-models.</li>
+<li><p>It has a simple combinatorial structure that allows for novel inputs to be
+composed from a small vocabulary of features.</p></li>
+<li><p>There is some interesting substructure to the vocabulary mapping at each slot.</p></li>
+<li><p>The structure of the task should be apparent in the weight patterns of the
+models.</p></li>
 </ul>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, O. (1993). Generativity and systematicity in neural network combinatorial learning</a></li>
-<li><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle, D. C., &amp; Cottrell, G. W. (1996). In search of articulated attractors</a></li>
-<li><a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02331346">F¨oldi´ak, P. (1990). Forming sparse representations by local anti-Hebbian learning</a></li>
-<li><a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51">Saund, E. (1995). A multiple cause mixture model for unsupervised learning</a></li>
-<li><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, R. S. (1993). A minimum description length framework for unsupervised learning</a></li>
-<li><a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan, P., &amp; Zemel, R. S. (1995). Competition and multiple cause models</a></li>
+<li><p><a class="reference external" href="https://scholar.colorado.edu/csci_techreports/647/">Brousse, O. (1993). Generativity and systematicity in neural network combinatorial learning</a></p></li>
+<li><p><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.51.2295">Noelle, D. C., &amp; Cottrell, G. W. (1996). In search of articulated attractors</a></p></li>
+<li><p><a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02331346">F¨oldi´ak, P. (1990). Forming sparse representations by local anti-Hebbian learning</a></p></li>
+<li><p><a class="reference external" href="https://www.mitpressjournals.org/doi/10.1162/neco.1995.7.1.51">Saund, E. (1995). A multiple cause mixture model for unsupervised learning</a></p></li>
+<li><p><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.53.6050">Zemel, R. S. (1993). A minimum description length framework for unsupervised learning</a></p></li>
+<li><p><a class="reference external" href="http://www.gatsby.ucl.ac.uk/~dayan/papers/cdz95.pdf">Dayan, P., &amp; Zemel, R. S. (1995). Competition and multiple cause models</a></p></li>
 </ul>
 <!-- Markdown References --></div>
 <div class="section" id="default-experimental-configuration">
@@ -276,8 +276,9 @@ models.</li>
 <p>Below is the default experimental conditions used for the task. Variables
 pertaining to the task itself are likely pulled straight from the paper.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;File to store the default experimental configuration.&quot;&quot;&quot;</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">ModuleType</span>
+<span class="kn">from</span> <span class="nn">pstar</span> <span class="kn">import</span> <span class="n">pdict</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -304,6 +305,8 @@ pertaining to the task itself are likely pulled straight from the paper.</p>
 <span class="n">n_val</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="c1"># Number of samples in the testing set</span>
 <span class="n">n_test</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="c1"># General variable that is meant to change based on the context</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="n">n_train</span>
 
 <span class="c1"># Network parameters</span>
 
@@ -328,6 +331,53 @@ pertaining to the task itself are likely pulled straight from the paper.</p>
 <span class="n">n_models</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="c1"># Recompute the model accuracy after this many epochs</span>
 <span class="n">n_epochs_acc</span> <span class="o">=</span> <span class="mi">25</span>
+
+<span class="c1"># Meta data variables</span>
+<span class="c1"># Config name</span>
+<span class="n">_name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="c1"># This is a configuration dict</span>
+<span class="n">_config</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">default_config</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function that turns all the values defined above into a dictionary.</span>
+
+<span class="sd">    Grabs all the values in the ``globals`` dictionary and adds them to the</span>
+<span class="sd">    returned dictionary if it is a relevant variable.</span>
+
+<span class="sd">    The function also accepts keyword arguments that will be added to the config</span>
+<span class="sd">    at the end, overwriting the existing value, or adding the key/value pair.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    default_config : pdict</span>
+<span class="sd">    	Default configuration as defined by in the default_configuration.py file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Configuration in a dictionary format</span>
+    <span class="n">locals_dict</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span>
+    <span class="c1"># Empty dict we will fill</span>
+    <span class="n">_dict</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">()</span>
+
+    <span class="c1"># Remove all the non configuration </span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">locals_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Skip if the key is a dunder key</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="c1"># Skip if the value is a module</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">ModuleType</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="c1"># Skip if the value is a callable (presumably a function)</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="c1"># Skip if the value is the logger</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Passed all skips, add to the dict</span>
+        <span class="n">_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="c1"># Add any kwargs to the dictionary, overwriting any conflicting values</span>
+    <span class="n">_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_dict</span>
 </pre></div>
 </div>
 </div>
@@ -339,32 +389,28 @@ arrays used for inputs and labels.</p>
 <dt id="leabratf.tasks.combinatorics.combigen.generate_labels">
 <code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">generate_labels</code><span class="sig-paren">(</span><em>n_samples=1</em>, <em>slots=4</em>, <em>size=5</em>, <em>dims=2</em>, <em>n_lines=2</em>, <em>line_stats=None</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.generate_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an array of labels to construct the data from.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>n_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return.</li>
-<li><strong>slots</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of slots per sample.</li>
-<li><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the nxn matrix to use for the task.</li>
-<li><strong>dims</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of dimensions for the task.</li>
-<li><strong>n_lines</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample.</li>
-<li><strong>line_stats</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return.</p></li>
+<li><p><strong>slots</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of slots per sample.</p></li>
+<li><p><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of the nxn matrix to use for the task.</p></li>
+<li><p><strong>dims</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of dimensions for the task.</p></li>
+<li><p><strong>n_lines</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample.</p></li>
+<li><p><strong>line_stats</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>labels</strong> – The resulting task labels.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">np.ndarray of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">stack,</span> <span class="pre">size,</span> <span class="pre">dims)</span></code></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If <code class="docutils literal notranslate"><span class="pre">dims</span></code> does not match the number of lines provided (assuming more
-than one number was provided for it)</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>labels</strong> – The resulting task labels.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">stack,</span> <span class="pre">size,</span> <span class="pre">dims)</span></code></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">dims</span></code> does not match the number of lines provided (assuming more
+    than one number was provided for it)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -372,36 +418,34 @@ than one number was provided for it)</p>
 <code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>Y</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for first pass implementation that accounts for multiple
 samples.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Y</strong> (<em>array-like</em>) – Array of samples</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>X</strong> – Array of samples transformed from <code class="docutils literal notranslate"><span class="pre">Y</span></code> to <code class="docutils literal notranslate"><span class="pre">X</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.ndarray</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>Y</strong> (<em>array-like</em>) – Array of samples</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>X</strong> – Array of samples transformed from <code class="docutils literal notranslate"><span class="pre">Y</span></code> to <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.combigen.inverse_transform_single_sample">
 <code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">inverse_transform_single_sample</code><span class="sig-paren">(</span><em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.inverse_transform_single_sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turns the inputted nxn array into the nx2 array</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>y</strong> (<em>array-like</em><em> (</em><em>nx2</em><em>)</em>) – The the label we are transforming.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>X</strong> – The <code class="docutils literal notranslate"><span class="pre">X</span></code> that would have generated the inputted <code class="docutils literal notranslate"><span class="pre">y</span></code>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.array (nxn)</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>y</strong> (<em>array-like</em><em> (</em><em>nx2</em><em>)</em>) – The the label we are transforming.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>X</strong> – The <code class="docutils literal notranslate"><span class="pre">X</span></code> that would have generated the inputted <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array (nxn)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -418,20 +462,18 @@ models.</p>
 The only change is that now the default number of samples is defined as
 <code class="docutils literal notranslate"><span class="pre">n_train</span></code> from <code class="docutils literal notranslate"><span class="pre">default_configuration.py</span></code>.</p>
 <p>See documentation for <code class="docutils literal notranslate"><span class="pre">cg.generate_labels</span></code> for all passable arguments.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to produce for X and Y.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><strong>x</strong> (<em>np.array</em>) – The <code class="docutils literal notranslate"><span class="pre">X</span></code> that would have generated the inputted <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
-<li><strong>y</strong> (<em>np.array</em>) – Labels for the generated <code class="docutils literal notranslate"><span class="pre">X</span></code> array.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to produce for X and Y.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>np.array</em>) – The <code class="docutils literal notranslate"><span class="pre">X</span></code> that would have generated the inputted <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p><strong>y</strong> (<em>np.array</em>) – Labels for the generated <code class="docutils literal notranslate"><span class="pre">X</span></code> array.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -444,36 +486,32 @@ training, validation, and testing sets. Default values are defined in
 <p>Parameters that should not be varied between the three datasets (slots,
 size, etc.) are included as star args and kwargs, while the rest that can
 be varied are given their own variables.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>n_samples_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the training data.</li>
-<li><strong>n_lines_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the training data.</li>
-<li><strong>line_stats_train</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
-training data.</li>
-<li><strong>n_samples_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the validation data.</li>
-<li><strong>n_lines_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the validation data.</li>
-<li><strong>line_stats_val</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
-validation data.</li>
-<li><strong>n_samples_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the testing data.</li>
-<li><strong>n_lines_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the testing data.</li>
-<li><strong>line_stats_test</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
-testing data.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_samples_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the training data.</p></li>
+<li><p><strong>n_lines_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the training data.</p></li>
+<li><p><strong>line_stats_train</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
+training data.</p></li>
+<li><p><strong>n_samples_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the validation data.</p></li>
+<li><p><strong>n_lines_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the validation data.</p></li>
+<li><p><strong>line_stats_val</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
+validation data.</p></li>
+<li><p><strong>n_samples_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples to return in the testing data.</p></li>
+<li><p><strong>n_lines_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Total number of lines to have per sample in the testing data.</p></li>
+<li><p><strong>line_stats_test</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Statistics for sampling from the <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">x</span> <span class="pre">dims</span></code> elements for the
+testing data.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>train_data</strong> (<em>tuple, (X, y)</em>) – Training data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
-<li><strong>val_data</strong> (<em>tuple, (X, y)</em>) – Validation data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
-<li><strong>test_data</strong> (<em>tuple, (X, y)</em>) – Testing data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>train_data</strong> (<em>tuple, (X, y)</em>) – Training data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p><strong>val_data</strong> (<em>tuple, (X, y)</em>) – Validation data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p><strong>test_data</strong> (<em>tuple, (X, y)</em>) – Testing data with <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -487,33 +525,29 @@ string handler tensor that will swap out what values are in the <code class="doc
 <p>To change between datasets, get the string handle returned by the
 <code class="docutils literal notranslate"><span class="pre">string_handle()</span></code> method of each iterator, and then pass it into the
 placeholder tensor, <code class="docutils literal notranslate"><span class="pre">handle</span></code>, through the feed dict.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>tf_datasets</strong> (<em>list</em>) – List of <code class="docutils literal notranslate"><span class="pre">tf.Datasets</span></code> to get the relevant iterators and initializers
-for.</li>
-<li><strong>init_ops</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of initial operations to perform. Will have initializer operations
-added to it.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tf_datasets</strong> (<em>list</em>) – List of <code class="docutils literal notranslate"><span class="pre">tf.Datasets</span></code> to get the relevant iterators and initializers
+for.</p></li>
+<li><p><strong>init_ops</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of initial operations to perform. Will have initializer operations
+added to it.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>x</strong> (<em>tf.Tensor</em>) – Tensor that will contain each of the samples. Actual values will depend
-on the value of the string handler.</li>
-<li><strong>y</strong> (<em>tf.Tensor</em>) – Tensor that will contain each of the labels. Actual values will depend
-on the value of the string handler.</li>
-<li><strong>iterators</strong> (<em>list</em>) – List of dataset iterators that will be used to get the string handles.</li>
-<li><strong>handle</strong> (<em>tf.Tensor</em>) – String handler that will determine which dataset to load data from.</li>
-<li><strong>init_ops</strong> (<em>list</em>) – List of operations to run at the start of a <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> with
-initializers for each iterator.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>tf.Tensor</em>) – Tensor that will contain each of the samples. Actual values will depend
+on the value of the string handler.</p></li>
+<li><p><strong>y</strong> (<em>tf.Tensor</em>) – Tensor that will contain each of the labels. Actual values will depend
+on the value of the string handler.</p></li>
+<li><p><strong>iterators</strong> (<em>list</em>) – List of dataset iterators that will be used to get the string handles.</p></li>
+<li><p><strong>handle</strong> (<em>tf.Tensor</em>) – String handler that will determine which dataset to load data from.</p></li>
+<li><p><strong>init_ops</strong> (<em>list</em>) – List of operations to run at the start of a <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> with
+initializers for each iterator.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -527,27 +561,23 @@ data, then convert them to <a href="#id5"><span class="problematic" id="id6">``<
 properly iterated through.</p>
 <p>Any extra arguments passed will be sent to <code class="docutils literal notranslate"><span class="pre">generate_combigen_datasets</span></code>,
 so see its documentation for more detail.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>batch_size_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the training datasets.</li>
-<li><strong>batch_size_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the validation datasets.</li>
-<li><strong>batch_size_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the testing datasets.</li>
-<li><strong>init_ops</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of operations to run at the start of a <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batch_size_train</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the training datasets.</p></li>
+<li><p><strong>batch_size_val</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the validation datasets.</p></li>
+<li><p><strong>batch_size_test</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size to use for the testing datasets.</p></li>
+<li><p><strong>init_ops</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of operations to run at the start of a <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>combigen_tf_parameters</strong> – Tuple of the relevant components for the combigen task. See
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>combigen_tf_parameters</strong> – Tuple of the relevant components for the combigen task. See
 <code class="docutils literal notranslate"><span class="pre">generate_iters_inits_and_handle</span></code> for more detail.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple, (x, y, iterators, handle, init_ops)</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple, (x, y, iterators, handle, init_ops)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

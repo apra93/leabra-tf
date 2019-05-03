@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Release Schedule &mdash; Leabra Tensorflow 0+untagged.64.g56294bc documentation</title>
+  <title>Release Schedule &mdash; Leabra Tensorflow 0+untagged.63.ga5c4bdc documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.64.g56294bc
+                0+untagged.63.ga5c4bdc
               </div>
             
           
@@ -230,95 +230,95 @@ the various release milestones.</p>
 <div class="section" id="release">
 <h2>0.0 Release<a class="headerlink" href="#release" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Establish a baseline using other canonical deep networks (DNs).</li>
-<li>Establish a baseline on the task using <code class="docutils literal notranslate"><span class="pre">leabra7</span></code>.</li>
-<li>Compare against results shown in O’Reilly’s paper.</li>
-<li>Run the same DNs on TPUs, and establish baselines between GPU and
-TPU performance.</li>
-<li>Pull out competitive inhibition learning component from leabra and add it to
-the canonical DNs.</li>
-<li>Pull out hebbian learning component from leabra and add it to the canonical
-DNs.</li>
-<li>Compare modified DNs (MDNs) to results shown in the O’Reily paper (perhaps
-strip leabra of each component to make clear comparisons).</li>
-<li>Find a way to reference other notebooks (analyses) like in a paper.</li>
-<li>Recreate results in TPU if they weren’t already.</li>
-<li>Implement competitive inhibition and hebbian learning in DNs in GPUs and TPUs.</li>
-<li>Assess performance compared to leabra.</li>
-<li>Mass-parameter search on the TPUs to compare with leabra.</li>
-<li>Revaluate different versioning packages and write down reasoning for the
-choice.</li>
+<li><p>Establish a baseline using other canonical deep networks (DNs).</p></li>
+<li><p>Establish a baseline on the task using <code class="docutils literal notranslate"><span class="pre">leabra7</span></code>.</p></li>
+<li><p>Compare against results shown in O’Reilly’s paper.</p></li>
+<li><p>Run the same DNs on TPUs, and establish baselines between GPU and
+TPU performance.</p></li>
+<li><p>Pull out competitive inhibition learning component from leabra and add it to
+the canonical DNs.</p></li>
+<li><p>Pull out hebbian learning component from leabra and add it to the canonical
+DNs.</p></li>
+<li><p>Compare modified DNs (MDNs) to results shown in the O’Reily paper (perhaps
+strip leabra of each component to make clear comparisons).</p></li>
+<li><p>Find a way to reference other notebooks (analyses) like in a paper.</p></li>
+<li><p>Recreate results in TPU if they weren’t already.</p></li>
+<li><p>Implement competitive inhibition and hebbian learning in DNs in GPUs and TPUs.</p></li>
+<li><p>Assess performance compared to leabra.</p></li>
+<li><p>Mass-parameter search on the TPUs to compare with leabra.</p></li>
+<li><p>Revaluate different versioning packages and write down reasoning for the
+choice.</p></li>
 </ul>
 <p><strong>Completed</strong></p>
 <ul class="simple">
-<li>Create a documentation page that will automatically add new notebooks as they
-are created.</li>
-<li>Implement the task described in O’Reilly’s paper.</li>
-<li>Create a new README that details how to go about the repo, and move components
-(like this release schedule) to their own pages in the documentation.</li>
+<li><p>Create a documentation page that will automatically add new notebooks as they
+are created.</p></li>
+<li><p>Implement the task described in O’Reilly’s paper.</p></li>
+<li><p>Create a new README that details how to go about the repo, and move components
+(like this release schedule) to their own pages in the documentation.</p></li>
 </ul>
 </div>
 <div class="section" id="id1">
 <h2>1.0 Release<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Streamline analysis pipeline to be reproducible on your own machine (if not
-already)</li>
-<li>Write implementation tests (should have some if not all already).</li>
-<li>Write analysis tests from notebooks.</li>
-<li>Look into running unit tests on a local machine as analysis testing will get
-computationally expensive.</li>
-<li>Set up continuous integration (CI) either locally (ex. jenkins) or on the
-cloud (ex travisci, circleci).</li>
-<li>Set up repo coverage.</li>
-<li>Compile notebooks into a 1.0 release report.</li>
-<li>Write documentation, add references, and fill out READMEs in various parts of
-the repo.</li>
-<li>Setup vulture and assess how well it can prune repos</li>
-<li>Prune away by hand anything vulture misses.</li>
-<li>Make all tests (implementation and analysis) pass with the pruned repo.</li>
-<li>Make pull-request (PR) and wait three days before merging. Don’t work on it in
-between.</li>
+<li><p>Streamline analysis pipeline to be reproducible on your own machine (if not
+already)</p></li>
+<li><p>Write implementation tests (should have some if not all already).</p></li>
+<li><p>Write analysis tests from notebooks.</p></li>
+<li><p>Look into running unit tests on a local machine as analysis testing will get
+computationally expensive.</p></li>
+<li><p>Set up continuous integration (CI) either locally (ex. jenkins) or on the
+cloud (ex travisci, circleci).</p></li>
+<li><p>Set up repo coverage.</p></li>
+<li><p>Compile notebooks into a 1.0 release report.</p></li>
+<li><p>Write documentation, add references, and fill out READMEs in various parts of
+the repo.</p></li>
+<li><p>Setup vulture and assess how well it can prune repos</p></li>
+<li><p>Prune away by hand anything vulture misses.</p></li>
+<li><p>Make all tests (implementation and analysis) pass with the pruned repo.</p></li>
+<li><p>Make pull-request (PR) and wait three days before merging. Don’t work on it in
+between.</p></li>
 </ul>
 </div>
 <div class="section" id="id2">
 <h2>1.1 Release<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Revisit containerization of packages and choose one to go forward with and
-document reasoning.</li>
-<li>Containerize the package and ensure tests pass on all relevant machines.</li>
+<li><p>Revisit containerization of packages and choose one to go forward with and
+document reasoning.</p></li>
+<li><p>Containerize the package and ensure tests pass on all relevant machines.</p></li>
 </ul>
 </div>
 <div class="section" id="releases">
 <h2>1.2-1.5 Releases<a class="headerlink" href="#releases" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Establish baselines of state of the art DNs (SDNs) on MNIST (or another task)
-using TPUs.</li>
-<li>Establish baselines of MDNs on this same task using by hand on TPUs.</li>
-<li>Mass parameter search for optimal MDNs on the TPUs.</li>
-<li>Recreate relevant portions of 1.0 analysis on MNIST and compare the results.</li>
+<li><p>Establish baselines of state of the art DNs (SDNs) on MNIST (or another task)
+using TPUs.</p></li>
+<li><p>Establish baselines of MDNs on this same task using by hand on TPUs.</p></li>
+<li><p>Mass parameter search for optimal MDNs on the TPUs.</p></li>
+<li><p>Recreate relevant portions of 1.0 analysis on MNIST and compare the results.</p></li>
 </ul>
 </div>
 <div class="section" id="id3">
 <h2>1.6-1.9 Releases<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Recreate full leabra in tensorflow, then compare against SDNs and MDNs.</li>
+<li><p>Recreate full leabra in tensorflow, then compare against SDNs and MDNs.</p></li>
 </ul>
 </div>
 <div class="section" id="id4">
 <h2>2.0 Release<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Streamline analysis pipeline to be reproducible on your own machine (if not
-already)</li>
-<li>Write new implementation and analysis tests, then add to CI pipeline.</li>
-<li>Compile notebooks into a 2.0 release report, and write documentation.</li>
-<li>Make PR and wait three days before merging. Don’t work on it in between.</li>
+<li><p>Streamline analysis pipeline to be reproducible on your own machine (if not
+already)</p></li>
+<li><p>Write new implementation and analysis tests, then add to CI pipeline.</p></li>
+<li><p>Compile notebooks into a 2.0 release report, and write documentation.</p></li>
+<li><p>Make PR and wait three days before merging. Don’t work on it in between.</p></li>
 </ul>
 </div>
 <div class="section" id="id5">
 <h2>2.1 Release<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Look into <a class="reference external" href="http://www.researchobject.org/">research objects</a>, and assess
-the difficulty of getting it in that form.</li>
+<li><p>Look into <a class="reference external" href="http://www.researchobject.org/">research objects</a>, and assess
+the difficulty of getting it in that form.</p></li>
 </ul>
 </div>
 </div>

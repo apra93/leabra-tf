@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.64.g56294bc documentation</title>
+  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.63.ga5c4bdc documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.64.g56294bc
+                0+untagged.63.ga5c4bdc
               </div>
             
           
@@ -231,44 +231,37 @@ throughout the repo.</p>
 <dd><p>Wrapper function of <code class="docutils literal notranslate"><span class="pre">sns.heatmap</span></code> with some different defaults.</p>
 <p>Only changed values are shown, see the documentation for <code class="docutils literal notranslate"><span class="pre">sns.heatmap</span></code>
 for all available parameters.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<em>np.ndarray</em>) – The data to send to the heatmap</li>
-<li><strong>data2</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – A second dataset to send to the heatmap in a zip</li>
-<li><strong>vmin</strong> (<em>float</em><em>, </em><em>optional</em>) – Min color. Now set to 0</li>
-<li><strong>vmax</strong> (<em>float</em><em>, </em><em>optional</em>) – Max color. Now set to 2</li>
-<li><strong>cbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Color bar present or not. Now set to False</li>
-<li><strong>linewidths</strong> (<em>float</em><em>, </em><em>optional</em>) – Width of lines between boxes. Now set to 1</li>
-<li><strong>square</strong> (<em>bool</em><em>, </em><em>optional</em>) – Maintain aspect ratio. Now set to True</li>
-<li><strong>gridspec_kw</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary of grid specifications for the subplots</li>
-<li><strong>sharey</strong> (<em>bool</em><em>, </em><em>optional</em>) – Have the subplots share the y axis.</li>
-<li><strong>sharex</strong> (<em>bool</em><em>, </em><em>optional</em>) – Have the subplots share the x axis.</li>
-<li><strong>titles</strong> (<em>iterable</em><em>, </em><em>optional</em>) – Titles to add to each of the subplots</li>
-<li><strong>squeeze</strong> (<em>bool</em><em>, </em><em>optional</em>) – Make the plots compact.</li>
-<li><strong>y_label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label to add to the y axis of the plot</li>
-<li><strong>x_label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label to add to the x axis (title) of the plot</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>np.ndarray</em>) – The data to send to the heatmap</p></li>
+<li><p><strong>data2</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – A second dataset to send to the heatmap in a zip</p></li>
+<li><p><strong>vmin</strong> (<em>float</em><em>, </em><em>optional</em>) – Min color. Now set to 0</p></li>
+<li><p><strong>vmax</strong> (<em>float</em><em>, </em><em>optional</em>) – Max color. Now set to 2</p></li>
+<li><p><strong>cbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Color bar present or not. Now set to False</p></li>
+<li><p><strong>linewidths</strong> (<em>float</em><em>, </em><em>optional</em>) – Width of lines between boxes. Now set to 1</p></li>
+<li><p><strong>square</strong> (<em>bool</em><em>, </em><em>optional</em>) – Maintain aspect ratio. Now set to True</p></li>
+<li><p><strong>gridspec_kw</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary of grid specifications for the subplots</p></li>
+<li><p><strong>sharey</strong> (<em>bool</em><em>, </em><em>optional</em>) – Have the subplots share the y axis.</p></li>
+<li><p><strong>sharex</strong> (<em>bool</em><em>, </em><em>optional</em>) – Have the subplots share the x axis.</p></li>
+<li><p><strong>titles</strong> (<em>iterable</em><em>, </em><em>optional</em>) – Titles to add to each of the subplots</p></li>
+<li><p><strong>squeeze</strong> (<em>bool</em><em>, </em><em>optional</em>) – Make the plots compact.</p></li>
+<li><p><strong>y_label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label to add to the y axis of the plot</p></li>
+<li><p><strong>x_label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label to add to the x axis (title) of the plot</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="leabratf.visualization.combigen_heatmap.visualize_combigen">
 <code class="descclassname">leabratf.visualization.combigen_heatmap.</code><code class="descname">visualize_combigen</code><span class="sig-paren">(</span><em>n_pairs=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.combigen_heatmap.visualize_combigen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot <code class="docutils literal notranslate"><span class="pre">n_pairs</span></code> of <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> from the combigen task</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_pairs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of <code class="docutils literal notranslate"><span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> pairs to visualize</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n_pairs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of <code class="docutils literal notranslate"><span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> pairs to visualize</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -291,33 +284,29 @@ values are then passed into <code class="docutils literal notranslate"><span cla
 <p>See <code class="docutils literal notranslate"><span class="pre">nb-0.3.1</span></code> for example usage.</p>
 <p>Note: Setting <code class="docutils literal notranslate"><span class="pre">model_average</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> for large sets of data will
 result in very long runtimes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>metrics_df</strong> (<em>pd.DataFrame</em>) – The dataframe containing the model data for each of the models. Data is
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metrics_df</strong> (<em>pd.DataFrame</em>) – The dataframe containing the model data for each of the models. Data is
 expected to be of type <code class="docutils literal notranslate"><span class="pre">str</span></code>, which can be evaluated to data of type
-<code class="docutils literal notranslate"><span class="pre">list</span></code>.</li>
-<li><strong>metrics</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Metrics from <code class="docutils literal notranslate"><span class="pre">metrics_df</span></code> to plot (column names). Defaults to plot all
-of them.</li>
-<li><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title to plot on the data. Defaults to ‘Training History’.</li>
-<li><strong>epochs</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Number of epochs from the data to plot. Defaults to plot every epoch in
-the data.</li>
-<li><strong>key_by_model</strong> (<em>bool</em><em>, </em><em>optional</em>) – Color the plots by the models that they come from, as opposed to the
+<code class="docutils literal notranslate"><span class="pre">list</span></code>.</p></li>
+<li><p><strong>metrics</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Metrics from <code class="docutils literal notranslate"><span class="pre">metrics_df</span></code> to plot (column names). Defaults to plot all
+of them.</p></li>
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title to plot on the data. Defaults to ‘Training History’.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Number of epochs from the data to plot. Defaults to plot every epoch in
+the data.</p></li>
+<li><p><strong>key_by_model</strong> (<em>bool</em><em>, </em><em>optional</em>) – Color the plots by the models that they come from, as opposed to the
 different metrics. Most useful if comparing model performance on a
-single metric.</li>
-<li><strong>model_average</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot the average performance across all models on each metric. Warning:
+single metric.</p></li>
+<li><p><strong>model_average</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot the average performance across all models on each metric. Warning:
 Setting this to <code class="docutils literal notranslate"><span class="pre">True</span></code> will result in long runtimes for large
-datasets.</li>
-<li><strong>epoch_vline</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Place to plot a dashed vertical line in the metrics plot. If
+datasets.</p></li>
+<li><p><strong>epoch_vline</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Place to plot a dashed vertical line in the metrics plot. If
 <code class="docutils literal notranslate"><span class="pre">epoch_vline</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, or <code class="docutils literal notranslate"><span class="pre">epoch_vline</span> <span class="pre">&gt;</span> <span class="pre">epochs</span></code>, then the line
-will not be plotted.</li>
+will not be plotted.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
