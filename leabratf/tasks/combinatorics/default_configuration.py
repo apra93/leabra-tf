@@ -54,6 +54,8 @@ tf_device = '/cpu:0'
 n_models = 10
 # Recompute the model accuracy after this many epochs
 n_epochs_acc = 25
+# Optimizer
+optimizer = 'sgd'
 
 # Meta data variables
 # Config name
