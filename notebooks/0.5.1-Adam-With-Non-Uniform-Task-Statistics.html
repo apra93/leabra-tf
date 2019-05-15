@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.5.1 Adam with Non-Uniform Task Statistics &mdash; Leabra Tensorflow 0+untagged.63.ga5c4bdc documentation</title>
+  <title>0.5.1 Adam with Non-Uniform Task Statistics &mdash; Leabra Tensorflow 0+untagged.59.gaedf8f6 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.63.ga5c4bdc
+                0+untagged.59.gaedf8f6
               </div>
             
           
@@ -139,13 +139,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Defining-the-Training-Function">Defining the Training Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Defining-The-Training-Routine">Defining The Training Routine</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Save-Data-Routine">Save Data Routine</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Adam-Optimizer-with-the-Different-Training-Sets">Adam Optimizer with the Different Training Sets</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Getting-the-Metrics">Getting the Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Saving-the-Data">Saving the Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Plots-for-LRs-Adam-with-the-Different-Statistics">Plots for LRs Adam with the Different Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Plotting-Results">Plotting Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Comparing-Datasets">Comparing Datasets</a></li>
 </ul>
 </li>
 </ul>
@@ -613,7 +614,7 @@ The autoreload extension is already loaded. To reload it, use:
 <div class="section" id="Default-Configuration">
 <h3>Default Configuration<a class="headerlink" href="#Default-Configuration" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[503]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[667]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -625,7 +626,7 @@ The autoreload extension is already loaded. To reload it, use:
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[504]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[685]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -660,6 +661,7 @@ The autoreload extension is already loaded. To reload it, use:
  &#39;n_train&#39;: 100,
  &#39;n_updates&#39;: 2,
  &#39;n_val&#39;: 50,
+ &#39;optimizer&#39;: &#39;sgd&#39;,
  &#39;size&#39;: 5,
  &#39;slots&#39;: 4,
  &#39;tf_device&#39;: &#39;/device:CPU:0&#39;}
@@ -670,7 +672,7 @@ The autoreload extension is already loaded. To reload it, use:
 <h4>Datasets<a class="headerlink" href="#Datasets" title="Permalink to this headline">¶</a></h4>
 <p>Here we will introduce new line sampling statistics</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[634]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[686]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -692,7 +694,7 @@ The autoreload extension is already loaded. To reload it, use:
 
 <span class="c1"># Testing Set experiment configurations</span>
 <span class="n">testing_set_configs</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">name</span> <span class="p">:</span> <span class="n">default_nb_config</span><span class="p">(</span><span class="n">line_stats</span><span class="o">=</span><span class="n">stat</span><span class="p">,</span>
-                                                      <span class="n">batch_size</span><span class="o">=</span><span class="n">test_batch_size</span><span class="p">,</span>
+                                                      <span class="n">batch_size</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_test</span><span class="p">,</span>
                                                       <span class="n">n_samples</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_test</span><span class="p">,</span>
                                                       <span class="n">_name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
                             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">stats_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
@@ -700,7 +702,7 @@ The autoreload extension is already loaded. To reload it, use:
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[635]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[687]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -730,18 +732,6 @@ The autoreload extension is already loaded. To reload it, use:
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[636]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># # Plots of the first x,y pair in each of the datasets</span>
-<span class="c1"># for name, (x,y) in np_datasets.items():</span>
-<span class="c1">#     cgh.heatmap(y[:1], x[:1], y_label=name)</span>
-<span class="c1">#     plt.show()</span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -751,14 +741,21 @@ The autoreload extension is already loaded. To reload it, use:
 <div class="section" id="The-Combigen-Task">
 <h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
 <p>Quickly remind ourselves what the task looks like before diving in.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[637]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[688]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># cgh.visualize_combigen(5)</span>
-<span class="c1"># plt.show()</span>
+<span></span><span class="n">cgh</span><span class="o">.</span><span class="n">visualize_combigen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_27_0.png" src="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_27_0.png" />
 </div>
 </div>
 </div>
@@ -771,7 +768,7 @@ The autoreload extension is already loaded. To reload it, use:
 <h2>Setting Up the Graph<a class="headerlink" href="#Setting-Up-the-Graph" title="Permalink to this headline">¶</a></h2>
 <p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[638]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[689]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -784,7 +781,7 @@ The autoreload extension is already loaded. To reload it, use:
 <h3>Make the Different Datasets<a class="headerlink" href="#Make-the-Different-Datasets" title="Permalink to this headline">¶</a></h3>
 <p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used including the ones with the different statistics.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[639]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[690]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -838,7 +835,7 @@ The autoreload extension is already loaded. To reload it, use:
 <p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
 <p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[640]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[691]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -865,7 +862,7 @@ The autoreload extension is already loaded. To reload it, use:
 <h3>Model and Metrics<a class="headerlink" href="#Model-and-Metrics" title="Permalink to this headline">¶</a></h3>
 <p>The architecture is the same as previous notebooks. See <code class="docutils literal notranslate"><span class="pre">nb-0.3</span></code> for more details.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[641]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[692]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -882,7 +879,7 @@ The autoreload extension is already loaded. To reload it, use:
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[642]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[693]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -940,7 +937,7 @@ The autoreload extension is already loaded. To reload it, use:
 <h3>Varying the Optimizer<a class="headerlink" href="#Varying-the-Optimizer" title="Permalink to this headline">¶</a></h3>
 <p>Let’s create several different training operations.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[643]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[694]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -969,7 +966,7 @@ The autoreload extension is already loaded. To reload it, use:
 <h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
 <p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[644]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[695]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -991,14 +988,14 @@ The autoreload extension is already loaded. To reload it, use:
 <h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[645]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[696]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">train_stats</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span>
                 <span class="n">lr</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span>
                 <span class="n">epochs</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
-                <span class="n">train_op</span><span class="o">=</span><span class="n">optimizer_dict</span><span class="o">.</span><span class="n">Adam</span><span class="p">,</span>
+                <span class="n">train_op</span><span class="o">=</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">optimizer</span><span class="p">],</span>
                 <span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">n_train</span><span class="o">=</span><span class="n">training_set_config</span><span class="o">.</span><span class="n">n_train</span><span class="p">,</span>
                 <span class="n">n_val</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
@@ -1061,7 +1058,7 @@ The autoreload extension is already loaded. To reload it, use:
 <div class="section" id="Defining-The-Training-Routine">
 <h3>Defining The Training Routine<a class="headerlink" href="#Defining-The-Training-Routine" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[646]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[697]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1070,21 +1067,25 @@ The autoreload extension is already loaded. To reload it, use:
               <span class="n">all_test_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">n_models</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_models</span><span class="p">,</span>
               <span class="n">lr</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span>
-              <span class="n">n_val</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+              <span class="n">n_val</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">optimizer</span><span class="p">):</span>
 
     <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
     <span class="n">all_train_metrics</span> <span class="o">=</span> <span class="n">all_train_metrics</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="n">all_test_metrics</span> <span class="o">=</span> <span class="n">all_test_metrics</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer_dict</span><span class="p">[</span><span class="n">optimizer</span><span class="p">]</span>
 
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Optimizing using </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_op</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
     <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_models</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)))</span>
             <span class="n">train_metrics</span><span class="p">,</span> <span class="n">test_metrics</span> <span class="o">=</span> <span class="n">train_stats</span><span class="p">(</span>
                 <span class="n">sess</span><span class="p">,</span>
                 <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
                 <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
                 <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">,</span>
-                <span class="n">n_val</span><span class="o">=</span><span class="n">n_val</span><span class="p">)</span>
+                <span class="n">n_val</span><span class="o">=</span><span class="n">n_val</span><span class="p">,</span>
+                <span class="n">train_op</span><span class="o">=</span><span class="n">train_op</span><span class="p">)</span>
 
             <span class="n">all_train_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_metrics</span><span class="p">)</span>
             <span class="n">all_test_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_metrics</span><span class="p">)</span>
@@ -1108,126 +1109,60 @@ The autoreload extension is already loaded. To reload it, use:
 </div>
 </div>
 </div>
-<div class="section" id="Save-Data-Routine">
-<h3>Save Data Routine<a class="headerlink" href="#Save-Data-Routine" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[647]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># def save_data(metrics, n_models=None, lr=ALPHA, n_train=N_TRAIN, n_epochs=None,</span>
-<span class="c1">#               optimizer=&#39;sgd&#39;, exp_dir=DIR_DATA_PROC, dryrun=False, train_stats=&#39;uni&#39;):</span>
-<span class="c1">#     df_metrics = metrics if isinstance(metrics, pd.DataFrame) else pd.DataFrame(metrics)</span>
-<span class="c1">#     # Grab the exp params</span>
-<span class="c1">#     n_models = n_models or df_metrics.shape[0]</span>
-<span class="c1">#     n_epochs = n_epochs or len(df_metrics.iloc[0,0])</span>
-
-<span class="c1">#     # Create a dict containing different keys and values if they differ</span>
-<span class="c1">#     # from the default exp</span>
-<span class="c1">#     file_name_dict = {}</span>
-<span class="c1">#     # If we used a different number of models</span>
-<span class="c1">#     if n_models != N_MODELS:</span>
-<span class="c1">#         file_name_dict[&#39;models&#39;] = str(n_models)</span>
-<span class="c1">#     # If we used a different number of epochs</span>
-<span class="c1">#     if n_epochs != EPOCHS:</span>
-<span class="c1">#         file_name_dict[&#39;epochs&#39;] = str(n_epochs)</span>
-<span class="c1">#     # If we used a different number of training samples</span>
-<span class="c1">#     if n_train != N_TRAIN:</span>
-<span class="c1">#         file_name_dict[&#39;ntrain&#39;] = str(n_train)</span>
-<span class="c1">#     # If we used a different learning rate</span>
-<span class="c1">#     if float(lr) != ALPHA:</span>
-<span class="c1">#         file_name_dict[&#39;lr&#39;] = str(lr)</span>
-<span class="c1">#     # If we used a different optimizer</span>
-<span class="c1">#     if optimizer.lower() != &#39;sgd&#39;:</span>
-<span class="c1">#         file_name_dict[&#39;optimizer&#39;] = optimizer.lower()</span>
-<span class="c1">#     # If we used a different training set</span>
-<span class="c1">#     if train_stats.lower() != &#39;uni&#39;:</span>
-<span class="c1">#         file_name_dict[&#39;train_stats&#39;] = train_stats.lower()</span>
-
-<span class="c1">#     # Create the filename and path object</span>
-<span class="c1">#     file_name = None</span>
-<span class="c1">#     for key, val in file_name_dict.items():</span>
-<span class="c1">#         if not file_name:</span>
-<span class="c1">#             file_name = &#39;_&#39;.join([str(val), str(key)])</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             file_name = &#39;_&#39;.join([file_name, str(val), str(key)])</span>
-<span class="c1">#     file_name += &#39;.csv&#39;</span>
-<span class="c1">#     exp_file = Path(exp_dir) / file_name</span>
-
-<span class="c1">#     # Save the df if the file does not exist</span>
-<span class="c1">#     if not exp_file.exists():</span>
-<span class="c1">#         if not dryrun:</span>
-<span class="c1">#             df_metrics.to_csv(str(exp_file))</span>
-<span class="c1">#             print(&quot;Saved df to &#39;{0}&#39;&quot;.format(str(exp_file)))</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             print(&quot;Dryrun: (Not) Saved df to &#39;{0}&#39;&quot;.format(str(exp_file)))</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         print(&quot;File &#39;{0}&#39; present, skipping.&quot;.format(str(exp_file)))</span>
-</pre></div>
-</div>
-</div>
-</div>
 </div>
 <div class="section" id="Adam-Optimizer-with-the-Different-Training-Sets">
 <h2>Adam Optimizer with the Different Training Sets<a class="headerlink" href="#Adam-Optimizer-with-the-Different-Training-Sets" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="Getting-the-Metrics">
 <h3>Getting the Metrics<a class="headerlink" href="#Getting-the-Metrics" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[662]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
 <span class="n">adam_train_metrics</span><span class="p">,</span> <span class="n">adam_test_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-    <span class="n">n_models</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">n_val</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">lr</span><span class="o">=</span><span class="mf">0.0033</span><span class="p">)</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">n_models</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">n_val</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">0.0033</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Starting training for model 0
-Completed epoch 1/20. Epoch accuracy: 0.0
-Completed epoch 6/20. Epoch accuracy: 0.04
-Completed epoch 11/20. Epoch accuracy: 0.82
-Completed epoch 16/20. Epoch accuracy: 1.0
-Completed epoch 20/20. Epoch accuracy: 1.0
-Starting training for model 1
-Completed epoch 1/20. Epoch accuracy: 0.0
-Completed epoch 6/20. Epoch accuracy: 0.07
-Completed epoch 11/20. Epoch accuracy: 0.82
-Completed epoch 16/20. Epoch accuracy: 1.0
-Completed epoch 20/20. Epoch accuracy: 1.0
-Completed exp with 2 models
-CPU times: user 21.1 s, sys: 3.26 s, total: 24.4 s
-Wall time: 9.1 s
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[649]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[716]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Define data handlers</span>
-<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
-<span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
-<span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">(),</span>
-             <span class="n">tf</span><span class="o">.</span><span class="n">local_variables_initializer</span><span class="p">()]</span>
-<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
+<span></span><span class="kn">import</span> <span class="nn">pickle</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[723]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dryrun</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="c1"># Define training and validation handlers</span>
-<span class="n">handles</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">name</span> <span class="p">:</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">iterators</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">string_handle</span><span class="p">())</span>
-                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">iterators</span><span class="o">.</span><span class="n">keys</span><span class="p">()})</span>
-<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">handles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">el_acc_op</span><span class="p">,</span>
-         <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float16</span><span class="p">))],</span>
-        <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handler</span><span class="p">:</span> <span class="n">val</span><span class="p">}))</span>
+<span class="n">exp_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span> <span class="s1">&#39;test_statistics&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">exp_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">exp_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+<span class="n">adam_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;adam_train_metrics.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;adam_test_metrics.pickle&#39;</span><span class="p">]</span>
+<span class="n">adam_file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">exp_dir</span> <span class="o">/</span> <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">adam_file_names</span><span class="p">]</span>
+<span class="n">adam_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">adam_train_metrics</span><span class="p">,</span> <span class="n">adam_test_metrics</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">adam_file_paths</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">adam_data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fp</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dryrun: did not write to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -1236,15 +1171,85 @@ Wall time: 9.1 s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-train [0.55, 0.55]
-1e [0.4817, 0.4817]
-2e [0.486, 0.486]
-he [0.48825, 0.4883]
-uni [0.49085, 0.491]
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/adam_train_metrics.pickle
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/adam_test_metrics.pickle
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[663]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[729]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">adam_file_paths</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="n">file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+10
+[&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;epoch&#39;]
+10
+[&#39;1e&#39;, &#39;2e&#39;, &#39;he&#39;, &#39;uni&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sgd_train_metrics</span><span class="p">,</span> <span class="n">sgd_test_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">n_models</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">n_val</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[733]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dryrun</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">sgd_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sgd_train_metrics.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;sgd_test_metrics.pickle&#39;</span><span class="p">]</span>
+<span class="n">sgd_file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">exp_dir</span> <span class="o">/</span> <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">sgd_file_names</span><span class="p">]</span>
+<span class="n">sgd_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">sgd_train_metrics</span><span class="p">,</span> <span class="n">sgd_test_metrics</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sgd_file_paths</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">sgd_data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fp</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dryrun: did not write to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/sgd_train_metrics.pickle
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/sgd_test_metrics.pickle
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1256,23 +1261,25 @@ uni [0.49085, 0.491]
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_53_0.png" src="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_53_0.png" />
-</div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[651]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[701]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">met</span> <span class="o">=</span> <span class="s1">&#39;sm_acc&#39;</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">adam_test_metrics</span><span class="p">):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="s1">&#39;1e&#39;</span><span class="p">][</span><span class="s1">&#39;epoch&#39;</span><span class="p">],</span> <span class="n">model</span><span class="p">[</span><span class="s1">&#39;1e&#39;</span><span class="p">][</span><span class="n">met</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">test_stat</span> <span class="ow">in</span> <span class="n">test_names</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">adam_test_metrics</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">test_stat</span><span class="p">][</span><span class="s1">&#39;epoch&#39;</span><span class="p">],</span>
+                 <span class="n">model</span><span class="p">[</span><span class="n">test_stat</span><span class="p">][</span><span class="n">met</span><span class="p">],</span>
+                 <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Stat: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_stat</span><span class="p">),</span>
+                <span class="p">)</span>
+
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">by_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># plt.legend()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1281,111 +1288,240 @@ uni [0.49085, 0.491]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_54_0.png" src="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_54_0.png" />
+<img alt="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_55_0.png" src="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_55_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[652]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># [adam_test_metrics[0][key][&#39;ax_acc&#39;][:8]</span>
-<span class="c1">#  for key in stat_names]</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[653]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># adam_train_metrics[0][&#39;sm_acc&#39;][:8]</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[654]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># np.array_equal(adam_test_metrics[0][&#39;he&#39;][&#39;sm_acc&#39;], adam_test_metrics[0][&#39;1e&#39;][&#39;sm_acc&#39;])</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[655]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># (adam_stats_metrics[0][1])</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[656]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># %%time</span>
-<span class="c1"># adam_stats_metrics_full = exp_stats(epochs=5*EPOCHS)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Saving-the-Data">
-<h3>Saving the Data<a class="headerlink" href="#Saving-the-Data" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[657]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># train_stat_dir = DIR_DATA_PROC /  &#39;new_task&#39; /&#39;training_set_statistics&#39;</span>
-<span class="c1"># if not train_stat_dir.exists():</span>
-<span class="c1">#     train_stat_dir.mkdir()</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[658]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># for stat_name, stat_data in adam_stats_metrics.items():</span>
-<span class="c1">#     save_data(stat_data, optimizer=&#39;Adam&#39;, lr=0.0033, train_stats=stat_name,</span>
-<span class="c1">#               exp_dir=train_stat_dir, dryrun=False)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Plots-for-LRs-Adam-with-the-Different-Statistics">
-<h3>Plots for LRs Adam with the Different Statistics<a class="headerlink" href="#Plots-for-LRs-Adam-with-the-Different-Statistics" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[659]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># # for stat in stat_names:</span>
-<span class="c1"># plt_metrics.plot_df_metrics(pd.DataFrame(adam_stats_metrics[1]))</span>
-<span class="c1"># plt.show()</span>
+<span></span><span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">set_plot_size</span>
+
+<span class="nd">@set_plot_size</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">plot_df_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training History&#39;</span><span class="p">,</span>
+                    <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">epoch_vline</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="c1"># What metrics to plot</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="c1"># Empty lists for the long form data</span>
+    <span class="n">long_epochs</span><span class="p">,</span> <span class="n">long_metrics</span><span class="p">,</span> <span class="n">long_hues</span><span class="p">,</span> <span class="n">long_units</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop through each model&#39;s data</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metrics_series</span> <span class="ow">in</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="c1"># Series data is in a string format, convert to floats and put them in a</span>
+        <span class="c1"># dict</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics_series</span><span class="p">[</span><span class="n">metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">literal_eval</span><span class="p">(</span><span class="n">metrics_series</span><span class="p">[</span><span class="n">key</span><span class="p">])]</span>
+                            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metrics_series</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+                            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>
+
+        <span class="c1"># How many epochs to plot</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">epochs</span><span class="p">:</span>
+            <span class="n">len_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metrics_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+            <span class="c1"># Plot the number of epochs according to the data with the shortest</span>
+            <span class="c1"># number of epochs.</span>
+            <span class="n">epochs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">len_metrics</span><span class="p">)</span>
+
+        <span class="c1"># Add to the long form lists</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">key</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="s1">&#39;Model </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">i</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="n">key</span>
+            <span class="n">long_epochs</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">))</span>
+            <span class="n">long_metrics</span> <span class="o">+=</span> <span class="n">metrics_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">epochs</span><span class="p">]</span>
+            <span class="n">long_hues</span> <span class="o">+=</span> <span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
+            <span class="n">long_units</span> <span class="o">+=</span> <span class="p">[</span><span class="n">units</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
+
+    <span class="k">if</span> <span class="n">model_average</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot each line individually</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">long_units</span><span class="p">)</span>
+
+    <span class="c1"># Title, axis, and 500 epoch line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epoch_vline</span> <span class="ow">and</span> <span class="n">epochs</span> <span class="o">&gt;</span> <span class="n">epoch_vline</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">epoch_vline</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> Epochs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">epoch_vline</span><span class="p">))</span>
+
+    <span class="c1"># Prune down the number of labels to just the unique ones</span>
+    <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+    <span class="n">by_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[660]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[763]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># adam_stats_metrics.keys()</span>
+<span></span><span class="c1"># Losses</span>
+<span class="n">min_loss_sgd_train</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_train_metrics</span><span class="p">]</span>
+<span class="n">min_loss_adam_train</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_train_metrics</span><span class="p">]</span>
+<span class="n">max_mets_sgd_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_test_metrics</span><span class="p">]</span>
+                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sgd_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="n">max_mets_adam_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_test_metrics</span><span class="p">]</span>
+                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">adam_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[762]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">optimizer_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="s1">&#39;SGD&#39;</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">optimizer_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[762]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([&#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;,
+       &#39;Adam&#39;, &#39;Adam&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;,
+       &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;], dtype=&#39;&lt;U4&#39;)
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[661]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[764]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># len(adam_stats_metrics[1])</span>
+<span></span><span class="n">data_loss</span> <span class="o">=</span> <span class="n">min_loss_adam_train</span> <span class="o">+</span> <span class="n">min_loss_sgd_train</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="p">:</span> <span class="n">max_mets_adam_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_test</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_loss</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;Optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer_labels</span>
 </pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[769]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">metric_labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">metric_values</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">optimizer_labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_test</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">metric_values</span> <span class="o">+=</span> <span class="n">max_mets_adam_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">metric_labels</span> <span class="o">+=</span>  <span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span>
+    <span class="n">optimizer_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;SGD&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[774]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Values&#39;</span> <span class="p">:</span> <span class="n">metric_values</span><span class="p">,</span>
+             <span class="s1">&#39;Datasets&#39;</span> <span class="p">:</span> <span class="n">metric_labels</span><span class="p">,</span>
+             <span class="s1">&#39;Optimizer&#39;</span> <span class="p">:</span> <span class="n">optimizer_labels</span><span class="p">}</span>
+<span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+<span class="n">data_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[774]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Values</th>
+      <th>Datasets</th>
+      <th>Optimizer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.338</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.400</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.374</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.368</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.354</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Plotting-Results">
+<h2>Plotting Results<a class="headerlink" href="#Plotting-Results" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Comparing-Datasets">
+<h3>Comparing Datasets<a class="headerlink" href="#Comparing-Datasets" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[779]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Datasets&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Values&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Optimizer&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_df</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sample Accuracy of Adam vs SGD&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_64_0.png" src="../_images/notebooks_0.5.1-Adam-With-Non-Uniform-Task-Statistics_64_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
