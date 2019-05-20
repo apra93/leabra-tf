@@ -14,6 +14,7 @@ DIR_DATA_EXT = DIR_DATA / 'external'
 DIR_DATA_INT = DIR_DATA / 'interim'
 DIR_DATA_PROC = DIR_DATA / 'processed'
 DIR_DATA_RAW = DIR_DATA / 'raw'
+DIR_DATA_TBRD = DIR_DATA / 'tensorboard'
 
 # Path to the figures
 DIR_FIG = DIR_REPO / 'figures'

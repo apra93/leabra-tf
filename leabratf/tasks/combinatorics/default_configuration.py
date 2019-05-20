@@ -1,7 +1,11 @@
 """File to store the default experimental configuration."""
 import logging
 from types import ModuleType
+
+import tensorflow as tf
 from pstar import pdict
+
+from leabratf import constants
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +60,19 @@ n_models = 10
 n_epochs_acc = 25
 # Optimizer
 optimizer = 'sgd'
+
+# Initializers
+
+# Weights
+weight_initializer = tf.contrib.layers.xavier_initializer
+# Biases
+bias_initializer = tf.zeros_initializer
+
+# Directories
+
+# Model checkpoints
+dir_checkpoints = constants.DIR_CKPTS
+dir_tensorboard = constants.DIR_DATA_TBRD
 
 # Meta data variables
 # Config name
