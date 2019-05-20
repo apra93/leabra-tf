@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.59.gaedf8f6 documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.58.g62a940d documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.59.gaedf8f6
+                0+untagged.58.g62a940d
               </div>
             
           
@@ -278,7 +278,11 @@ pertaining to the task itself are likely pulled straight from the paper.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;File to store the default experimental configuration.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">ModuleType</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
 <span class="kn">from</span> <span class="nn">pstar</span> <span class="kn">import</span> <span class="n">pdict</span>
+
+<span class="kn">from</span> <span class="nn">leabratf</span> <span class="kn">import</span> <span class="n">constants</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -333,6 +337,19 @@ pertaining to the task itself are likely pulled straight from the paper.</p>
 <span class="n">n_epochs_acc</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="c1"># Optimizer</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;sgd&#39;</span>
+
+<span class="c1"># Initializers</span>
+
+<span class="c1"># Weights</span>
+<span class="n">weight_initializer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span>
+<span class="c1"># Biases</span>
+<span class="n">bias_initializer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span>
+
+<span class="c1"># Directories</span>
+
+<span class="c1"># Model checkpoints</span>
+<span class="n">dir_checkpoints</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DIR_CKPTS</span>
+<span class="n">dir_tensorboard</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DIR_DATA_TBRD</span>
 
 <span class="c1"># Meta data variables</span>
 <span class="c1"># Config name</span>
