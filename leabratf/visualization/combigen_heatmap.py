@@ -62,7 +62,11 @@ def heatmap(data, data2=None, vmin=0, vmax=2, cbar=False, linewidths=1,
     x_label : str, optional
     	A label to add to the x axis (title) of the plot
     """
-    n_samples, stack, _, _ = data.shape
+    if len(data.shape) == 4:
+        n_samples, stack, _, _ = data.shape
+    elif len(data.shape) == 3:
+        stack, _, _ = data.shape
+        n_samples = 1
     # Check if another dataset was passed
     hor = stack if data2 is None else stack + data2.shape[1]
     # Place everything in subplots
