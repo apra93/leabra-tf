@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.5.2 Adam with Non-Uniform Training Statistics &mdash; Leabra Tensorflow 0+untagged.53.g810f976 documentation</title>
+  <title>0.5.2 Adam with Non-Uniform Training Statistics &mdash; Leabra Tensorflow 0+untagged.52.gff5a313 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.53.g810f976
+                0+untagged.52.gff5a313
               </div>
             
           
@@ -457,7 +457,7 @@ div.rendered_html tbody tr:hover {
 <h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
 <p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -473,7 +473,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Mon May 20 2019 21:15:37
+Wed May 22 2019 11:18:22
 
 CPython 3.6.8
 IPython 7.3.0
@@ -490,14 +490,14 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 12
 interpreter: 64bit
-Git hash   : d7ed46cd052e6cf775f785e66b0b4f1c7878ee76
+Git hash   : 810f976398276557f16e1a3950c0699c4cefcbbb
 Git branch : master
 </pre></div></div>
 </div>
 <p>Load <a class="reference external" href="https://ipython.org/ipython-doc/3/config/extensions/autoreload.html">autoreload</a> which will always reload modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <p>This behavior can be inverted by running <code class="docutils literal notranslate"><span class="pre">autoreload</span> <span class="pre">2</span></code> which will set everything to be auto-reloaded <em>except</em> for modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -510,7 +510,7 @@ Git branch : master
 </div>
 <p>Load <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in one of the more <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>-friendly <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/plotting.html">rich-output modes</a>. Some options (that may or may not have worked) are <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">notebook</span></code>, and <code class="docutils literal notranslate"><span class="pre">gtk</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -524,7 +524,7 @@ Git branch : master
 <h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -533,6 +533,7 @@ Git branch : master
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
 
 <span class="c1"># Third party</span>
 <span class="kn">import</span> <span class="nn">IPython</span> <span class="k">as</span> <span class="nn">ipy</span>
@@ -547,7 +548,7 @@ Git branch : master
 </div>
 <p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -575,7 +576,7 @@ Git branch : master
 <h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -587,7 +588,7 @@ Git branch : master
 <p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -595,8 +596,6 @@ Git branch : master
 <span class="n">setup_logging</span><span class="p">()</span>
 <span class="c1"># Define a logger object</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;leabratf&#39;</span><span class="p">)</span>
-<span class="c1"># Don&#39;t propagate messages</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
 </div>
@@ -604,7 +603,7 @@ Git branch : master
 <div class="section" id="Default-Configuration">
 <h3>Default Configuration<a class="headerlink" href="#Default-Configuration" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -616,7 +615,7 @@ Git branch : master
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -664,7 +663,7 @@ Git branch : master
 <h4>Datasets<a class="headerlink" href="#Datasets" title="Permalink to this headline">¶</a></h4>
 <p>Here we will introduce new line sampling statistics</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -694,7 +693,7 @@ Git branch : master
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -734,7 +733,7 @@ Git branch : master
 <h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
 <p>Quickly remind ourselves what the task looks like before diving in.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -760,7 +759,7 @@ Git branch : master
 <h2>Setting Up the Graph<a class="headerlink" href="#Setting-Up-the-Graph" title="Permalink to this headline">¶</a></h2>
 <p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -773,7 +772,7 @@ Git branch : master
 <h3>Make the Different Datasets<a class="headerlink" href="#Make-the-Different-Datasets" title="Permalink to this headline">¶</a></h3>
 <p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used including the ones with the different statistics.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -827,7 +826,7 @@ Git branch : master
 <p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
 <p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -854,7 +853,7 @@ Git branch : master
 <h3>Model and Metrics<a class="headerlink" href="#Model-and-Metrics" title="Permalink to this headline">¶</a></h3>
 <p>The architecture is the same as previous notebooks. See <code class="docutils literal notranslate"><span class="pre">nb-0.3</span></code> for more details.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -871,7 +870,7 @@ Git branch : master
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -929,7 +928,7 @@ Git branch : master
 <h3>Varying the Optimizer<a class="headerlink" href="#Varying-the-Optimizer" title="Permalink to this headline">¶</a></h3>
 <p>Let’s create several different training operations.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -958,7 +957,7 @@ Git branch : master
 <h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
 <p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -980,7 +979,7 @@ Git branch : master
 <h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1010,17 +1009,19 @@ Git branch : master
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_train</span><span class="p">):</span>
             <span class="c1"># Training op and compute metrics</span>
-            <span class="n">_</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
-                <span class="n">alpha_ph</span><span class="p">:</span> <span class="n">lr</span><span class="p">,</span>
-                <span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="p">[</span><span class="n">training_set_name</span><span class="p">]})</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">train_op</span><span class="p">,</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">alpha_ph</span><span class="p">:</span> <span class="n">lr</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="p">[</span><span class="n">training_set_name</span><span class="p">]})</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">n_val</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">metrics</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">met_ops</span><span class="p">,</span>
-                               <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="o">.</span><span class="n">test</span><span class="p">})</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">met_ops</span><span class="p">,</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="o">.</span><span class="n">test</span><span class="p">})</span>
             <span class="c1"># Record</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">met_op_names</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
                 <span class="n">training_metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
             <span class="n">training_metrics</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Completed epoch </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">training_metrics</span>
 </pre></div>
@@ -1030,11 +1031,35 @@ Git branch : master
 <div class="section" id="Defining-The-Training-Routine">
 <h3>Defining The Training Routine<a class="headerlink" href="#Defining-The-Training-Routine" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">exp_stats</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
+<span></span><span class="c1"># Pulled from https://codereview.stackexchange.com/questions/169870/decorator-to-measure-execution-time-of-a-function</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="k">def</span> <span class="nf">timing</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Elapsed time: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nd">@timing</span>
+<span class="k">def</span> <span class="nf">exp_stats</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
               <span class="n">all_train_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">all_test_metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">n_models</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_models</span><span class="p">,</span>
@@ -1047,13 +1072,14 @@ Git branch : master
     <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer_dict</span><span class="p">[</span><span class="n">optimizer</span><span class="p">]</span>
     <span class="n">exit</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Optimizing using </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_op</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Optimizing using </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_op</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">train_set</span> <span class="ow">in</span> <span class="n">train_names</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Using </span><span class="si">{}</span><span class="s1"> training set&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_set</span><span class="p">))</span>
-        <span class="n">all_train_metrics</span> <span class="o">=</span> <span class="n">all_train_metrics</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Using </span><span class="si">{}</span><span class="s1"> training set&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_set</span><span class="p">))</span>
+        <span class="n">all_train_metrics</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_models</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)))</span>
                 <span class="n">metrics</span> <span class="o">=</span> <span class="n">train_stats</span><span class="p">(</span>
                     <span class="n">sess</span><span class="p">,</span>
                     <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
@@ -1065,20 +1091,25 @@ Git branch : master
                 <span class="n">all_train_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Encountered a KeyboardInterrupt. Starting a IPython Shell.&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Encountered a KeyboardInterrupt. &#39;</span>
+                      <span class="s1">&#39;Starting a IPython Shell.&#39;</span><span class="p">)</span>
                 <span class="n">ipy</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
                 <span class="n">inp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">]:</span>
-                    <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training? [(Y)es/(N)o]&quot;</span><span class="p">)</span>
+                <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">]:</span>
+                    <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training? [(Y)es/(N)o/(S)kip]&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Continuing training...&#39;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Continuing training...&#39;</span><span class="p">)</span>
                     <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipping training set...&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exiting&#39;</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Exiting&#39;</span><span class="p">)</span>
                     <span class="n">exit</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="n">stat_metrics</span><span class="p">[</span><span class="n">train_set</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_train_metrics</span>
 
-            <span class="n">stat_metrics</span><span class="p">[</span><span class="n">train_set</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_train_metrics</span>
         <span class="k">if</span> <span class="n">exit</span><span class="p">:</span>
             <span class="k">break</span>
 
@@ -1093,13 +1124,13 @@ Git branch : master
 <div class="section" id="Getting-the-Metrics">
 <h3>Getting the Metrics<a class="headerlink" href="#Getting-the-Metrics" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
-<span class="n">adam_train_metrics</span><span class="p">,</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="n">adam_train_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
     <span class="n">n_models</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">n_val</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">lr</span><span class="o">=</span><span class="mf">0.0033</span><span class="p">,</span>
@@ -1107,89 +1138,74 @@ Git branch : master
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimizing using Adam
-Using train_1e training set
-Starting training for model 0.
-Starting training for model 1.
-Encountered a KeyboardInterrupt. Starting a IPython Shell.
-Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34)
-Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
-IPython 7.3.0 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
-
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-In [1]:  quit
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Continue training? [(Y)es/(N)o] N&#39;
-Continue training? [(Y)es/(N)o] N
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Exiting
-CPU times: user 52.3 s, sys: 6.53 s, total: 58.8 s
-Wall time: 27.6 s
+2019-05-26 14:11:15 x7 leabratf[24947] INFO Optimizing using Adam_1
+2019-05-26 14:11:15 x7 leabratf[24947] INFO Using train_1e training set
+2019-05-26 14:11:15 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-26 14:40:07 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-26 15:09:01 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-26 15:37:54 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-26 16:06:49 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-26 16:35:37 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-26 17:04:34 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-26 17:33:30 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-26 18:02:26 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-26 18:31:23 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-26 19:00:20 x7 leabratf[24947] INFO Using train_2e training set
+2019-05-26 19:00:20 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-26 19:29:17 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-26 19:58:16 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-26 20:27:14 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-26 20:56:13 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-26 21:25:10 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-26 21:54:07 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-26 22:23:05 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-26 22:52:01 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-26 23:20:59 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-26 23:49:56 x7 leabratf[24947] INFO Using train_he training set
+2019-05-26 23:49:56 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-27 00:18:52 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-27 00:47:47 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-27 01:16:45 x7 leabratf[24947] INFO Starting training for model 3.
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">adam_train_metrics</span>
+<span></span><span class="n">adam_train_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>&#39;train_1e&#39;
+<span></span>dict_keys([&#39;train_1e&#39;, &#39;train_2e&#39;, &#39;train_he&#39;, &#39;train_uni&#39;])
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[723]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">dryrun</span> <span class="o">=</span> <span class="kc">False</span>
+<span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">dryrun</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="n">exp_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span> <span class="s1">&#39;test_statistics&#39;</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">exp_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
     <span class="n">exp_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
 
-<span class="n">adam_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;adam_train_metrics.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;adam_test_metrics.pickle&#39;</span><span class="p">]</span>
+<span class="n">adam_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;adam_train_metrics_5.2.pickle&#39;</span><span class="p">]</span>
 <span class="n">adam_file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">exp_dir</span> <span class="o">/</span> <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">adam_file_names</span><span class="p">]</span>
-<span class="n">adam_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">adam_train_metrics</span><span class="p">,</span> <span class="n">adam_test_metrics</span><span class="p">]</span>
+<span class="n">adam_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">adam_train_metrics</span><span class="p">]</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">adam_file_paths</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
@@ -1209,8 +1225,7 @@ Wall time: 27.6 s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/adam_train_metrics.pickle
-Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/adam_test_metrics.pickle
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/adam_train_metrics_5.2.pickle
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1244,12 +1259,30 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
-<span class="n">sgd_train_metrics</span><span class="p">,</span> <span class="n">sgd_test_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
+<span class="n">sgd_train_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
     <span class="n">n_models</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">n_val</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">n_val</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">len</span><span class="p">(</span><span class="n">sgd_train_metrics</span><span class="p">[</span><span class="s1">&#39;train_1e&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>10
 </pre></div>
 </div>
 </div>
@@ -1326,7 +1359,7 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_55_0.png" src="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_55_0.png" />
+<img alt="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_57_0.png" src="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_57_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1398,22 +1431,22 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[781]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Losses</span>
-<span class="n">min_loss_sgd_train</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_train_metrics</span><span class="p">]</span>
-<span class="n">min_loss_adam_train</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_train_metrics</span><span class="p">]</span>
-<span class="n">max_mets_sgd_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_test_metrics</span><span class="p">]</span>
-                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sgd_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
-<span class="n">max_mets_adam_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_test_metrics</span><span class="p">]</span>
-                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">adam_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="c1"># min_loss_sgd_train = [min(met[&#39;loss&#39;]) for met in sgd_train_metrics]</span>
+<span class="c1"># min_loss_adam_train = [min(met[&#39;loss&#39;]) for met in adam_train_metrics]</span>
+<span class="n">max_mets_sgd_train</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_train_metrics</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+                      <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sgd_train_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="n">max_mets_adam_train</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_train_metrics</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+                       <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">adam_train_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[782]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1423,7 +1456,7 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[782]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1433,29 +1466,65 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[783]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">data_loss</span> <span class="o">=</span> <span class="n">min_loss_adam_train</span> <span class="o">+</span> <span class="n">min_loss_sgd_train</span>
-<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="p">:</span> <span class="n">max_mets_adam_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_test</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
-<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_loss</span>
+<span></span><span class="n">adam_train_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>dict_keys([&#39;train_1e&#39;, &#39;train_2e&#39;, &#39;train_he&#39;, &#39;train_uni&#39;])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">adam_train_metrics</span><span class="p">[</span><span class="s1">&#39;train_uni&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>dict_keys([&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;epoch&#39;])
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># data_loss = min_loss_adam_train + min_loss_sgd_train</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="p">:</span> <span class="n">max_mets_adam_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_train</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="c1"># data_dict[&#39;Loss&#39;] = data_loss</span>
 <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;Optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer_labels</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[784]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">metric_labels</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">metric_values</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">optimizer_labels</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_test</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-    <span class="n">metric_values</span> <span class="o">+=</span> <span class="n">max_mets_adam_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_train</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">metric_values</span> <span class="o">+=</span> <span class="n">max_mets_adam_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
     <span class="n">metric_labels</span> <span class="o">+=</span>  <span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span>
     <span class="n">optimizer_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;SGD&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
 
@@ -1463,7 +1532,7 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[785]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1476,7 +1545,7 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[785]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1506,32 +1575,32 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.338</td>
-      <td>1e</td>
+      <td>0.0</td>
+      <td>train_1e</td>
       <td>Adam</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.400</td>
-      <td>1e</td>
+      <td>0.0</td>
+      <td>train_1e</td>
       <td>Adam</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.374</td>
-      <td>1e</td>
+      <td>0.0</td>
+      <td>train_1e</td>
       <td>Adam</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.368</td>
-      <td>1e</td>
+      <td>0.0</td>
+      <td>train_1e</td>
       <td>Adam</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.354</td>
-      <td>1e</td>
+      <td>0.0</td>
+      <td>train_1e</td>
       <td>Adam</td>
     </tr>
   </tbody>
@@ -1545,7 +1614,7 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 <div class="section" id="Comparing-Datasets">
 <h3>Comparing Datasets<a class="headerlink" href="#Comparing-Datasets" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[786]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1559,7 +1628,16 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_64_0.png" src="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_64_0.png" />
+<img alt="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_68_0.png" src="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_68_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
 </div>
 </div>
 </div>
