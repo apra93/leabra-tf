@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.5.2 Adam with Non-Uniform Training Statistics &mdash; Leabra Tensorflow 0+untagged.52.gf7dc320 documentation</title>
+  <title>0.5.2 Adam with Non-Uniform Training Statistics &mdash; Leabra Tensorflow 0+untagged.52.gb05a537 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.52.gf7dc320
+                0+untagged.52.gb05a537
               </div>
             
           
@@ -148,8 +148,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Plotting-Results">Plotting Results</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Comparing-Datasets">Comparing Datasets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Debugging-the-Increasing-Validation-Loss">Debugging the Increasing Validation Loss</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Rerunning-the-Analysis">Rerunning the Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Debugging-the-Increasing-Validation-Loss">Debugging the Increasing Validation Loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Rerunning-the-Analysis">Rerunning the Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#New-Plots">New Plots</a></li>
 </ul>
 </li>
 </ul>
@@ -981,7 +984,7 @@ Git branch : master
 <h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[173]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[214]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1062,7 +1065,7 @@ Git branch : master
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[203]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[215]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1595,8 +1598,9 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="Debugging-the-Increasing-Validation-Loss">
-<h3>Debugging the Increasing Validation Loss<a class="headerlink" href="#Debugging-the-Increasing-Validation-Loss" title="Permalink to this headline">¶</a></h3>
+<h2>Debugging the Increasing Validation Loss<a class="headerlink" href="#Debugging-the-Increasing-Validation-Loss" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[139]:
 </pre></div>
@@ -1722,7 +1726,6 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
     <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
         <span class="n">alpha_ph</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="o">.</span><span class="n">test</span><span class="p">})</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">x_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
 </pre></div>
 </div>
 </div>
@@ -1825,16 +1828,16 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 <p>The batch sizes were totally wrong between the training and test sets. Fixing them in the exp configs all the way at the top of the notebook solved the problem.</p>
 </div>
 <div class="section" id="Rerunning-the-Analysis">
-<h3>Rerunning the Analysis<a class="headerlink" href="#Rerunning-the-Analysis" title="Permalink to this headline">¶</a></h3>
+<h2>Rerunning the Analysis<a class="headerlink" href="#Rerunning-the-Analysis" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[205]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[220]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
 <span class="n">adam_train_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
-    <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">n_models</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">n_models</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">n_val</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">lr</span><span class="o">=</span><span class="mf">0.0033</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">)</span>
@@ -1846,16 +1849,52 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2019-05-28 15:37:58 x7 leabratf[24947] INFO Optimizing using Adam
-2019-05-28 15:37:58 x7 leabratf[24947] INFO Using train_1e training set
-2019-05-28 15:37:58 x7 leabratf[24947] INFO Starting training for model 0.
-2019-05-28 15:38:09 x7 leabratf[24947] INFO Using train_2e training set
-2019-05-28 15:38:09 x7 leabratf[24947] INFO Starting training for model 0.
-2019-05-28 15:38:19 x7 leabratf[24947] INFO Using train_he training set
-2019-05-28 15:38:19 x7 leabratf[24947] INFO Starting training for model 0.
-2019-05-28 15:38:29 x7 leabratf[24947] INFO Using train_uni training set
-2019-05-28 15:38:29 x7 leabratf[24947] INFO Starting training for model 0.
-2019-05-28 15:38:40 x7 leabratf[24947] INFO Elapsed time: 0:00:41.911544
+2019-05-28 15:43:08 x7 leabratf[24947] INFO Optimizing using Adam
+2019-05-28 15:43:08 x7 leabratf[24947] INFO Using train_1e training set
+2019-05-28 15:43:08 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 15:45:55 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 15:48:42 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 15:51:29 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 15:54:16 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 15:57:03 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 15:59:49 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 16:02:35 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 16:05:22 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 16:08:08 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 16:10:55 x7 leabratf[24947] INFO Using train_2e training set
+2019-05-28 16:10:55 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 16:13:42 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 16:16:29 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 16:19:16 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 16:22:03 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 16:24:51 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 16:27:38 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 16:30:25 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 16:33:12 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 16:36:00 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 16:38:47 x7 leabratf[24947] INFO Using train_he training set
+2019-05-28 16:38:47 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 16:41:34 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 16:44:21 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 16:47:08 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 16:49:55 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 16:52:43 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 16:55:30 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 16:58:17 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 17:01:04 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 17:03:51 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 17:06:38 x7 leabratf[24947] INFO Using train_uni training set
+2019-05-28 17:06:38 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 17:09:25 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 17:12:13 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 17:15:00 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 17:17:47 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 17:20:34 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 17:23:21 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 17:26:08 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 17:28:55 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 17:31:43 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 17:34:30 x7 leabratf[24947] INFO Elapsed time: 1:51:22.297224
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1863,21 +1902,203 @@ Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 1min 39s, sys: 17.3 s, total: 1min 56s
-Wall time: 41.9 s
+CPU times: user 4h 46min 35s, sys: 52min 20s, total: 5h 38min 55s
+Wall time: 1h 51min 22s
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[221]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">control_models</span> <span class="o">=</span> <span class="n">adam_train_metrics</span><span class="p">[</span><span class="s1">&#39;train_uni&#39;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">control_models</span><span class="p">):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">epoch</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">loss</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Model </span><span class="si">{i}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span></span><span class="o">%%time</span>
+<span class="n">sgd_train_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">n_models</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">n_val</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2019-05-28 17:34:30 x7 leabratf[24947] INFO Optimizing using GradientDescent
+2019-05-28 17:34:30 x7 leabratf[24947] INFO Using train_1e training set
+2019-05-28 17:34:30 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 17:36:51 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 17:39:12 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 17:41:32 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 17:43:53 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 17:46:14 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 17:48:35 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 17:50:57 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 17:53:18 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 17:55:39 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 17:57:57 x7 leabratf[24947] INFO Using train_2e training set
+2019-05-28 17:57:57 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 18:00:10 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 18:02:22 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 18:04:41 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 18:07:02 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 18:09:24 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 18:11:45 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 18:14:07 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 18:16:28 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 18:18:50 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 18:21:12 x7 leabratf[24947] INFO Using train_he training set
+2019-05-28 18:21:12 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 18:23:33 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 18:25:54 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 18:28:15 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 18:30:37 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 18:32:59 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 18:35:20 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 18:37:42 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 18:40:04 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 18:42:26 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 18:44:48 x7 leabratf[24947] INFO Using train_uni training set
+2019-05-28 18:44:48 x7 leabratf[24947] INFO Starting training for model 0.
+2019-05-28 18:47:10 x7 leabratf[24947] INFO Starting training for model 1.
+2019-05-28 18:49:31 x7 leabratf[24947] INFO Starting training for model 2.
+2019-05-28 18:51:53 x7 leabratf[24947] INFO Starting training for model 3.
+2019-05-28 18:54:15 x7 leabratf[24947] INFO Starting training for model 4.
+2019-05-28 18:56:37 x7 leabratf[24947] INFO Starting training for model 5.
+2019-05-28 18:58:59 x7 leabratf[24947] INFO Starting training for model 6.
+2019-05-28 19:01:21 x7 leabratf[24947] INFO Starting training for model 7.
+2019-05-28 19:03:43 x7 leabratf[24947] INFO Starting training for model 8.
+2019-05-28 19:06:05 x7 leabratf[24947] INFO Starting training for model 9.
+2019-05-28 19:08:27 x7 leabratf[24947] INFO Elapsed time: 1:33:56.581223
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 3h 52min 48s, sys: 41min 46s, total: 4h 34min 35s
+Wall time: 1h 33min 56s
+</pre></div></div>
+</div>
+<div class="section" id="New-Plots">
+<h3>New Plots<a class="headerlink" href="#New-Plots" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[222]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Losses</span>
+<span class="c1"># min_loss_sgd_train = [min(met[&#39;loss&#39;]) for met in sgd_train_metrics]</span>
+<span class="c1"># min_loss_adam_train = [min(met[&#39;loss&#39;]) for met in adam_train_metrics]</span>
+<span class="n">max_mets_sgd_train</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_train_metrics</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+                      <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sgd_train_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="n">max_mets_adam_train</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_train_metrics</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+                       <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">adam_train_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="n">optimizer_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="s1">&#39;SGD&#39;</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c1"># data_loss = min_loss_adam_train + min_loss_sgd_train</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="p">:</span> <span class="n">max_mets_adam_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_train</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="c1"># data_dict[&#39;Loss&#39;] = data_loss</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;Optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer_labels</span>
+
+<span class="n">metric_labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">metric_values</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">optimizer_labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_train</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">metric_values</span> <span class="o">+=</span> <span class="n">max_mets_adam_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_train</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">metric_labels</span> <span class="o">+=</span>  <span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span>
+    <span class="n">optimizer_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;SGD&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Values&#39;</span> <span class="p">:</span> <span class="n">metric_values</span><span class="p">,</span>
+             <span class="s1">&#39;Datasets&#39;</span> <span class="p">:</span> <span class="n">metric_labels</span><span class="p">,</span>
+             <span class="s1">&#39;Optimizer&#39;</span> <span class="p">:</span> <span class="n">optimizer_labels</span><span class="p">}</span>
+<span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+<span class="n">data_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[222]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Values</th>
+      <th>Datasets</th>
+      <th>Optimizer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.214</td>
+      <td>train_1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.254</td>
+      <td>train_1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.238</td>
+      <td>train_1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.256</td>
+      <td>train_1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.252</td>
+      <td>train_1e</td>
+      <td>Adam</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[223]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Datasets&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Values&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Optimizer&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_df</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sample Accuracy of Adam vs SGD&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_83_0.png" src="../_images/notebooks_0.5.2-Adam-With-Non-Uniform-Training-Statistics_83_0.png" />
 </div>
 </div>
 </div>
