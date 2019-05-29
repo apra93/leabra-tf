@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.5.2 Adam with Non-Uniform Training Statistics &mdash; Leabra Tensorflow 0+untagged.52.g46893d3 documentation</title>
+  <title>0.5.2 Adam with Non-Uniform Training Statistics &mdash; Leabra Tensorflow 0+untagged.52.gc00edf6 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.52.g46893d3
+                0+untagged.52.gc00edf6
               </div>
             
           
@@ -2255,12 +2255,13 @@ Wall time: 3h 41min 56s
 <div class="section" id="New-Plot-with-2500-Epochs-for-SGD">
 <h4>New Plot with 2500 Epochs for SGD<a class="headerlink" href="#New-Plot-with-2500-Epochs-for-SGD" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[226]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[229]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Datasets&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Values&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Optimizer&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_df</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sample Accuracy of Adam vs SGD&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sample Accuracy of Adam vs SGD on Uniform Datasets&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Training Datasets&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
