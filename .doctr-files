@@ -175,6 +175,7 @@
 ./_sources/notebooks/0.5.2-Adam-With-Non-Uniform-Training-Statistics.ipynb.txt
 ./_sources/notebooks/0.6-Hebbian-Learning.ipynb.txt
 ./_sources/notebooks/0.7-Replicating-Results-with-the-Updated-Task.ipynb.txt
+./_sources/notebooks/0.8-Hierarchical-Learning.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/tfutils.rst.txt
 ./_sources/utils.rst.txt
@@ -249,6 +250,7 @@
 ./notebooks/0.5.2-Adam-With-Non-Uniform-Training-Statistics.html
 ./notebooks/0.6-Hebbian-Learning.html
 ./notebooks/0.7-Replicating-Results-with-the-Updated-Task.html
+./notebooks/0.8-Hierarchical-Learning.html
 ./objects.inv
 ./release_schedule.html
 ./search.html
