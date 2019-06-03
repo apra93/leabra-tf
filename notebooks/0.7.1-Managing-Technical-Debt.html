@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.7 Replicating Results with the Updated Task &mdash; Leabra Tensorflow 0+untagged.52.g51625b7 documentation</title>
+  <title>0.7.1 Managing Technical Debt &mdash; Leabra Tensorflow 0+untagged.52.g51625b7 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="0.7.1 Managing Technical Debt" href="0.7.1-Managing-Technical-Debt.html" />
-    <link rel="prev" title="0.6 Hebbian Learning" href="0.6-Hebbian-Learning.html" /> 
+    <link rel="next" title="0.8 Hierarchical Learning" href="0.8-Hierarchical-Learning.html" />
+    <link rel="prev" title="0.7 Replicating Results with the Updated Task" href="0.7-Replicating-Results-with-the-Updated-Task.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -120,19 +120,13 @@
 <li class="toctree-l1"><a class="reference internal" href="0.5.1-Adam-With-Non-Uniform-Task-Statistics.html">0.5.1 Adam with Non-Uniform Task Statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.5.2-Adam-With-Non-Uniform-Training-Statistics.html">0.5.2 Adam with Non-Uniform Training Statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.6-Hebbian-Learning.html">0.6 Hebbian Learning</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0.7 Replicating Results with the Updated Task</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="0.7-Replicating-Results-with-the-Updated-Task.html">0.7 Replicating Results with the Updated Task</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.7.1 Managing Technical Debt</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Starter-Imports">Starter Imports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Global-Variables">Global Variables</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Combigen-Task-Variables">Combigen Task Variables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Data-Parameters">Data Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Datasets">Datasets</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Network-Parameters">Network Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Training-Parameters">Training Parameters</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#Defalt-Configuration---Formerly-Global-Variables">Defalt Configuration - Formerly Global Variables</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Background">Background</a><ul>
@@ -168,7 +162,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="0.7.1-Managing-Technical-Debt.html">0.7.1 Managing Technical Debt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.8-Hierarchical-Learning.html">0.8 Hierarchical Learning</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Project Links</span></p>
@@ -223,13 +216,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>0.7 Replicating Results with the Updated Task</li>
+      <li>0.7.1 Managing Technical Debt</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/0.7-Replicating-Results-with-the-Updated-Task.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/0.7.1-Managing-Technical-Debt.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -464,9 +457,18 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="0.7-Replicating-Results-with-the-Updated-Task">
-<h1>0.7 Replicating Results with the Updated Task<a class="headerlink" href="#0.7-Replicating-Results-with-the-Updated-Task" title="Permalink to this headline">¶</a></h1>
-<p>The final change made to the task shown in <a class="reference internal" href="0.1.4-Selectable-Line-Statistics.html"><span class="doc">nb-0.1.4</span></a> resulted in large changes to results found in previous notebooks. Let’s redo the relevant previous analyses so everything is compiled in one place.</p>
+<div class="section" id="0.7.1-Managing-Technical-Debt">
+<h1>0.7.1 Managing Technical Debt<a class="headerlink" href="#0.7.1-Managing-Technical-Debt" title="Permalink to this headline">¶</a></h1>
+<p>The project has accrued enough technical debt that some effort should be put in to make things better. This notebook will be an effort to improve upon the workflow used in <a class="reference internal" href="0.7-Replicating-Results-with-the-Updated-Task.html"><span class="doc">nb-0.7</span></a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="Boilerplate">
 <h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
 <p>The following subsections are largely boilerplate code, so skip around as needed.</p>
@@ -474,7 +476,7 @@ div.rendered_html tbody tr:hover {
 <h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
 <p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -490,7 +492,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Thu Apr 11 2019 15:36:16
+Thu Apr 11 2019 11:22:41
 
 CPython 3.6.8
 IPython 7.3.0
@@ -507,14 +509,14 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 12
 interpreter: 64bit
-Git hash   : 2dce2bc48d77c7dc2cb94fcc05b9fe632f8090a0
+Git hash   : ecbf7757b31d5f96c5541a0b5aa942b13768d43f
 Git branch : master
 </pre></div></div>
 </div>
 <p>Load <a class="reference external" href="https://ipython.org/ipython-doc/3/config/extensions/autoreload.html">autoreload</a> which will always reload modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <p>This behavior can be inverted by running <code class="docutils literal notranslate"><span class="pre">autoreload</span> <span class="pre">2</span></code> which will set everything to be auto-reloaded <em>except</em> for modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -527,7 +529,7 @@ Git branch : master
 </div>
 <p>Load <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in one of the more <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>-friendly <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/plotting.html">rich-output modes</a>. Some options (that may or may not have worked) are <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">notebook</span></code>, and <code class="docutils literal notranslate"><span class="pre">gtk</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -537,21 +539,19 @@ Git branch : master
 </div>
 </div>
 </div>
-<div class="section" id="Imports">
-<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Starter-Imports">
+<h3>Starter Imports<a class="headerlink" href="#Starter-Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 <span class="c1"># Third party</span>
-<span class="kn">import</span> <span class="nn">IPython</span> <span class="k">as</span> <span class="nn">ipy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -562,7 +562,7 @@ Git branch : master
 </div>
 <p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -572,9 +572,6 @@ Git branch : master
 <span class="c1"># Visualization for the task</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.visualization.combigen_heatmap
 <span class="kn">import</span> <span class="nn">leabratf.visualization.combigen_heatmap</span> <span class="k">as</span> <span class="nn">cgh</span>
-<span class="c1"># Metrics visulaization</span>
-<span class="o">%</span><span class="k">aimport</span> leabratf.visualization.metrics
-<span class="kn">import</span> <span class="nn">leabratf.visualization.metrics</span> <span class="k">as</span> <span class="nn">plt_metrics</span>
 <span class="c1"># Utility functions</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.utils
 <span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
@@ -588,7 +585,7 @@ Git branch : master
 <h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -600,7 +597,7 @@ Git branch : master
 <p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -614,136 +611,30 @@ Git branch : master
 </div>
 </div>
 </div>
-<div class="section" id="Global-Variables">
-<h3>Global Variables<a class="headerlink" href="#Global-Variables" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="Combigen-Task-Variables">
-<h4>Combigen Task Variables<a class="headerlink" href="#Combigen-Task-Variables" title="Permalink to this headline">¶</a></h4>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Number of slots in a training set</span>
-<span class="n">SLOTS</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="c1"># Size of each axis in the input array</span>
-<span class="n">SIZE</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="c1"># Number of axes to use per slot</span>
-<span class="n">DIMS</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="c1"># Number of lines per slot</span>
-<span class="n">LINES</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="c1"># Line frequency statistics</span>
-<span class="n">LINE_STATS</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Data-Parameters">
-<h4>Data Parameters<a class="headerlink" href="#Data-Parameters" title="Permalink to this headline">¶</a></h4>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Number of epochs to train for</span>
-<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">500</span>
-<span class="c1"># Number of samples in the training set</span>
-<span class="n">N_TRAIN</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="c1"># Number of samples in the validation set</span>
-<span class="n">N_VAL</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="c1"># Number of samples in the testing set</span>
-<span class="n">N_TEST</span> <span class="o">=</span> <span class="mi">500</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Datasets">
-<h4>Datasets<a class="headerlink" href="#Datasets" title="Permalink to this headline">¶</a></h4>
-<p>Here we will introduce new line sampling statistics</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Training Data - Uniform</span>
-<span class="n">Y_TRAIN</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_TRAIN</span><span class="p">,</span>
-                             <span class="n">slots</span><span class="o">=</span><span class="n">SLOTS</span><span class="p">,</span>
-                             <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span>
-                             <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">,</span>
-                             <span class="n">n_lines</span><span class="o">=</span><span class="n">LINES</span><span class="p">,</span>
-                             <span class="n">line_stats</span><span class="o">=</span><span class="n">LINE_STATS</span><span class="p">)</span>
-<span class="n">X_TRAIN</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_TRAIN</span><span class="p">)</span>
-
-<span class="c1"># Validation Data</span>
-<span class="n">Y_VAL</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_VAL</span><span class="p">,</span>
-                           <span class="n">slots</span><span class="o">=</span><span class="n">SLOTS</span><span class="p">,</span>
-                           <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span>
-                           <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">,</span>
-                           <span class="n">n_lines</span><span class="o">=</span><span class="n">LINES</span><span class="p">,</span>
-                           <span class="n">line_stats</span><span class="o">=</span><span class="n">LINE_STATS</span><span class="p">)</span>
-<span class="n">X_VAL</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_VAL</span><span class="p">)</span>
-
-<span class="c1"># Testing data</span>
-<span class="n">Y_TEST</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">N_TEST</span><span class="p">,</span>
-                            <span class="n">slots</span><span class="o">=</span><span class="n">SLOTS</span><span class="p">,</span>
-                            <span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span>
-                            <span class="n">dims</span><span class="o">=</span><span class="n">DIMS</span><span class="p">,</span>
-                            <span class="n">n_lines</span><span class="o">=</span><span class="n">LINES</span><span class="p">,</span>
-                            <span class="n">line_stats</span><span class="o">=</span><span class="n">LINE_STATS</span><span class="p">)</span>
-<span class="n">X_TEST</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Y_TEST</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Network-Parameters">
-<h4>Network Parameters<a class="headerlink" href="#Network-Parameters" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="Defalt-Configuration---Formerly-Global-Variables">
+<h3>Defalt Configuration - Formerly Global Variables<a class="headerlink" href="#Defalt-Configuration---Formerly-Global-Variables" title="Permalink to this headline">¶</a></h3>
+<p>Rather than declaring a set of constants at the top, these variables are defined in a new file <code class="docutils literal notranslate"><span class="pre">leabratf/tasks/combinatorics/default_configuration.py</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Learning rate</span>
-<span class="n">LR</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># Batch size</span>
-<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="c1"># Number of parameters in the inputs</span>
-<span class="n">N_INPUTS</span> <span class="o">=</span> <span class="n">SLOTS</span> <span class="o">*</span> <span class="n">SIZE</span> <span class="o">**</span> <span class="n">DIMS</span>
-<span class="c1"># Number of hidden units</span>
-<span class="n">N_HIDDEN_1</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="c1"># Number of parameters in the labels</span>
-<span class="n">N_OUTPUTS</span> <span class="o">=</span> <span class="n">SLOTS</span> <span class="o">*</span> <span class="n">SIZE</span> <span class="o">*</span> <span class="n">DIMS</span>
+<span></span><span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.default_configuration
+<span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.default_configuration</span> <span class="k">as</span> <span class="nn">config</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Training-Parameters">
-<h4>Training Parameters<a class="headerlink" href="#Training-Parameters" title="Permalink to this headline">¶</a></h4>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Number of times to print an update</span>
-<span class="n">N_UPDATES</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="c1"># Which device to train on</span>
-<span class="n">TF_DEVICE</span> <span class="o">=</span> <span class="s1">&#39;/cpu:0&#39;</span>
-<span class="c1"># Number of models to train with</span>
-<span class="n">N_MODELS</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="c1"># Recompute the model accuracy after this many epochs</span>
-<span class="n">N_EPOCHS_ACC</span> <span class="o">=</span> <span class="mi">25</span>
-</pre></div>
-</div>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="Background">
 <h2>Background<a class="headerlink" href="#Background" title="Permalink to this headline">¶</a></h2>
+<p><em>Leave this all for now</em></p>
 <p>This section goes over some of the background information for the notebook using results from previous notebooks. This first section shows the task as always, but then will also go over the previous training curves.</p>
 <div class="section" id="The-Combigen-Task">
 <h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
 <p>Quickly remind ourselves what the task looks like before diving in.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -756,7 +647,7 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_32_0.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_32_0.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_24_0.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_24_0.png" />
 </div>
 </div>
 </div>
@@ -767,7 +658,7 @@ Git branch : master
 <h4>Reading the Data<a class="headerlink" href="#Reading-the-Data" title="Permalink to this headline">¶</a></h4>
 <p>Let’s write a function to read the relevant data we want back into a dictionary, keyed by learning rates.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -822,7 +713,7 @@ Git branch : master
 <h4>Adam with LR 0.0033<a class="headerlink" href="#Adam-with-LR-0.0033" title="Permalink to this headline">¶</a></h4>
 <p>And now let’s plot the one with the 0.0033 LR</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -837,7 +728,7 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_38_0.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_38_0.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_30_0.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_30_0.png" />
 </div>
 </div>
 </div>
@@ -847,7 +738,7 @@ Git branch : master
 <h2>Setting Up the Graph<a class="headerlink" href="#Setting-Up-the-Graph" title="Permalink to this headline">¶</a></h2>
 <p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -856,6 +747,7 @@ Git branch : master
 </pre></div>
 </div>
 </div>
+<p>Here we will introduce new line sampling statistics</p>
 <div class="section" id="Make-the-Different-Datasets">
 <h3>Make the Different Datasets<a class="headerlink" href="#Make-the-Different-Datasets" title="Permalink to this headline">¶</a></h3>
 <p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used including the ones with the different statistics.</p>
@@ -864,58 +756,14 @@ Git branch : master
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="c1"># The first step of the setup is that each of the datasets (training, validation, and</span>
-    <span class="c1"># testing) are turned into their own `Dataset` objects.</span>
-    <span class="c1"># Training dataset</span>
-    <span class="n">dataset_train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">X_TRAIN</span><span class="p">,</span> <span class="n">Y_TRAIN</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
-    <span class="c1"># Validation dataset</span>
-    <span class="n">dataset_val</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">X_VAL</span><span class="p">,</span> <span class="n">Y_VAL</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">N_VAL</span><span class="p">)</span>
-    <span class="c1"># Testing dataset</span>
-    <span class="n">dataset_test</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">X_TEST</span><span class="p">,</span> <span class="n">Y_TEST</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">N_TEST</span><span class="p">)</span>
+<span></span><span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.make_datasets
+<span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.make_datasets</span> <span class="k">as</span> <span class="nn">make_datasets</span>
 
-    <span class="c1"># Next, let&#39;s define the iterators for each of the datasets, and then add their</span>
-    <span class="c1"># initializations to the `init_ops` list.</span>
-    <span class="c1"># Training iterator</span>
-    <span class="n">train_iter</span> <span class="o">=</span> <span class="n">dataset_train</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
-    <span class="c1"># Validation iterator</span>
-    <span class="n">val_iter</span> <span class="o">=</span> <span class="n">dataset_val</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
-    <span class="c1"># Testing iterator</span>
-    <span class="n">test_iter</span> <span class="o">=</span> <span class="n">dataset_test</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
-    <span class="c1"># Aggregate the iterators</span>
-    <span class="n">iterators</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_iter</span><span class="p">,</span>
-                 <span class="n">val_iter</span><span class="p">,</span>
-                 <span class="n">test_iter</span><span class="p">]</span>
+<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c1"># Add the initiatlizations to the init opts</span>
-    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
-    <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">train_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span>
-                 <span class="n">val_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span>
-                 <span class="n">test_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">]</span>
-
-    <span class="c1"># And finally, the interesting part. Rather than creating separate next elements for</span>
-    <span class="c1"># the model, the `tf.data` API has a string handler iterator so we can contextually</span>
-    <span class="c1"># switch the active `Dataset` object, resulting in different values being used for `x`</span>
-    <span class="c1"># and `y`.</span>
-
-    <span class="c1"># The way this is done is by defining a `tf.placeholder` variable, which is used</span>
-    <span class="c1"># first to create a string handler iterator, and later to hold the dataset-indicating</span>
-    <span class="c1"># string handle. The string handler iterator is what then changes the values of `x` and</span>
-    <span class="c1"># `y`, naturally also supplying them using the `get_next` method.</span>
-    <span class="c1"># The placeholder variable of type string</span>
-    <span class="n">handle</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
-    <span class="c1"># Iterator from string handle</span>
-    <span class="n">handle_iterator</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Iterator</span><span class="o">.</span><span class="n">from_string_handle</span><span class="p">(</span>
-        <span class="n">handle</span><span class="p">,</span> <span class="n">dataset_train</span><span class="o">.</span><span class="n">output_types</span><span class="p">,</span>
-        <span class="n">dataset_train</span><span class="o">.</span><span class="n">output_shapes</span><span class="p">)</span>
-
-    <span class="c1"># x and y that will be used in the graph</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">handle_iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">tf_device</span><span class="p">):</span>
+    <span class="c1"># Get the relevant dataset nodes</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_datasets</span><span class="o">.</span><span class="n">generate_combigen_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -925,21 +773,21 @@ Git branch : master
 <p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
 <p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Weights and biases</span>
 <span class="n">weights</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">],</span>
+    <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">n_inputs</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">n_hidden_1</span><span class="p">],</span>
                       <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
-    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">],</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">n_hidden_1</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">n_outputs</span><span class="p">],</span>
                       <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
 <span class="p">}</span>
 <span class="n">biases</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">],</span>
+    <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">n_hidden_1</span><span class="p">],</span>
                       <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
-    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_OUTPUTS</span><span class="p">],</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">n_outputs</span><span class="p">],</span>
                       <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
 <span class="p">}</span>
 
@@ -952,7 +800,7 @@ Git branch : master
 <h3>Model and Metrics<a class="headerlink" href="#Model-and-Metrics" title="Permalink to this headline">¶</a></h3>
 <p>The architecture is the same as previous notebooks. See <code class="docutils literal notranslate"><span class="pre">nb-0.3</span></code> for more details.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -969,13 +817,13 @@ Git branch : master
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
     <span class="c1"># Get the relevant dataset nodes</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">generate_combigen_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
 
     <span class="c1"># Build the model</span>
     <span class="n">logits</span> <span class="o">=</span> <span class="n">oreilly_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -1012,7 +860,7 @@ Git branch : master
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1041,7 +889,7 @@ Git branch : master
 <h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
 <p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1063,7 +911,7 @@ Git branch : master
 <h3>Defining the Default Training Function<a class="headerlink" href="#Defining-the-Default-Training-Function" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1131,7 +979,7 @@ Git branch : master
 <div class="section" id="Defining-The-Experiment-Function">
 <h3>Defining The Experiment Function<a class="headerlink" href="#Defining-The-Experiment-Function" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1183,12 +1031,12 @@ Git branch : master
 <div class="section" id="Getting-the-Metrics">
 <h3>Getting the Metrics<a class="headerlink" href="#Getting-the-Metrics" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
-<span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0333</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="n">lrs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">]</span>
 <span class="c1"># lr_metrics, lr_accuracy_df = exp_lr(lrs=lrs, epochs=5*EPOCHS)</span>
 <span class="n">lr_metrics</span> <span class="o">=</span> <span class="n">exp_lr</span><span class="p">(</span><span class="n">lrs</span><span class="o">=</span><span class="n">lrs</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
 </pre></div>
@@ -1199,16 +1047,27 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Starting training with lr of 0.0333...
-Optimization Finished! Testing Sample Accuracy: 0.308
-Optimization Finished! Testing Sample Accuracy: 0.276
+Starting training with lr of 0.01...
+Optimization Finished! Testing Sample Accuracy: 0.126
+Optimization Finished! Testing Sample Accuracy: 0.116
+Optimization Finished! Testing Sample Accuracy: 0.102
+Optimization Finished! Testing Sample Accuracy: 0.092
+Optimization Finished! Testing Sample Accuracy: 0.094
+Optimization Finished! Testing Sample Accuracy: 0.126
+Optimization Finished! Testing Sample Accuracy: 0.104
+Optimization Finished! Testing Sample Accuracy: 0.082
+Optimization Finished! Testing Sample Accuracy: 0.106
+Optimization Finished! Testing Sample Accuracy: 0.094
+Completed training for lr of 0.01
+CPU times: user 2h 48min 9s, sys: 28min 46s, total: 3h 16min 55s
+Wall time: 1h 11min 33s
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="Saving-the-Data">
 <h3>Saving the Data<a class="headerlink" href="#Saving-the-Data" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1264,7 +1123,7 @@ Optimization Finished! Testing Sample Accuracy: 0.276
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1274,7 +1133,7 @@ Optimization Finished! Testing Sample Accuracy: 0.276
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1288,15 +1147,14 @@ Optimization Finished! Testing Sample Accuracy: 0.276
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/new_task/learning_rates/2500_epochs_0.0333_lr.csv&#39;
-Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/new_task/learning_rates/2500_epochs_0.1_lr.csv&#39;
+Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/new_task/learning_rates/2500_epochs.csv&#39;
 </pre></div></div>
 </div>
 </div>
 <div class="section" id="Reading-in-the-Rest-of-the-Data">
 <h3>Reading in the Rest of the Data<a class="headerlink" href="#Reading-in-the-Rest-of-the-Data" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1321,7 +1179,7 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/ne
 <div class="section" id="Plots-for-SGD-with-the-Different-Learning-Rates">
 <h3>Plots for SGD with the Different Learning Rates<a class="headerlink" href="#Plots-for-SGD-with-the-Different-Learning-Rates" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1336,42 +1194,28 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/ne
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_0.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_0.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_0.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_1.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_1.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_1.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_2.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_2.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_3.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_3.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_4.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_4.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_2.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_2.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_5.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_65_5.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_3.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_58_3.png" />
 </div>
 </div>
 </div>
@@ -1432,35 +1276,35 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/ne
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_0.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_0.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_0.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_1.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_1.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_1.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_2.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_2.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_2.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_2.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_3.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_3.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_3.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_3.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_4.png" src="../_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_4.png" />
+<img alt="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_4.png" src="../_images/notebooks_0.7.1-Managing-Technical-Debt_64_4.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1484,10 +1328,10 @@ Saved df to &#39;/home/abdullah_rashed/work/projects/leabra-tf/data/processed/ne
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="0.7.1-Managing-Technical-Debt.html" class="btn btn-neutral float-right" title="0.7.1 Managing Technical Debt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="0.8-Hierarchical-Learning.html" class="btn btn-neutral float-right" title="0.8 Hierarchical Learning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="0.6-Hebbian-Learning.html" class="btn btn-neutral float-left" title="0.6 Hebbian Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="0.7-Replicating-Results-with-the-Updated-Task.html" class="btn btn-neutral float-left" title="0.7 Replicating Results with the Updated Task" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.3.1 Comparing Accuracy Metrics &mdash; Leabra Tensorflow 0+untagged.52.g51625b7 documentation</title>
+  <title>0.3.2 Model Checkpoints &mdash; Leabra Tensorflow 0+untagged.52.g51625b7 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="0.3.2 Model Checkpoints" href="0.3.2-Model-Checkpoints.html" />
-    <link rel="prev" title="0.3 BP Model in Tensorflow" href="0.3-BP-Model-in-Tensorflow.html" /> 
+    <link rel="next" title="0.3.3 GPU Performance Metrics" href="0.3.3-GPU-Performance-Metrics.html" />
+    <link rel="prev" title="0.3.1 Comparing Accuracy Metrics" href="0.3.1-Comparing-Accuracy-Metrics.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,11 +111,13 @@
 <li class="toctree-l1"><a class="reference internal" href="0.2-Running-a-Basic-Model-on-Combigen.html">0.2 Running a Basic Model on Combigen</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.2.1-Iterating-the-BP-Model-on-GPUs.html">0.2.1 Iterating the BP Model on GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0.3.1 Comparing Accuracy Metrics</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="0.3.1-Comparing-Accuracy-Metrics.html">0.3.1 Comparing Accuracy Metrics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.3.2 Model Checkpoints</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Default-Configuration">Default Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Global-Variables">Global Variables</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Combigen-Task-Variables">Combigen Task Variables</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Data-Parameters">Data Parameters</a></li>
@@ -128,46 +130,24 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Background">Background</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#The-Combigen-Task">The Combigen Task</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Previous-Accuracy-Results">Previous Accuracy Results</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Elemental-Accuracy">Elemental Accuracy</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Sample-Accuracy">Sample Accuracy</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Obtaining-the-Metrics">Obtaining the Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Setting-Up-the-Graph">Setting Up the Graph</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Make-the-Datasets">Make the Datasets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#TF-Variables">TF Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Model-and-Loss-Function">Model and Loss Function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Metrics">Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Model,-Loss-Function,-and-Metrics">Model, Loss Function, and Metrics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Defining-the-Training-Function">Defining the Training Function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Getting-Metrics-for-10-Models">Getting Metrics for 10 Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Training-the-Model">Training the Model</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Plotting-the-Metrics">Plotting the Metrics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#The-Legend">The Legend</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Training-Set-Metrics">Training Set Metrics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Validation-Set-Metrics">Validation Set Metrics</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Summary-Plots">Summary Plots</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#All-Metrics-for-All-Models">All Metrics for All Models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Average-Metrics-for-All-Models">Average Metrics for All Models</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Accuracy-Metrics-in-Detail">Accuracy Metrics in Detail</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Average-Loss-and-Elemental-Accuracy">Average Loss and Elemental Accuracy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Average-Training-Axis-and-Slot-Accuracy">Average Training Axis and Slot Accuracy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Validation-Accuracy-Metrics">Validation Accuracy Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Validation-Sample-Accuracy">Validation Sample Accuracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Recreating-the-BCE+E-Training-Curves">Recreating the BCE+E Training Curves</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#500-Epochs">500 Epochs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#10-x-500-Epochs">10 x 500 Epochs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#50-x-500-Epochs">50 x 500 Epochs</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="0.3.2-Model-Checkpoints.html">0.3.2 Model Checkpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.3.3-GPU-Performance-Metrics.html">0.3.3 GPU Performance Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.4-Exploring-Different-Learning-Rates.html">0.4 Exploring Different Learning Rates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.4.1-Exploring-Different-Optimizers.html">0.4.1 Exploring Different Optimizers</a></li>
@@ -231,13 +211,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>0.3.1 Comparing Accuracy Metrics</li>
+      <li>0.3.2 Model Checkpoints</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/0.3.1-Comparing-Accuracy-Metrics.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/0.3.2-Model-Checkpoints.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -472,9 +452,9 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="0.3.1-Comparing-Accuracy-Metrics">
-<h1>0.3.1 Comparing Accuracy Metrics<a class="headerlink" href="#0.3.1-Comparing-Accuracy-Metrics" title="Permalink to this headline">¶</a></h1>
-<p>The accuracy results that we’ve been getting so far haven’t reflected the those presented in O’Reilly’s paper, so let’s generate them more systematically.</p>
+<div class="section" id="0.3.2-Model-Checkpoints">
+<h1>0.3.2 Model Checkpoints<a class="headerlink" href="#0.3.2-Model-Checkpoints" title="Permalink to this headline">¶</a></h1>
+<p>Before iterating through large quantities of models, we should figure out a good workflow for saving models at various checkpoints.</p>
 <div class="section" id="Boilerplate">
 <h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
 <p>The following subsections are largely boilerplate code, so skip around as needed.</p>
@@ -482,7 +462,7 @@ div.rendered_html tbody tr:hover {
 <h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
 <p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -498,7 +478,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Sun Mar 10 2019 15:15:54
+Tue May 07 2019 15:52:28
 
 CPython 3.6.8
 IPython 7.3.0
@@ -515,14 +495,14 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 12
 interpreter: 64bit
-Git hash   : c78d1b5e16d1a927fca67905d23089041445c4fd
+Git hash   : ded6540a0da1ae5a1d9648a102ddfea7da0ed892
 Git branch : master
 </pre></div></div>
 </div>
 <p>Load <a class="reference external" href="https://ipython.org/ipython-doc/3/config/extensions/autoreload.html">autoreload</a> which will always reload modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <p>This behavior can be inverted by running <code class="docutils literal notranslate"><span class="pre">autoreload</span> <span class="pre">2</span></code> which will set everything to be auto-reloaded <em>except</em> for modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -535,11 +515,11 @@ Git branch : master
 </div>
 <p>Load <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in one of the more <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>-friendly <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/plotting.html">rich-output modes</a>. Some options (that may or may not have worked) are <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">notebook</span></code>, and <code class="docutils literal notranslate"><span class="pre">gtk</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Set the matplotlib mode.</span>
+<span></span><span class="c1"># Set the matplotlib mode</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
@@ -549,27 +529,28 @@ Git branch : master
 <h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Standard library imports</span>
-<span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
 
 <span class="c1"># Third party</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
 </pre></div>
 </div>
 </div>
 <p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -583,7 +564,9 @@ Git branch : master
 <span class="o">%</span><span class="k">aimport</span> leabratf.utils
 <span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
 <span class="o">%</span><span class="k">aimport</span> leabratf.constants
-<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_MODELS</span>
+<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_CKPTS</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.default_configuration
+<span class="kn">from</span> <span class="nn">leabratf.tasks.combinatorics.default_configuration</span> <span class="k">import</span> <span class="n">default_config</span>
 </pre></div>
 </div>
 </div>
@@ -592,7 +575,7 @@ Git branch : master
 <h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -604,7 +587,7 @@ Git branch : master
 <p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -614,18 +597,77 @@ Git branch : master
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;leabratf&#39;</span><span class="p">)</span>
 <span class="c1"># Don&#39;t propagate messages</span>
 <span class="n">logger</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
-
-<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<div class="section" id="Default-Configuration">
+<h3>Default Configuration<a class="headerlink" href="#Default-Configuration" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Define the base experiment configuration</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">()</span>
+<span class="c1"># Overwrite any configuration values here</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tf_device</span> <span class="o">=</span> <span class="s1">&#39;/device:CPU:0&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Define a config dict constructor based on the cfg above</span>
+<span class="n">default_nb_config</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">default_config</span><span class="p">(</span><span class="o">**</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<span class="c1"># Training set config</span>
+<span class="n">training_set_config</span> <span class="o">=</span> <span class="n">default_nb_config</span><span class="p">(</span><span class="n">_name</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">training_set_config</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">training_set_config</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;_config&#39;: True,
+ &#39;_name&#39;: &#39;train&#39;,
+ &#39;batch_size&#39;: 1,
+ &#39;dims&#39;: 2,
+ &#39;dir_checkpoints&#39;: PosixPath(&#39;/home/abdullah_rashed/work/projects/leabra-tf/models/checkpoints&#39;),
+ &#39;dir_tensorboard&#39;: PosixPath(&#39;/home/abdullah_rashed/work/projects/leabra-tf/data/tensorboard&#39;),
+ &#39;epochs&#39;: 500,
+ &#39;line_stats&#39;: [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]],
+ &#39;lr&#39;: 0.01,
+ &#39;n_epochs_acc&#39;: 25,
+ &#39;n_hidden_1&#39;: 100,
+ &#39;n_inputs&#39;: 100,
+ &#39;n_lines&#39;: 2,
+ &#39;n_models&#39;: 10,
+ &#39;n_outputs&#39;: 40,
+ &#39;n_samples&#39;: 100,
+ &#39;n_test&#39;: 500,
+ &#39;n_train&#39;: 100,
+ &#39;n_updates&#39;: 2,
+ &#39;n_val&#39;: 50,
+ &#39;optimizer&#39;: &#39;sgd&#39;,
+ &#39;size&#39;: 5,
+ &#39;slots&#39;: 4,
+ &#39;tf_device&#39;: &#39;/device:CPU:0&#39;}
+&lt;class &#39;pstar.pstar.pdict&#39;&gt;
+</pre></div></div>
+</div>
+</div>
 <div class="section" id="Global-Variables">
 <h3>Global Variables<a class="headerlink" href="#Global-Variables" title="Permalink to this headline">¶</a></h3>
+<p>Same variables that characterize the task, network, and data.</p>
 <div class="section" id="Combigen-Task-Variables">
 <h4>Combigen Task Variables<a class="headerlink" href="#Combigen-Task-Variables" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -644,7 +686,7 @@ Git branch : master
 <div class="section" id="Data-Parameters">
 <h4>Data Parameters<a class="headerlink" href="#Data-Parameters" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -663,7 +705,7 @@ Git branch : master
 <div class="section" id="Datasets">
 <h4>Datasets<a class="headerlink" href="#Datasets" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -683,7 +725,7 @@ Git branch : master
 <div class="section" id="Network-Parameters">
 <h4>Network Parameters<a class="headerlink" href="#Network-Parameters" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -704,12 +746,12 @@ Git branch : master
 <div class="section" id="Training-Parameters">
 <h4>Training Parameters<a class="headerlink" href="#Training-Parameters" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Number of times to print an update</span>
-<span class="n">N_UPDATES</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">N_UPDATES</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1"># Which device to train on</span>
 <span class="n">TF_DEVICE</span> <span class="o">=</span> <span class="s1">&#39;/cpu:0&#39;</span>
 <span class="c1"># Number of models to train with</span>
@@ -727,7 +769,7 @@ Git branch : master
 <h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
 <p>Quickly remind ourselves what the task looks like before diving in.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -740,29 +782,16 @@ Git branch : master
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_32_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_32_0.png" />
+<img alt="../_images/notebooks_0.3.2-Model-Checkpoints_35_0.png" src="../_images/notebooks_0.3.2-Model-Checkpoints_35_0.png" />
 </div>
 </div>
 </div>
-<div class="section" id="Previous-Accuracy-Results">
-<h3>Previous Accuracy Results<a class="headerlink" href="#Previous-Accuracy-Results" title="Permalink to this headline">¶</a></h3>
-<p>Between nb-0.2.x and 0.3, our accuracy results have been quite reproducible. Here is a summary of the different results so far. All of the models shown below were trained using the O’Reilly BP architecture and binary cross-entropy as the loss.</p>
-<div class="section" id="Elemental-Accuracy">
-<h4>Elemental Accuracy<a class="headerlink" href="#Elemental-Accuracy" title="Permalink to this headline">¶</a></h4>
-<p>In nb-0.2.x, the O’Reilly BP model was implemented in keras using an absolute error based accuracy metric. Below is the training curve when trained to 5000 epochs.</p>
-<p><img alt="BCE_SGD" src="../_images/nb0.2.1_bce_sgd_5000_epochs.png" /></p>
 </div>
-<div class="section" id="Sample-Accuracy">
-<h4>Sample Accuracy<a class="headerlink" href="#Sample-Accuracy" title="Permalink to this headline">¶</a></h4>
-<p>In nb-0.3, the model was implemented in tensorflow with a modification to the accuracy Some things to note are that the models were trained to 10 times the number of epochs as O’Reilly did (500). However, a dotted vertical line was added at the 500 epoch mark to make it clear what the model’s performance would have looked like.</p>
-</div>
-</div>
-</div>
-<div class="section" id="Obtaining-the-Metrics">
-<h2>Obtaining the Metrics<a class="headerlink" href="#Obtaining-the-Metrics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Setting-Up-the-Graph">
+<h2>Setting Up the Graph<a class="headerlink" href="#Setting-Up-the-Graph" title="Permalink to this headline">¶</a></h2>
 <p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -775,11 +804,11 @@ Git branch : master
 <h3>Make the Datasets<a class="headerlink" href="#Make-the-Datasets" title="Permalink to this headline">¶</a></h3>
 <p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># The first step of the setup is that each of the datasets (training, validation, and</span>
     <span class="c1"># testing) are turned into their own `Dataset` objects.</span>
     <span class="c1"># Training dataset</span>
@@ -804,6 +833,7 @@ Git branch : master
     <span class="n">iterators</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">]</span>
 
     <span class="c1"># Add the initiatlizations to the init opts</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">train_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">val_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">test_iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">]</span>
 
     <span class="c1"># And finally, the interesting part. Rather than creating separate next elements for</span>
@@ -835,7 +865,7 @@ Git branch : master
 <p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
 <p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -853,17 +883,16 @@ Git branch : master
                       <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
 <span class="p">}</span>
 
-<span class="c1"># List for initialization operations</span>
-<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()]</span>
+<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[]</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Model-and-Loss-Function">
-<h3>Model and Loss Function<a class="headerlink" href="#Model-and-Loss-Function" title="Permalink to this headline">¶</a></h3>
-<p>The architecture is the same as previous notebooks. See nb-0.3 for more details.</p>
+<div class="section" id="Model,-Loss-Function,-and-Metrics">
+<h3>Model, Loss Function, and Metrics<a class="headerlink" href="#Model,-Loss-Function,-and-Metrics" title="Permalink to this headline">¶</a></h3>
+<p>The architecture is the same as previous notebooks. See <code class="docutils literal notranslate"><span class="pre">nb-0.3</span></code> for more details.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -876,8 +905,15 @@ Git branch : master
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">])</span>
     <span class="c1"># Reshape for labels</span>
     <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">STACK</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">,</span> <span class="n">DIMS</span><span class="p">])</span>
-
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
     <span class="c1"># Get the relevant dataset nodes</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_datasets</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
 
@@ -886,26 +922,17 @@ Git branch : master
     <span class="c1"># Ensure y is cast to the same type as logits</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
+    <span class="c1"># We will keep this in for now</span>
+    <span class="c1"># Define alpha as placeholder variable</span>
+    <span class="n">alpha_ph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+
     <span class="c1"># Define loss and optimizer</span>
     <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
         <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">)</span>
 
     <span class="c1"># train_op = optimizer.minimize(loss_op, global_step=tf.train.get_global_step())</span>
     <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Metrics">
-<h3>Metrics<a class="headerlink" href="#Metrics" title="Permalink to this headline">¶</a></h3>
-<p>The last few ops to define before training are the metrics.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+
     <span class="c1"># Define some intermediate nodes</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
     <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
@@ -932,7 +959,7 @@ Git branch : master
 <h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
 <p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[488]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -950,15 +977,15 @@ Git branch : master
 </div>
 </div>
 </div>
-<div class="section" id="Defining-the-Training-Function">
-<h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Training-the-Model">
+<h3>Training the Model<a class="headerlink" href="#Training-the-Model" title="Permalink to this headline">¶</a></h3>
 <p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[509]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">ALPHA</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="n">N_UPDATES</span><span class="p">,</span> <span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># Ensure this is an int</span>
     <span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
     <span class="c1"># Dict with the various metrics we care about</span>
@@ -966,6 +993,8 @@ Git branch : master
                <span class="s1">&#39;val_loss&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">:[],</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">:[],</span>
                <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">:[]}</span>
     <span class="c1"># Run the initialization ops</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">(),</span> <span class="n">tf</span><span class="o">.</span><span class="n">local_variables_initializer</span><span class="p">()]</span>
     <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
     <span class="c1"># Define training and validation handlers</span>
     <span class="n">training_handle</span><span class="p">,</span> <span class="n">validation_handle</span><span class="p">,</span> <span class="n">testing_handle</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">string_handle</span><span class="p">()</span>
@@ -977,7 +1006,7 @@ Git branch : master
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TRAIN</span><span class="p">):</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">ep_loss</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_el_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sl_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_ax_acc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ep_sm_acc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">train_op</span><span class="p">,</span> <span class="n">loss_op</span><span class="p">,</span> <span class="n">el_acc_op</span><span class="p">,</span> <span class="n">axis_acc_op</span><span class="p">,</span> <span class="n">slot_acc_op</span><span class="p">,</span> <span class="n">sample_acc_op</span><span class="p">],</span>
-                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">})</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">training_handle</span><span class="p">,</span> <span class="n">alpha_ph</span><span class="p">:</span> <span class="n">lr</span><span class="p">})</span>
 
         <span class="c1"># Get means for the epoch</span>
         <span class="n">epoch_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">ep_loss</span><span class="p">,</span> <span class="n">ep_el_acc</span><span class="p">,</span> <span class="n">ep_sl_acc</span><span class="p">,</span> <span class="n">ep_ax_acc</span><span class="p">,</span> <span class="n">ep_sm_acc</span><span class="p">),</span>
@@ -992,7 +1021,7 @@ Git branch : master
             <span class="n">metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
         <span class="c1"># Selectively display the epoch number</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">epochs</span> <span class="o">/</span> <span class="n">n_updates</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_updates</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="p">(</span><span class="n">epochs</span> <span class="o">/</span> <span class="n">n_updates</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;Completed epoch </span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">. Metrics:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
                    <span class="s2">&quot;                     Loss   Sample Accuracy   Elem Accuracy</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
                    <span class="s2">&quot;    Epoch:      </span><span class="si">{2:10.4f}</span><span class="s2">   </span><span class="si">{3:10.4f}</span><span class="s2">   </span><span class="si">{4:10.4f}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
@@ -1001,28 +1030,21 @@ Git branch : master
                 <span class="n">val_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">val_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
     <span class="c1"># Calculate accuracy for test images</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished! Testing Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="n">accuracy_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimization Finished! Testing Sample Accuracy:&quot;</span><span class="p">,</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">sample_acc_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handle</span><span class="p">:</span> <span class="n">testing_handle</span><span class="p">}))</span>
     <span class="k">return</span> <span class="n">metrics</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Getting-Metrics-for-10-Models">
-<h3>Getting Metrics for 10 Models<a class="headerlink" href="#Getting-Metrics-for-10-Models" title="Permalink to this headline">¶</a></h3>
-<p>The last thing to do is encapsulate everything into one list.</p>
+<p>And now let’s train for <code class="docutils literal notranslate"><span class="pre">EPOCHS</span></code> epochs.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[503]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
 <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_MODELS</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-    <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">n_updates</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Completed training for model </span><span class="si">{0}</span><span class="s1">!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1031,358 +1053,118 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Starting training for model 0...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6657       0.0000       0.5955
-    Validation:     0.6367       0.0000       0.6450
+Completed epoch 1/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.7072       0.0000       0.5708
+    Validation:     0.6705       0.0000       0.6260
 
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0635       0.3999       0.9766
+Completed epoch 11/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.5040       0.0000       0.7998
+    Validation:     0.5096       0.0000       0.7998
 
-Optimization Finished! Testing Accuracy: 0.454
-Completed training for model 0!
+Completed epoch 21/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4888       0.0000       0.7998
+    Validation:     0.5007       0.0000       0.7998
 
-Starting training for model 1...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7226       0.0000       0.5315
-    Validation:     0.6821       0.0000       0.5732
+Completed epoch 31/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4834       0.0000       0.7998
+    Validation:     0.4981       0.0000       0.7998
 
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0618       0.4199       0.9771
+Completed epoch 41/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4789       0.0000       0.7998
+    Validation:     0.4954       0.0000       0.7998
 
-Optimization Finished! Testing Accuracy: 0.484
-Completed training for model 1!
+Completed epoch 50/50. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4750       0.0000       0.7998
+    Validation:     0.4926       0.0000       0.7998
 
-Starting training for model 2...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6739       0.0000       0.6012
-    Validation:     0.6468       0.0000       0.6465
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0613       0.3999       0.9761
-
-Optimization Finished! Testing Accuracy: 0.452
-Completed training for model 2!
-
-Starting training for model 3...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7103       0.0000       0.5833
-    Validation:     0.6879       0.0000       0.6040
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0674       0.3799       0.9736
-
-Optimization Finished! Testing Accuracy: 0.438
-Completed training for model 3!
-
-Starting training for model 4...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7036       0.0000       0.5950
-    Validation:     0.6646       0.0000       0.6196
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0596       0.4199       0.9775
-
-Optimization Finished! Testing Accuracy: 0.454
-Completed training for model 4!
-
-Starting training for model 5...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7352       0.0000       0.4913
-    Validation:     0.6886       0.0000       0.5649
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0639       0.3601       0.9746
-
-Optimization Finished! Testing Accuracy: 0.49
-Completed training for model 5!
-
-Starting training for model 6...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.7234       0.0000       0.4922
-    Validation:     0.6932       0.0000       0.5278
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0585       0.4800       0.9790
-
-Optimization Finished! Testing Accuracy: 0.466
-Completed training for model 6!
-
-Starting training for model 7...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6881       0.0000       0.5540
-    Validation:     0.6663       0.0000       0.5747
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0644       0.5200       0.9790
-
-Optimization Finished! Testing Accuracy: 0.434
-Completed training for model 7!
-
-Starting training for model 8...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6645       0.0000       0.5910
-    Validation:     0.6521       0.0000       0.6362
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0631       0.5000       0.9761
-
-Optimization Finished! Testing Accuracy: 0.468
-Completed training for model 8!
-
-Starting training for model 9...
-Completed epoch 1/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.6865       0.0000       0.5622
-    Validation:     0.6628       0.0000       0.6001
-
-Completed epoch 25000/25000. Metrics:
-                     Loss   Sample Accuracy   Elem Accuracy
-    Epoch:          0.0025       1.0000       1.0000
-    Validation:     0.0621       0.3601       0.9746
-
-Optimization Finished! Testing Accuracy: 0.452
-Completed training for model 9!
-
-CPU times: user 1d 3h 11min 44s, sys: 4h 45min 4s, total: 1d 7h 56min 49s
-Wall time: 11h 19min 5s
+Optimization Finished!
+Testing Accuracy: 0.0
+CPU times: user 19.1 s, sys: 3.3 s, total: 22.4 s
+Wall time: 7.89 s
 </pre></div></div>
 </div>
-<p>And then now let’s put everything in one pandas dataframe.</p>
+</div>
+</div>
+<div class="section" id="Recreating-the-BCE+E-Training-Curves">
+<h2>Recreating the BCE+E Training Curves<a class="headerlink" href="#Recreating-the-BCE+E-Training-Curves" title="Permalink to this headline">¶</a></h2>
+<p>Just like before, let’s plot the training curves using the metrics we obtained. To do this, let’s borrow the same function we had earlier but make a slight adjustment to it works for plain dictionaries.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[501]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>In the event that the data needs to be reloaded (for example if the kernel needs to be restarted), I have the data saved locally and can be reloaded using the following lines:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_LOGS</span>
-<span class="n">metrics_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">DIR_LOGS</span> <span class="o">/</span> <span class="s1">&#39;10_models_25000_epochs.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Plotting-the-Metrics">
-<h2>Plotting the Metrics<a class="headerlink" href="#Plotting-the-Metrics" title="Permalink to this headline">¶</a></h2>
-<p>Just like before, let’s plot the training curves using the metrics we obtained. To do this, let’s borrow the same function from nb-0.3 but make it a bit more general.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="c1"># What metrics to plot</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">columns</span>
-    <span class="c1"># Empty lists for the long form data</span>
-    <span class="n">long_epochs</span><span class="p">,</span> <span class="n">long_metrics</span><span class="p">,</span> <span class="n">long_hues</span><span class="p">,</span> <span class="n">long_units</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
-
-    <span class="c1"># Loop through each model&#39;s data</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metrics_series</span> <span class="ow">in</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="c1"># Series data is in a string format, convert to floats and put them in a dict</span>
-        <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">literal_eval</span><span class="p">(</span><span class="n">metrics_series</span><span class="p">[</span><span class="n">key</span><span class="p">])]</span>
-                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>
-
-        <span class="c1"># How many epochs to plot</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">epochs</span><span class="p">:</span>
-            <span class="n">len_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metrics_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
-            <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="n">len_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">len_metrics</span><span class="p">),</span> <span class="s1">&#39;Metrics have different lengths&#39;</span>
-            <span class="n">epochs</span> <span class="o">=</span> <span class="n">len_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="c1"># Add to the long form lists</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
-            <span class="n">label</span> <span class="o">=</span> <span class="n">key</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="s1">&#39;Model </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-            <span class="n">units</span> <span class="o">=</span> <span class="n">i</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="n">key</span>
-            <span class="n">long_epochs</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">))</span>
-            <span class="n">long_metrics</span> <span class="o">+=</span> <span class="n">metrics_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">epochs</span><span class="p">]</span>
-            <span class="n">long_hues</span> <span class="o">+=</span> <span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
-            <span class="n">long_units</span> <span class="o">+=</span> <span class="p">[</span><span class="n">units</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
-
-    <span class="k">if</span> <span class="n">model_average</span><span class="p">:</span>
-        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
-                     <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
-    <span class="c1"># Plot each line individually</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
-                     <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">long_units</span><span class="p">)</span>
-
-    <span class="c1"># Title, axis, and 500 epoch line</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span> <span class="ow">or</span> <span class="s1">&#39;Training History&#39;</span><span class="p">)</span>
+<span></span><span class="k">def</span> <span class="nf">plot_history</span><span class="p">(</span><span class="n">history</span><span class="p">):</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">history</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="s1">&#39;history&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training History&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">epochs</span> <span class="o">&gt;</span> <span class="n">EPOCHS</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">EPOCHS</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;500 Epochs&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>This function will now work for both keras history objects and dictionaries.</p>
+<div class="section" id="500-Epochs">
+<h3>500 Epochs<a class="headerlink" href="#500-Epochs" title="Permalink to this headline">¶</a></h3>
+<p>Start the plot for just 500 epochs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Completed epoch 1/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.7023       0.0000       0.5130
+    Validation:     0.6680       0.0000       0.5752
 
-    <span class="c1"># Prune down the number of labels to just the unique ones</span>
-    <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
-    <span class="n">by_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+Completed epoch 101/500. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.4520       0.0000       0.7998
+    Validation:     0.4764       0.0000       0.7998
 
-    <span class="c1"># Make the plot twice as large to make things a little more viewable</span>
-    <span class="n">gcf</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
-    <span class="n">gcf</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">size</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">gcf</span><span class="o">.</span><span class="n">get_size_inches</span><span class="p">()])</span>
-</pre></div>
+</pre></div></div>
 </div>
-</div>
-<div class="section" id="The-Legend">
-<h3>The Legend<a class="headerlink" href="#The-Legend" title="Permalink to this headline">¶</a></h3>
-<p>Now that we have so may metrics to keep track of, it’s worth taking the time to define each of them.</p>
-<div class="section" id="Training-Set-Metrics">
-<h4>Training Set Metrics<a class="headerlink" href="#Training-Set-Metrics" title="Permalink to this headline">¶</a></h4>
-<p>Metrics obtained every epoch from from performance on the training set.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">loss</span></code> - Loss for the training set</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">el_acc</span></code> - Element-wise accuracy between predictions and labels for the training set</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ax_acc</span></code> - Axis accuracy for each slot in each sample between predictions and labels for the training set. Score per sample goes in eighth steps between 0.0 and 1.0. Every correct axis in every slot contributes 0.125 to the the overall accuracy</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the training set. Score per sample goes in quarter steps between 0.0 and 1.0. Any slot that has all elements correct contributes 0.25 to the score</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. Score per sample is binary - model must get every element correct to receive 1.0</p></li>
-</ul>
-</div>
-<div class="section" id="Validation-Set-Metrics">
-<h4>Validation Set Metrics<a class="headerlink" href="#Validation-Set-Metrics" title="Permalink to this headline">¶</a></h4>
-<p>Metrics obtained every epoch from from performance on the validation set.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">val_loss</span></code> - Loss for the validation set for a particular epoch</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">val_el_acc</span></code> - Element-wise accuracy between predictions and labels for the validation set. See above for details</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">val_sl_acc</span></code> - Slot accuracy for sample between predictions and labels for the validation set. See above for details</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">val_sm_acc</span></code> - Sample accuracy between predictions and labels for the training set. See above for details</p></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="section" id="Summary-Plots">
-<h2>Summary Plots<a class="headerlink" href="#Summary-Plots" title="Permalink to this headline">¶</a></h2>
-<p>The following two plots have summaries of all the data collected.</p>
-<div class="section" id="All-Metrics-for-All-Models">
-<h3>All Metrics for All Models<a class="headerlink" href="#All-Metrics-for-All-Models" title="Permalink to this headline">¶</a></h3>
-<p>Let’s plot all the metrics for all the models to see what they all generally look like.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;All Metrics for All Models&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span></span><span class="n">plot_history</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_58_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_58_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 1min 18s, sys: 1.84 s, total: 1min 20s
-Wall time: 43.4 s
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="Average-Metrics-for-All-Models">
-<h3>Average Metrics for All Models<a class="headerlink" href="#Average-Metrics-for-All-Models" title="Permalink to this headline">¶</a></h3>
-<p>Let’s also plot the average metric values across all 10 models.</p>
+<div class="section" id="10-x-500-Epochs">
+<h3>10 x 500 Epochs<a class="headerlink" href="#10-x-500-Epochs" title="Permalink to this headline">¶</a></h3>
+<p>Let’s recreate the same plot shown above for the O’Reilly model when running for ten times as many epochs.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>%%time
-# These are the possible metrics to use
-# [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,
-#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]
-plot_metrics(metrics_df,
-             metrics=None,
-             epochs=None,
-             title=&#39;Average Metrics Across All Models&#39;,
-             key_by_model=False,
-             model_average=True)`
-plt.show()
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_60_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_60_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 1h 35min 4s, sys: 4min 23s, total: 1h 39min 28s
-Wall time: 1h 38min 36s
-</pre></div></div>
-</div>
-<p>Note the execution time difference between the two plots.</p>
-</div>
-</div>
-<div class="section" id="Accuracy-Metrics-in-Detail">
-<h2>Accuracy Metrics in Detail<a class="headerlink" href="#Accuracy-Metrics-in-Detail" title="Permalink to this headline">¶</a></h2>
-<p>Let’s go through each of the different accuracy metrics individually.</p>
-<div class="section" id="Average-Loss-and-Elemental-Accuracy">
-<h3>Average Loss and Elemental Accuracy<a class="headerlink" href="#Average-Loss-and-Elemental-Accuracy" title="Permalink to this headline">¶</a></h3>
-<p>These are plots we have already generated in the past so let’s just start with them. Since they also asymptote relatively quickly, let’s only plot the first 2000 epochs, and also average them since they don’t vary much between models.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[526]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;val_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;el_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_el_acc&#39;</span><span class="p">],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Loss and Elemental Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1390,85 +1172,110 @@ Wall time: 1h 38min 36s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_64_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_64_0.png" />
-</div>
+<div class="highlight"><pre>
+Completed epoch 1/5000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.6818       0.0000       0.5827
+    Validation:     0.6557       0.0000       0.6128
+
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 2min 57s, sys: 8.61 s, total: 3min 6s
-Wall time: 3min 6s
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;timed exec&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-509-a87b27f4ed47&gt;</span> in <span class="ansi-cyan-fg">train_or_model</span><span class="ansi-blue-fg">(sess, epochs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     19</span>             _, epoch_loss[i], epoch_acc[i], epoch_el_acc[i]= sess.run(
+<span class="ansi-green-intense-fg ansi-bold">     20</span>                 <span class="ansi-blue-fg">[</span>train_op<span class="ansi-blue-fg">,</span> loss_op<span class="ansi-blue-fg">,</span> accuracy_op<span class="ansi-blue-fg">,</span> el_accuracy_op<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">---&gt; 21</span><span class="ansi-red-fg">                 feed_dict={handle: training_handle})
+</span><span class="ansi-green-intense-fg ansi-bold">     22</span>         loss<span class="ansi-blue-fg">,</span> acc<span class="ansi-blue-fg">,</span> el_acc <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>mean<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>epoch_loss<span class="ansi-blue-fg">,</span> epoch_acc<span class="ansi-blue-fg">,</span> epoch_el_acc<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">    927</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    928</span>       result = self._run(None, fetches, feed_dict, options_ptr,
+<span class="ansi-green-fg">--&gt; 929</span><span class="ansi-red-fg">                          run_metadata_ptr)
+</span><span class="ansi-green-intense-fg ansi-bold">    930</span>       <span class="ansi-green-fg">if</span> run_metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    931</span>         proto_data <span class="ansi-blue-fg">=</span> tf_session<span class="ansi-blue-fg">.</span>TF_GetBuffer<span class="ansi-blue-fg">(</span>run_metadata_ptr<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_run</span><span class="ansi-blue-fg">(self, handle, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1135</span>     <span class="ansi-red-fg"># Create a fetch handler to take care of the structure of fetches.</span>
+<span class="ansi-green-intense-fg ansi-bold">   1136</span>     fetch_handler = _FetchHandler(
+<span class="ansi-green-fg">-&gt; 1137</span><span class="ansi-red-fg">         self._graph, fetches, feed_dict_tensor, feed_handles=feed_handles)
+</span><span class="ansi-green-intense-fg ansi-bold">   1138</span>
+<span class="ansi-green-intense-fg ansi-bold">   1139</span>     <span class="ansi-red-fg"># Run request and get response.</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, graph, fetches, feeds, feed_handles)</span>
+<span class="ansi-green-intense-fg ansi-bold">    469</span>     &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">    470</span>     <span class="ansi-green-fg">with</span> graph<span class="ansi-blue-fg">.</span>as_default<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 471</span><span class="ansi-red-fg">       </span>self<span class="ansi-blue-fg">.</span>_fetch_mapper <span class="ansi-blue-fg">=</span> _FetchMapper<span class="ansi-blue-fg">.</span>for_fetch<span class="ansi-blue-fg">(</span>fetches<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    472</span>     self<span class="ansi-blue-fg">.</span>_fetches <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    473</span>     self<span class="ansi-blue-fg">.</span>_targets <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">for_fetch</span><span class="ansi-blue-fg">(fetch)</span>
+<span class="ansi-green-intense-fg ansi-bold">    259</span>     <span class="ansi-green-fg">elif</span> isinstance<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>list<span class="ansi-blue-fg">,</span> tuple<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    260</span>       <span class="ansi-red-fg"># NOTE(touts): This is also the code path for namedtuples.</span>
+<span class="ansi-green-fg">--&gt; 261</span><span class="ansi-red-fg">       </span><span class="ansi-green-fg">return</span> _ListFetchMapper<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    262</span>     <span class="ansi-green-fg">elif</span> isinstance<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">,</span> collections<span class="ansi-blue-fg">.</span>Mapping<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    263</span>       <span class="ansi-green-fg">return</span> _DictFetchMapper<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, fetches)</span>
+<span class="ansi-green-intense-fg ansi-bold">    368</span>     &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">    369</span>     self<span class="ansi-blue-fg">.</span>_fetch_type <span class="ansi-blue-fg">=</span> type<span class="ansi-blue-fg">(</span>fetches<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 370</span><span class="ansi-red-fg">     </span>self<span class="ansi-blue-fg">.</span>_mappers <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>_FetchMapper<span class="ansi-blue-fg">.</span>for_fetch<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> fetch <span class="ansi-green-fg">in</span> fetches<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    371</span>     self<span class="ansi-blue-fg">.</span>_unique_fetches<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>_value_indices <span class="ansi-blue-fg">=</span> _uniquify_fetches<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_mappers<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    372</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">&lt;listcomp&gt;</span><span class="ansi-blue-fg">(.0)</span>
+<span class="ansi-green-intense-fg ansi-bold">    368</span>     &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">    369</span>     self<span class="ansi-blue-fg">.</span>_fetch_type <span class="ansi-blue-fg">=</span> type<span class="ansi-blue-fg">(</span>fetches<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 370</span><span class="ansi-red-fg">     </span>self<span class="ansi-blue-fg">.</span>_mappers <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>_FetchMapper<span class="ansi-blue-fg">.</span>for_fetch<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> fetch <span class="ansi-green-fg">in</span> fetches<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    371</span>     self<span class="ansi-blue-fg">.</span>_unique_fetches<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>_value_indices <span class="ansi-blue-fg">=</span> _uniquify_fetches<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_mappers<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    372</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">for_fetch</span><span class="ansi-blue-fg">(fetch)</span>
+<span class="ansi-green-intense-fg ansi-bold">    267</span>       <span class="ansi-red-fg"># Look for a handler in the registered expansions.</span>
+<span class="ansi-green-intense-fg ansi-bold">    268</span>       <span class="ansi-green-fg">for</span> tensor_type<span class="ansi-blue-fg">,</span> fetch_fn<span class="ansi-blue-fg">,</span> _<span class="ansi-blue-fg">,</span> _ <span class="ansi-green-fg">in</span> _REGISTERED_EXPANSIONS<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 269</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">,</span> tensor_type<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    270</span>           fetches<span class="ansi-blue-fg">,</span> contraction_fn <span class="ansi-blue-fg">=</span> fetch_fn<span class="ansi-blue-fg">(</span>fetch<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    271</span>           <span class="ansi-green-fg">return</span> _ElementFetchMapper<span class="ansi-blue-fg">(</span>fetches<span class="ansi-blue-fg">,</span> contraction_fn<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Average-Training-Axis-and-Slot-Accuracy">
-<h3>Average Training Axis and Slot Accuracy<a class="headerlink" href="#Average-Training-Axis-and-Slot-Accuracy" title="Permalink to this headline">¶</a></h3>
-<p>Next let’s take a look at the training axis and slot accuracy, which also level off relatively quickly (by around 2000 epochs).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[511]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ax_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;sl_acc&#39;</span><span class="p">,],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="mi">2500</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Training Axis and Slot Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span></span><span class="n">plot_history</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_66_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_66_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 1min 50s, sys: 5.54 s, total: 1min 55s
-Wall time: 1min 55s
-</pre></div></div>
+<img alt="../_images/notebooks_0.3.2-Model-Checkpoints_59_0.png" src="../_images/notebooks_0.3.2-Model-Checkpoints_59_0.png" />
 </div>
 </div>
-<div class="section" id="Validation-Accuracy-Metrics">
-<h3>Validation Accuracy Metrics<a class="headerlink" href="#Validation-Accuracy-Metrics" title="Permalink to this headline">¶</a></h3>
-<p>The validation curves are where the curves for training are most revealing. So let’s plot them all in one graph in the first 10,000 epochs.</p>
+</div>
+<div class="section" id="50-x-500-Epochs">
+<h3>50 x 500 Epochs<a class="headerlink" href="#50-x-500-Epochs" title="Permalink to this headline">¶</a></h3>
+<p>It looks as though the model is still continuing to learn as shown by the increasing validation accuracy and falling validation loss. So train it for even longer.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[512]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;val_el_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_ax_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_sl_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;val_sm_acc&#39;</span><span class="p">],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Validation Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span></span><span class="n">metrics_1</span> <span class="o">=</span> <span class="n">train_or_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1476,49 +1283,56 @@ Wall time: 1min 55s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 17.2 s, sys: 312 ms, total: 17.5 s
-Wall time: 8.51 s
+Completed epoch 1/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.7033       0.0000       0.5765
+    Validation:     0.6728       0.0000       0.5991
+
+Completed epoch 5001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0175       1.0000       1.0000
+    Validation:     0.1010       0.2000       0.9648
+
+Completed epoch 10001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0074       1.0000       1.0000
+    Validation:     0.0783       0.3000       0.9727
+
+Completed epoch 15001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0046       1.0000       1.0000
+    Validation:     0.0692       0.3401       0.9761
+
+Completed epoch 20001/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0033       1.0000       1.0000
+    Validation:     0.0640       0.3401       0.9780
+
+Completed epoch 25000/25000. Metrics:
+                     Loss       Accuracy   Elem Accuracy
+    Epoch:          0.0025       1.0000       1.0000
+    Validation:     0.0604       0.3601       0.9785
+
+Optimization Finished!
+Testing Accuracy: 0.438
 </pre></div></div>
 </div>
-<p>Validation axis and slot accuracy begin asymptotic ascent around 4000 epochs never approach 1.0 the way it does for the training data. The slot accuracy also levels off at a lower point than the axis accuracy.</p>
-</div>
-<div class="section" id="Validation-Sample-Accuracy">
-<h3>Validation Sample Accuracy<a class="headerlink" href="#Validation-Sample-Accuracy" title="Permalink to this headline">¶</a></h3>
-<p>The most interesting metric seems to definitely be the sample accuracy, which has the most diverse behavior of all the metrics. So let’s plot it for all the models.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[515]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
-<span class="c1"># These are the possible metrics to use</span>
-<span class="c1"># [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;val_loss&#39;,</span>
-<span class="c1">#  &#39;val_el_acc&#39;, &#39;val_ax_acc&#39;, &#39;val_sl_acc&#39;, &#39;val_sm_acc&#39;]</span>
-<span class="n">plot_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span>
-             <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;val_sm_acc&#39;</span><span class="p">],</span>
-             <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Validation Sample Accuracy&#39;</span><span class="p">,</span>
-             <span class="n">key_by_model</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-             <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span></span><span class="n">plot_history</span><span class="p">(</span><span class="n">metrics_1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_71_0.png" src="../_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_71_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 3.82 s, sys: 92 ms, total: 3.92 s
-Wall time: 3.91 s
-</pre></div></div>
+<img alt="../_images/notebooks_0.3.2-Model-Checkpoints_62_0.png" src="../_images/notebooks_0.3.2-Model-Checkpoints_62_0.png" />
+</div>
 </div>
 </div>
 </div>
@@ -1532,10 +1346,10 @@ Wall time: 3.91 s
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="0.3.2-Model-Checkpoints.html" class="btn btn-neutral float-right" title="0.3.2 Model Checkpoints" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="0.3.3-GPU-Performance-Metrics.html" class="btn btn-neutral float-right" title="0.3.3 GPU Performance Metrics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="0.3-BP-Model-in-Tensorflow.html" class="btn btn-neutral float-left" title="0.3 BP Model in Tensorflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="0.3.1-Comparing-Accuracy-Metrics.html" class="btn btn-neutral float-left" title="0.3.1 Comparing Accuracy Metrics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

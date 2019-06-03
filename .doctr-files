@@ -86,6 +86,12 @@
 ./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_66_0.png
 ./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_68_0.png
 ./_images/notebooks_0.3.1-Comparing-Accuracy-Metrics_71_0.png
+./_images/notebooks_0.3.2-Model-Checkpoints_35_0.png
+./_images/notebooks_0.3.2-Model-Checkpoints_59_0.png
+./_images/notebooks_0.3.2-Model-Checkpoints_62_0.png
+./_images/notebooks_0.3.3-GPU-Performance-Metrics_27_0.png
+./_images/notebooks_0.3.3-GPU-Performance-Metrics_51_0.png
+./_images/notebooks_0.3.3-GPU-Performance-Metrics_60_0.png
 ./_images/notebooks_0.4-Exploring-Different-Learning-Rates_32_0.png
 ./_images/notebooks_0.4-Exploring-Different-Learning-Rates_59_0.png
 ./_images/notebooks_0.4-Exploring-Different-Learning-Rates_61_0.png
@@ -152,6 +158,17 @@
 ./_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_2.png
 ./_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_3.png
 ./_images/notebooks_0.7-Replicating-Results-with-the-Updated-Task_71_4.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_24_0.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_30_0.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_58_0.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_58_1.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_58_2.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_58_3.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_64_0.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_64_1.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_64_2.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_64_3.png
+./_images/notebooks_0.7.1-Managing-Technical-Debt_64_4.png
 ./_sources/combinatorics.rst.txt
 ./_sources/commands.rst.txt
 ./_sources/data.rst.txt
@@ -168,6 +185,8 @@
 ./_sources/notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.ipynb.txt
 ./_sources/notebooks/0.3-BP-Model-in-Tensorflow.ipynb.txt
 ./_sources/notebooks/0.3.1-Comparing-Accuracy-Metrics.ipynb.txt
+./_sources/notebooks/0.3.2-Model-Checkpoints.ipynb.txt
+./_sources/notebooks/0.3.3-GPU-Performance-Metrics.ipynb.txt
 ./_sources/notebooks/0.4-Exploring-Different-Learning-Rates.ipynb.txt
 ./_sources/notebooks/0.4.1-Exploring-Different-Optimizers.ipynb.txt
 ./_sources/notebooks/0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.ipynb.txt
@@ -175,6 +194,7 @@
 ./_sources/notebooks/0.5.2-Adam-With-Non-Uniform-Training-Statistics.ipynb.txt
 ./_sources/notebooks/0.6-Hebbian-Learning.ipynb.txt
 ./_sources/notebooks/0.7-Replicating-Results-with-the-Updated-Task.ipynb.txt
+./_sources/notebooks/0.7.1-Managing-Technical-Debt.ipynb.txt
 ./_sources/notebooks/0.8-Hierarchical-Learning.ipynb.txt
 ./_sources/release_schedule.rst.txt
 ./_sources/tfutils.rst.txt
@@ -243,6 +263,8 @@
 ./notebooks/0.2.1-Iterating-the-BP-Model-on-GPUs.html
 ./notebooks/0.3-BP-Model-in-Tensorflow.html
 ./notebooks/0.3.1-Comparing-Accuracy-Metrics.html
+./notebooks/0.3.2-Model-Checkpoints.html
+./notebooks/0.3.3-GPU-Performance-Metrics.html
 ./notebooks/0.4-Exploring-Different-Learning-Rates.html
 ./notebooks/0.4.1-Exploring-Different-Optimizers.html
 ./notebooks/0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html
@@ -250,6 +272,7 @@
 ./notebooks/0.5.2-Adam-With-Non-Uniform-Training-Statistics.html
 ./notebooks/0.6-Hebbian-Learning.html
 ./notebooks/0.7-Replicating-Results-with-the-Updated-Task.html
+./notebooks/0.7.1-Managing-Technical-Debt.html
 ./notebooks/0.8-Hierarchical-Learning.html
 ./objects.inv
 ./release_schedule.html

@@ -1,0 +1,1944 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>0.3.3 GPU Performance Metrics &mdash; Leabra Tensorflow 0+untagged.52.g51625b7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="0.4 Exploring Different Learning Rates" href="0.4-Exploring-Different-Learning-Rates.html" />
+    <link rel="prev" title="0.3.2 Model Checkpoints" href="0.3.2-Model-Checkpoints.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Leabra Tensorflow
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.52.g51625b7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../release_schedule.html">Release Schedule</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tasks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../combinatorics.html">Combinatorial Generalizaton and Interactivity</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Scripts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utility Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tfutils.html">Tensorflow Utility Functions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Notebooks</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0.0-Notebook-Template.html">0.0 Leabra-tf Notebook Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1-Designing-the-Combigen-Task.html">0.1 Implementing the Combinatorial Generalization Task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1.1-Combigen-All-True-Bug-Fix.html">0.1.1 Combigen All-True Bug Fix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1.2-Combigen-Stacks.html">0.1.2 Combigen Stacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1.3-Specifying-the-Number-of-Lines.html">0.1.3 Specifying the Number of Lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.1.4-Selectable-Line-Statistics.html">0.1.4 Selectable Line Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.2-Running-a-Basic-Model-on-Combigen.html">0.2 Running a Basic Model on Combigen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.2.1-Iterating-the-BP-Model-on-GPUs.html">0.2.1 Iterating the BP Model on GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.3-BP-Model-in-Tensorflow.html">0.3 BP Model in Tensorflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.3.1-Comparing-Accuracy-Metrics.html">0.3.1 Comparing Accuracy Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.3.2-Model-Checkpoints.html">0.3.2 Model Checkpoints</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0.3.3 GPU Performance Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Default-Configuration">Default Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Training-Set-Configurations">Training Set Configurations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-Combigen-Task">The Combigen Task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Adam-Optimizer-Performance-Thus-Far">Adam Optimizer Performance Thus Far</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Setting-Up-the-Graph">Setting Up the Graph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Make-the-Different-Datasets">Make the Different Datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TF-Variables">TF Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Model-and-Metrics">Model and Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#New-Session-Function">New Session Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Defining-the-Training-Function">Defining the Training Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Defining-The-Training-Routine">Defining The Training Routine</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Adam-Optimizer-with-the-Different-Training-Sets">Adam Optimizer with the Different Training Sets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Getting-the-Metrics">Getting the Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Plotting-Results">Plotting Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Comparing-Datasets">Comparing Datasets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="0.4-Exploring-Different-Learning-Rates.html">0.4 Exploring Different Learning Rates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.4.1-Exploring-Different-Optimizers.html">0.4.1 Exploring Different Optimizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.5-Adam-Optimizer-Learning-Rate-Tuning-and-Dropout.html">0.5 Adam Optimizer Learning Rate Tuning and Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.5.1-Adam-With-Non-Uniform-Task-Statistics.html">0.5.1 Adam with Non-Uniform Task Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.5.2-Adam-With-Non-Uniform-Training-Statistics.html">0.5.2 Adam with Non-Uniform Training Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.6-Hebbian-Learning.html">0.6 Hebbian Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.7-Replicating-Results-with-the-Updated-Task.html">0.7 Replicating Results with the Updated Task</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.7.1-Managing-Technical-Debt.html">0.7.1 Managing Technical Debt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.8-Hierarchical-Learning.html">0.8 Hierarchical Learning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://apra93.github.io/leabra-tf/">Home</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/apra93/leabra-tf/">Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://travis-ci.org/apra93/leabra-tf">Travis CI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://codecov.io/gh/apra93/leabra-tf">Codecov</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://app.codacy.com/project/apra93/leabra-tf/dashboard">Codacy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Leabra Tensorflow</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>0.3.3 GPU Performance Metrics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/notebooks/0.3.3-GPU-Performance-Metrics.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="0.3.3-GPU-Performance-Metrics">
+<h1>0.3.3 GPU Performance Metrics<a class="headerlink" href="#0.3.3-GPU-Performance-Metrics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Boilerplate">
+<h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
+<p>The following subsections are largely boilerplate code, so skip around as needed.</p>
+<div class="section" id="Jupyter-Extensions">
+<h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
+<p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Load `watermark` extension</span>
+<span class="o">%</span><span class="k">load_ext</span> watermark
+<span class="c1"># Display the status of the machine and packages. Add more as necessary.</span>
+<span class="o">%</span><span class="k">watermark</span> -v -n -m -g -b -t -p numpy,matplotlib,seaborn,tensorflow
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Wed May 22 2019 13:05:45
+
+CPython 3.6.8
+IPython 7.3.0
+
+numpy 1.16.2
+matplotlib 3.0.3
+seaborn 0.9.0
+tensorflow 1.12.0
+
+compiler   : GCC 7.3.0
+system     : Linux
+release    : 4.4.0-130-generic
+machine    : x86_64
+processor  : x86_64
+CPU cores  : 12
+interpreter: 64bit
+Git hash   : 810f976398276557f16e1a3950c0699c4cefcbbb
+Git branch : master
+</pre></div></div>
+</div>
+<p>Load <a class="reference external" href="https://ipython.org/ipython-doc/3/config/extensions/autoreload.html">autoreload</a> which will always reload modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
+<p>This behavior can be inverted by running <code class="docutils literal notranslate"><span class="pre">autoreload</span> <span class="pre">2</span></code> which will set everything to be auto-reloaded <em>except</em> for modules marked with <code class="docutils literal notranslate"><span class="pre">%aimport</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Load `autoreload` extension</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="c1"># Set autoreload behavior</span>
+<span class="o">%</span><span class="k">autoreload</span> 1
+</pre></div>
+</div>
+</div>
+<p>Load <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> in one of the more <code class="docutils literal notranslate"><span class="pre">jupyter</span></code>-friendly <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/plotting.html">rich-output modes</a>. Some options (that may or may not have worked) are <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">notebook</span></code>, and <code class="docutils literal notranslate"><span class="pre">gtk</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Set the matplotlib mode.</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
+<p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
+
+<span class="c1"># Third party</span>
+<span class="kn">import</span> <span class="nn">IPython</span> <span class="k">as</span> <span class="nn">ipy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">pstar</span> <span class="k">import</span> <span class="n">pdict</span>
+</pre></div>
+</div>
+</div>
+<p>Local imports that may or may not be autoreloaded. This section contains things that will likely have to be re-imported multiple times, and have additions or subtractions made throughout the project.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Task script</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.combigen
+<span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.combigen</span> <span class="k">as</span> <span class="nn">cg</span>
+<span class="c1"># Visualization for the task</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.visualization.combigen_heatmap
+<span class="kn">import</span> <span class="nn">leabratf.visualization.combigen_heatmap</span> <span class="k">as</span> <span class="nn">cgh</span>
+<span class="c1"># Metrics visulaization</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.visualization.metrics
+<span class="kn">import</span> <span class="nn">leabratf.visualization.metrics</span> <span class="k">as</span> <span class="nn">plt_metrics</span>
+<span class="c1"># Utility functions</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.utils
+<span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">setup_logging</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.constants
+<span class="kn">from</span> <span class="nn">leabratf.constants</span> <span class="k">import</span> <span class="n">DIR_DATA_PROC</span>
+<span class="o">%</span><span class="k">aimport</span> leabratf.tasks.combinatorics.default_configuration
+<span class="kn">from</span> <span class="nn">leabratf.tasks.combinatorics.default_configuration</span> <span class="k">import</span> <span class="n">default_config</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Initial-Setup">
+<h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
+<p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;notebook&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Set up the logger configuration to something more useful than baseline. Creates log files for the different log levels in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">logging.yml</span></code> for the exact logging configuration.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Run base logger setup</span>
+<span class="n">setup_logging</span><span class="p">()</span>
+<span class="c1"># Define a logger object</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;leabratf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Default-Configuration">
+<h3>Default Configuration<a class="headerlink" href="#Default-Configuration" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Define the base experiment configuration</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">()</span>
+<span class="c1"># Overwrite any configuration values here</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">tf_device</span> <span class="o">=</span> <span class="s1">&#39;/device:CPU:0&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">n_train</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;Adam&#39;</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="mf">0.00333</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Define a config dict constructor based on the cfg above</span>
+<span class="n">default_nb_config</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">default_config</span><span class="p">(</span><span class="o">**</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<span class="c1"># Training set config</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2019-05-22 13:05:57 x7 leabratf[28365] INFO {&#39;_config&#39;: True,
+ &#39;_name&#39;: &#39;default&#39;,
+ &#39;batch_size&#39;: 1,
+ &#39;dims&#39;: 2,
+ &#39;dir_checkpoints&#39;: PosixPath(&#39;/home/abdullah_rashed/work/projects/leabra-tf/models/checkpoints&#39;),
+ &#39;dir_tensorboard&#39;: PosixPath(&#39;/home/abdullah_rashed/work/projects/leabra-tf/data/tensorboard&#39;),
+ &#39;epochs&#39;: 500,
+ &#39;line_stats&#39;: [[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]],
+ &#39;lr&#39;: 0.00333,
+ &#39;n_epochs_acc&#39;: 25,
+ &#39;n_hidden_1&#39;: 100,
+ &#39;n_inputs&#39;: 100,
+ &#39;n_lines&#39;: 2,
+ &#39;n_models&#39;: 10,
+ &#39;n_outputs&#39;: 40,
+ &#39;n_samples&#39;: 128,
+ &#39;n_test&#39;: 500,
+ &#39;n_train&#39;: 128,
+ &#39;n_updates&#39;: 2,
+ &#39;n_val&#39;: 50,
+ &#39;optimizer&#39;: &#39;Adam&#39;,
+ &#39;size&#39;: 5,
+ &#39;slots&#39;: 4,
+ &#39;tf_device&#39;: &#39;/device:CPU:0&#39;}
+</pre></div></div>
+</div>
+<div class="section" id="Training-Set-Configurations">
+<h4>Training Set Configurations<a class="headerlink" href="#Training-Set-Configurations" title="Permalink to this headline">¶</a></h4>
+<p>Here we create the different configs for the batch sizes</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">batch_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Using batch sizes: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">batch_sizes</span><span class="p">))</span>
+
+<span class="c1"># CPU Training Set experiment configurations</span>
+<span class="n">training_set_configs_cpu</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">(</span>
+    <span class="p">{</span><span class="n">batch_size</span> <span class="p">:</span> <span class="n">default_nb_config</span><span class="p">(</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">_name</span><span class="o">=</span><span class="s1">&#39;cpu_batch_size_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">batch_size</span><span class="p">))</span>
+     <span class="k">for</span> <span class="n">batch_size</span> <span class="ow">in</span> <span class="n">batch_sizes</span><span class="p">})</span>
+
+<span class="c1"># GPU Training Set experiment configurations</span>
+<span class="n">training_set_configs_gpu</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">(</span>
+    <span class="p">{</span><span class="n">batch_size</span> <span class="p">:</span> <span class="n">default_nb_config</span><span class="p">(</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">tf_device</span><span class="o">=</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">,</span>
+        <span class="n">_name</span><span class="o">=</span><span class="s1">&#39;gpu_batch_size_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">batch_size</span><span class="p">))</span>
+     <span class="k">for</span> <span class="n">batch_size</span> <span class="ow">in</span> <span class="n">batch_sizes</span><span class="p">})</span>
+
+<span class="n">testing_set_config</span> <span class="o">=</span> <span class="n">default_nb_config</span><span class="p">(</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_samples</span><span class="p">,</span>
+        <span class="n">_name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">np_datasets</span><span class="p">(</span><span class="n">configs</span><span class="p">):</span>
+    <span class="n">datasets</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">()</span>
+    <span class="n">inner_config</span> <span class="o">=</span> <span class="n">configs</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">inner_config</span><span class="p">,</span> <span class="s1">&#39;_config&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">inner_config</span><span class="o">.</span><span class="n">_config</span><span class="p">:</span>
+        <span class="n">inner_config</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">inner_config</span><span class="o">.</span><span class="n">_name</span> <span class="p">:</span> <span class="n">inner_config</span><span class="p">})</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">exp_cfg</span> <span class="ow">in</span> <span class="n">inner_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Generate the datasets</span>
+        <span class="n">y_data</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">exp_cfg</span><span class="o">.</span><span class="n">n_samples</span><span class="p">,</span>
+                                    <span class="n">slots</span><span class="o">=</span><span class="n">exp_cfg</span><span class="o">.</span><span class="n">slots</span><span class="p">,</span>
+                                    <span class="n">size</span><span class="o">=</span><span class="n">exp_cfg</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                                    <span class="n">dims</span><span class="o">=</span><span class="n">exp_cfg</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+                                    <span class="n">n_lines</span><span class="o">=</span><span class="n">exp_cfg</span><span class="o">.</span><span class="n">n_lines</span><span class="p">,</span>
+                                    <span class="n">line_stats</span><span class="o">=</span><span class="n">exp_cfg</span><span class="o">.</span><span class="n">line_stats</span><span class="p">)</span>
+        <span class="n">x_data</span> <span class="o">=</span> <span class="n">cg</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span>
+        <span class="c1"># Add them to the datasets pdict</span>
+        <span class="n">datasets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">datasets</span>
+
+<span class="n">dataset_configs</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">testing_set_config</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span> <span class="n">testing_set_config</span><span class="p">})</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="n">training_set_configs_cpu</span><span class="p">)</span>
+
+<span class="c1"># Single pdict of x,y datasets</span>
+<span class="n">np_datasets</span> <span class="o">=</span> <span class="n">np_datasets</span><span class="p">(</span><span class="n">dataset_configs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Background">
+<h2>Background<a class="headerlink" href="#Background" title="Permalink to this headline">¶</a></h2>
+<p>This section goes over some of the background information for the notebook using results from previous notebooks. This first section shows the task as always, but then will also go over the previous training curves.</p>
+<div class="section" id="The-Combigen-Task">
+<h3>The Combigen Task<a class="headerlink" href="#The-Combigen-Task" title="Permalink to this headline">¶</a></h3>
+<p>Quickly remind ourselves what the task looks like before diving in.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cgh</span><span class="o">.</span><span class="n">visualize_combigen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.3-GPU-Performance-Metrics_27_0.png" src="../_images/notebooks_0.3.3-GPU-Performance-Metrics_27_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Adam-Optimizer-Performance-Thus-Far">
+<h3>Adam Optimizer Performance Thus Far<a class="headerlink" href="#Adam-Optimizer-Performance-Thus-Far" title="Permalink to this headline">¶</a></h3>
+<p>In <a class="reference internal" href="0.7-Replicating-Results-with-the-Updated-Task.html"><span class="doc">nb-0.7</span></a> we showed that Adam Optimizer still performed better than the standard model.</p>
+</div>
+</div>
+<div class="section" id="Setting-Up-the-Graph">
+<h2>Setting Up the Graph<a class="headerlink" href="#Setting-Up-the-Graph" title="Permalink to this headline">¶</a></h2>
+<p>This next section will define the computational graph that will be used to generate the metrics down below. It is largely code copied from nb-0.3, so skip around as needed.</p>
+<div class="section" id="Make-the-Different-Datasets">
+<h3>Make the Different Datasets<a class="headerlink" href="#Make-the-Different-Datasets" title="Permalink to this headline">¶</a></h3>
+<p>Define the various <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>s that will be used including the ones with the different statistics.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">make_tf_datasets</span><span class="p">(</span><span class="n">datasets</span><span class="p">,</span> <span class="n">configs</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">init_ops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+        <span class="c1"># The first step of the setup is that each of the datasets (training, validation, and</span>
+        <span class="c1"># testing) are turned into their own `Dataset` objects.</span>
+        <span class="n">tf_datasets</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
+                <span class="n">datasets</span><span class="p">[</span><span class="n">name</span><span class="p">])</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">configs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">()})</span>
+
+        <span class="c1"># Next, let&#39;s define the iterators for each of the datasets, and then add their</span>
+        <span class="c1"># initializations to the `init_ops` list.</span>
+        <span class="c1"># Training iterator</span>
+        <span class="n">iterators</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">name</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
+                          <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">tf_datasets</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+
+        <span class="c1"># Add the initiatlizations to the init opts</span>
+        <span class="n">init_ops</span> <span class="o">=</span> <span class="n">init_ops</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">iter</span><span class="o">.</span><span class="n">initializer</span> <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="n">iterators</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+        <span class="n">first_dataset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tf_datasets</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">output_types</span><span class="p">,</span> <span class="n">output_shapes</span> <span class="o">=</span> <span class="n">first_dataset</span><span class="o">.</span><span class="n">output_types</span><span class="p">,</span> <span class="n">first_dataset</span><span class="o">.</span><span class="n">output_shapes</span>
+
+        <span class="c1"># And finally, the interesting part. Rather than creating separate next elements for</span>
+        <span class="c1"># the model, the `tf.data` API has a string handler iterator so we can contextually</span>
+        <span class="c1"># switch the active `Dataset` object, resulting in different values being used for `x`</span>
+        <span class="c1"># and `y`.</span>
+
+        <span class="c1"># The way this is done is by defining a `tf.placeholder` variable, which is used</span>
+        <span class="c1"># first to create a string handler iterator, and later to hold the dataset-indicating</span>
+        <span class="c1"># string handle. The string handler iterator is what then changes the values of `x` and</span>
+        <span class="c1"># `y`, naturally also supplying them using the `get_next` method.</span>
+        <span class="c1"># The placeholder variable of type string</span>
+        <span class="n">handle</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">string</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+
+        <span class="c1"># Iterator from string handle</span>
+        <span class="n">handle_iterator</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Iterator</span><span class="o">.</span><span class="n">from_string_handle</span><span class="p">(</span>
+            <span class="n">handle</span><span class="p">,</span> <span class="n">output_types</span><span class="p">,</span> <span class="n">output_shapes</span><span class="p">)</span>
+
+        <span class="c1"># x and y that will be used in the graph</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">handle_iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="TF-Variables">
+<h3>TF Variables<a class="headerlink" href="#TF-Variables" title="Permalink to this headline">¶</a></h3>
+<p>Straight forward section where we define the weights and biases. One thing to note is that the weights are initialized using the <code class="docutils literal notranslate"><span class="pre">tf.contrib.layers.xavier_initializer</span></code>.</p>
+<p>Additionally, create an empty list that will contain the initialization operations to be performed at the start of a session.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">weights_biases</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
+    <span class="c1"># Weights and biases</span>
+    <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_inputs</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">n_hidden_1</span><span class="p">],</span>
+                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
+            <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_hidden_1</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">n_outputs</span><span class="p">],</span>
+                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()),</span>
+        <span class="p">}</span>
+        <span class="n">biases</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_hidden_1</span><span class="p">],</span>
+                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
+            <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">cfg</span><span class="o">.</span><span class="n">n_outputs</span><span class="p">],</span>
+                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">()),</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Model-and-Metrics">
+<h3>Model and Metrics<a class="headerlink" href="#Model-and-Metrics" title="Permalink to this headline">¶</a></h3>
+<p>The architecture is the same as previous notebooks. See <code class="docutils literal notranslate"><span class="pre">nb-0.3</span></code> for more details.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">oreilly_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+        <span class="c1"># Reshape for hidden layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">n_inputs</span><span class="p">])</span>
+        <span class="c1"># Single hidden layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;h1&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">]))</span>
+        <span class="c1"># Output layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]),</span> <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">])</span>
+        <span class="c1"># Reshape for labels</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">slots</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">dims</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">init_graph</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
+    <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span> <span class="o">=</span> <span class="n">weights_biases</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">tf_device</span><span class="p">):</span>
+            <span class="c1"># Build the model</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">oreilly_model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
+            <span class="c1"># Ensure y is cast to the same type as logits</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+            <span class="c1"># We will keep this in for now</span>
+            <span class="c1"># Define alpha as placeholder variable</span>
+            <span class="n">alpha_ph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+
+            <span class="c1"># Define loss and optimizer</span>
+            <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid_cross_entropy_with_logits</span><span class="p">(</span>
+                <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
+
+            <span class="c1"># Define some intermediate nodes</span>
+            <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+            <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+            <span class="n">equal_labels_and_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rounded_predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+            <span class="c1"># O&#39;Reilly Accuracy</span>
+            <span class="n">axis_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+            <span class="n">slot_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">axis_acc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+            <span class="n">sample_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">slot_acc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+            <span class="c1"># Elemental Accuracy</span>
+            <span class="n">el_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+            <span class="c1"># Axis Accuracy</span>
+            <span class="n">axis_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">axis_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+            <span class="c1"># Slot Accuracy</span>
+            <span class="n">slot_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">slot_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+            <span class="c1"># Sample Accuracy</span>
+            <span class="n">sample_acc_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+
+            <span class="c1"># metric ops</span>
+            <span class="n">met_op_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;el_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;ax_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;sl_acc&#39;</span><span class="p">,</span> <span class="s1">&#39;sm_acc&#39;</span><span class="p">]</span>
+            <span class="n">met_ops</span> <span class="o">=</span> <span class="p">[</span><span class="n">loss_op</span><span class="p">,</span> <span class="n">el_acc_op</span><span class="p">,</span> <span class="n">axis_acc_op</span><span class="p">,</span> <span class="n">slot_acc_op</span><span class="p">,</span> <span class="n">sample_acc_op</span><span class="p">]</span>
+            <span class="c1"># Put them in a dict</span>
+            <span class="n">met_op_dict</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">name</span> <span class="p">:</span> <span class="n">op</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">op</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">met_op_names</span><span class="p">,</span> <span class="n">met_ops</span><span class="p">)})</span>
+
+            <span class="c1"># Adam</span>
+            <span class="n">train_op_adam</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+            <span class="c1"># Adadelta</span>
+            <span class="n">train_op_adadelta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdadeltaOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+            <span class="c1"># RMSProp</span>
+            <span class="n">train_op_rmsprop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">RMSPropOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+            <span class="c1"># SGD</span>
+            <span class="n">train_op_sgd</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+
+            <span class="c1"># And now add these to a dictionary</span>
+            <span class="n">optimizer_dict</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span>
+                <span class="s1">&#39;Adam&#39;</span> <span class="p">:</span> <span class="n">train_op_adam</span><span class="p">,</span>
+                <span class="s1">&#39;Adadelta&#39;</span> <span class="p">:</span> <span class="n">train_op_adadelta</span><span class="p">,</span>
+                <span class="s1">&#39;RMSProp&#39;</span> <span class="p">:</span> <span class="n">train_op_rmsprop</span><span class="p">,</span>
+                <span class="s1">&#39;sgd&#39;</span> <span class="p">:</span> <span class="n">train_op_sgd</span><span class="p">,</span>
+            <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">alpha_ph</span><span class="p">,</span> <span class="n">met_op_dict</span><span class="p">,</span> <span class="n">optimizer_dict</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="New-Session-Function">
+<h3>New Session Function<a class="headerlink" href="#New-Session-Function" title="Permalink to this headline">¶</a></h3>
+<p>In the event that we do not want to immediately close sessions, we won’t be using the context handler but will still need to grab new sessions as necessary. So let’s quickly write a function that will properly run <code class="docutils literal notranslate"><span class="pre">sess.close()</span></code> if a previous session exists and then return a new <code class="docutils literal notranslate"><span class="pre">tf.Session</span></code> instance.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">new_session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># Try to close the globally defined session if it isn&#39;t already</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sess</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c1"># If it doesn&#39;t exist, then just pass</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="c1"># Return the new instance</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Defining-the-Training-Function">
+<h3>Defining the Training Function<a class="headerlink" href="#Defining-the-Training-Function" title="Permalink to this headline">¶</a></h3>
+<p>Let’s define a function that runs the training routine and accepts the number of epochs as the inputs.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span>
+                <span class="n">config</span><span class="p">,</span>
+                <span class="n">init_ops</span><span class="p">,</span>
+                <span class="n">iterators</span><span class="p">,</span>
+                <span class="n">handler</span><span class="p">,</span>
+                <span class="n">alpha_ph</span><span class="p">,</span>
+                <span class="n">met_op_dict</span><span class="p">,</span>
+                <span class="n">train_op</span><span class="p">,</span>
+                <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">lr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="p">):</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_ops</span><span class="p">)</span>
+    <span class="c1"># Define training and validation handlers</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">name</span> <span class="p">:</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">iterators</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">string_handle</span><span class="p">())</span>
+                    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">iterators</span><span class="o">.</span><span class="n">keys</span><span class="p">()})</span>
+
+    <span class="c1"># metric ops</span>
+    <span class="n">met_op_names</span><span class="p">,</span> <span class="n">met_ops</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">items</span> <span class="k">for</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">met_op_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+    <span class="c1"># Generic metrics dict</span>
+    <span class="n">generic_metrics_dict</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">pdict</span><span class="p">(</span>
+        <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">met_op_names</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]})</span>
+    <span class="c1"># Dict with the various metrics we care about while training</span>
+    <span class="n">training_metrics</span> <span class="o">=</span> <span class="n">generic_metrics_dict</span><span class="p">()</span>
+
+    <span class="c1"># Ensure this is an int</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">epochs</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">lr</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">n_train</span> <span class="o">/</span> <span class="n">config</span><span class="o">.</span><span class="n">batch_size</span><span class="p">):</span>
+            <span class="c1"># Training op and compute metrics</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">train_op</span><span class="p">,</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">alpha_ph</span><span class="p">:</span> <span class="n">lr</span><span class="p">,</span>
+                           <span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">_name</span><span class="p">]})</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">config</span><span class="o">.</span><span class="n">n_epochs_acc</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">==</span> <span class="n">epochs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">met_ops</span><span class="p">,</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="o">.</span><span class="n">test</span><span class="p">})</span>
+            <span class="c1"># Record</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">met_op_names</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+                <span class="n">training_metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+            <span class="n">training_metrics</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Completed epoch </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">training_metrics</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Defining-The-Training-Routine">
+<h3>Defining The Training Routine<a class="headerlink" href="#Defining-The-Training-Routine" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">exp_batch</span><span class="p">(</span><span class="n">all_configs</span><span class="p">,</span>
+              <span class="n">train_configs</span><span class="p">,</span>
+              <span class="n">np_datasets</span><span class="p">,</span>
+              <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">n_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">lr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">optimizer</span><span class="p">):</span>
+
+    <span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+    <span class="n">batch_metrics</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">()</span>
+    <span class="n">exit</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Cleanup any residual nodes</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+    <span class="n">init_ops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_datasets</span><span class="p">(</span>
+            <span class="n">np_datasets</span><span class="p">,</span> <span class="n">all_configs</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">init_ops</span><span class="p">)</span>
+
+        <span class="n">generic_train_config</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">train_configs</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">alpha_ph</span><span class="p">,</span> <span class="n">met_op_dict</span><span class="p">,</span> <span class="n">optimizer_dict</span> <span class="o">=</span> <span class="n">init_graph</span><span class="p">(</span>
+            <span class="n">generic_train_config</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
+
+        <span class="c1"># Choose the training method</span>
+        <span class="n">train_op</span> <span class="o">=</span> <span class="n">optimizer_dict</span><span class="p">[</span><span class="n">optimizer</span><span class="p">]</span>
+        <span class="c1"># Add the initialization ops</span>
+        <span class="n">init_ops</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">(),</span>
+                     <span class="n">tf</span><span class="o">.</span><span class="n">local_variables_initializer</span><span class="p">()]</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Optimizing using </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_op</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">train_configs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Using &quot;</span><span class="si">{}</span><span class="s1">&quot; config&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">_name</span><span class="p">))</span>
+        <span class="n">all_train_metrics</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">epochs</span> <span class="o">=</span> <span class="n">epochs</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">epochs</span>
+        <span class="n">n_models</span> <span class="o">=</span> <span class="n">n_models</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">n_models</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">lr</span>
+
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_models</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Starting training for model </span><span class="si">{0}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="n">all_train_metrics</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">all_train_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_model</span><span class="p">(</span>
+                    <span class="n">sess</span><span class="p">,</span>
+                    <span class="n">config</span><span class="p">,</span>
+                    <span class="n">init_ops</span><span class="p">,</span>
+                    <span class="n">iterators</span><span class="p">,</span>
+                    <span class="n">handle</span><span class="p">,</span>
+                    <span class="n">alpha_ph</span><span class="p">,</span>
+                    <span class="n">met_op_dict</span><span class="p">,</span>
+                    <span class="n">train_op</span><span class="p">,</span>
+                    <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+                    <span class="n">lr</span><span class="o">=</span><span class="n">lr</span>
+                    <span class="p">))</span>
+
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Encountered a KeyboardInterrupt. &#39;</span>
+                      <span class="s1">&#39;Starting a IPython Shell.&#39;</span><span class="p">)</span>
+                <span class="n">ipy</span><span class="o">.</span><span class="n">embed</span><span class="p">()</span>
+                <span class="n">inp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                <span class="k">while</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">]:</span>
+                    <span class="n">inp</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Continue training? [(Y)es/(N)o/(S)kip]&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Continuing training...&#39;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">inp</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipping training set...&#39;</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Exiting&#39;</span><span class="p">)</span>
+                    <span class="n">exit</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="n">batch_metrics</span><span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_train_metrics</span>
+
+        <span class="k">if</span> <span class="n">exit</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">stat_metrics</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Adam-Optimizer-with-the-Different-Training-Sets">
+<h2>Adam Optimizer with the Different Training Sets<a class="headerlink" href="#Adam-Optimizer-with-the-Different-Training-Sets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Getting-the-Metrics">
+<h3>Getting the Metrics<a class="headerlink" href="#Getting-the-Metrics" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">adam_batch_metrics</span> <span class="o">=</span> <span class="n">exp_batch</span><span class="p">(</span>
+    <span class="n">dataset_configs</span><span class="p">,</span>
+    <span class="n">training_set_configs_cpu</span><span class="p">,</span>
+    <span class="n">np_datasets</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;Adam&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2019-05-28 16:32:27 x7 leabratf[28365] INFO Optimizing using Adam
+2019-05-28 16:32:27 x7 leabratf[28365] INFO Using &#34;cpu_batch_size_1&#34; config
+2019-05-28 16:32:27 x7 leabratf[28365] INFO Starting training for model 1.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">RuntimeError</span>                              Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;timed exec&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-32-be532b49ba28&gt;</span> in <span class="ansi-cyan-fg">exp_batch</span><span class="ansi-blue-fg">(all_configs, train_configs, np_datasets, epochs, n_models, lr, optimizer)</span>
+<span class="ansi-green-intense-fg ansi-bold">     53</span>                     train_op<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">     54</span>                     epochs<span class="ansi-blue-fg">=</span>epochs<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">---&gt; 55</span><span class="ansi-red-fg">                     </span>lr<span class="ansi-blue-fg">=</span>lr
+<span class="ansi-green-intense-fg ansi-bold">     56</span>                     ))
+<span class="ansi-green-intense-fg ansi-bold">     57</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-29-d525b56c0afe&gt;</span> in <span class="ansi-cyan-fg">train_model</span><span class="ansi-blue-fg">(sess, config, init_ops, iterators, handler, alpha_ph, met_op_dict, train_op, epochs, lr)</span>
+<span class="ansi-green-intense-fg ansi-bold">     10</span>                 lr<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span>                ):
+<span class="ansi-green-fg">---&gt; 12</span><span class="ansi-red-fg">     </span>sess<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>init_ops<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     13</span>     <span class="ansi-red-fg"># Define training and validation handlers</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>     handles = pdict({name : sess.run(iterators[name].string_handle())
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">    927</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    928</span>       result = self._run(None, fetches, feed_dict, options_ptr,
+<span class="ansi-green-fg">--&gt; 929</span><span class="ansi-red-fg">                          run_metadata_ptr)
+</span><span class="ansi-green-intense-fg ansi-bold">    930</span>       <span class="ansi-green-fg">if</span> run_metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    931</span>         proto_data <span class="ansi-blue-fg">=</span> tf_session<span class="ansi-blue-fg">.</span>TF_GetBuffer<span class="ansi-blue-fg">(</span>run_metadata_ptr<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_run</span><span class="ansi-blue-fg">(self, handle, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1075</span>       <span class="ansi-green-fg">raise</span> RuntimeError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Attempted to use a closed Session.&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1076</span>     <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>graph<span class="ansi-blue-fg">.</span>version <span class="ansi-blue-fg">==</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1077</span><span class="ansi-red-fg">       raise RuntimeError(&#39;The Session graph is empty.  Add operations to the &#39;
+</span><span class="ansi-green-intense-fg ansi-bold">   1078</span>                          &#39;graph before calling run().&#39;)
+<span class="ansi-green-intense-fg ansi-bold">   1079</span>
+
+<span class="ansi-red-fg">RuntimeError</span>: The Session graph is empty.  Add operations to the graph before calling run().
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">dryrun</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">exp_dir</span> <span class="o">=</span> <span class="n">DIR_DATA_PROC</span> <span class="o">/</span> <span class="s1">&#39;test_statistics&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">exp_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">exp_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+<span class="n">adam_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;adam_train_metrics_5.2.pickle&#39;</span><span class="p">]</span>
+<span class="n">adam_file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">exp_dir</span> <span class="o">/</span> <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">adam_file_names</span><span class="p">]</span>
+<span class="n">adam_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">adam_train_metrics</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">adam_file_paths</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">adam_data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fp</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dryrun: did not write to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/adam_train_metrics_5.2.pickle
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[729]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">adam_file_paths</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="n">file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+10
+[&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;, &#39;epoch&#39;]
+10
+[&#39;1e&#39;, &#39;2e&#39;, &#39;he&#39;, &#39;uni&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sgd_train_metrics</span> <span class="o">=</span> <span class="n">exp_stats</span><span class="p">(</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">n_models</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">n_val</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;sgd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimizing using GradientDescent
+Using train_1e training set
+Starting training for model 0.
+Encountered a KeyboardInterrupt. Starting a IPython Shell.
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34)
+Type &#39;copyright&#39;, &#39;credits&#39; or &#39;license&#39; for more information
+IPython 7.3.0 -- An enhanced Interactive Python. Type &#39;?&#39; for help.
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow_internal.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1053</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1054</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>this<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>this<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1055</span>         <span class="ansi-green-fg">except</span> Exception<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow_internal.py</span> in <span class="ansi-cyan-fg">&lt;lambda&gt;</span><span class="ansi-blue-fg">(self, name)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1039</span>     __swig_getmethods__ <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-fg">-&gt; 1040</span><span class="ansi-red-fg">     </span>__getattr__ <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">lambda</span> self<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">:</span> _swig_getattr<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> TF_Output<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1041</span>     __repr__ <span class="ansi-blue-fg">=</span> _swig_repr
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow_internal.py</span> in <span class="ansi-cyan-fg">_swig_getattr</span><span class="ansi-blue-fg">(self, class_type, name)</span>
+<span class="ansi-green-intense-fg ansi-bold">     73</span> <span class="ansi-green-fg">def</span> _swig_getattr<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> class_type<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 74</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> _swig_getattr_nondynamic<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> class_type<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     75</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow_internal.py</span> in <span class="ansi-cyan-fg">_swig_getattr_nondynamic</span><span class="ansi-blue-fg">(self, class_type, name, static)</span>
+<span class="ansi-green-intense-fg ansi-bold">     68</span>     <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">(</span><span class="ansi-green-fg">not</span> static<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 69</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> object<span class="ansi-blue-fg">.</span>__getattr__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     70</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">AttributeError</span>: type object &#39;object&#39; has no attribute &#39;__getattr__&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-65-27ce4de587cb&gt;</span> in <span class="ansi-cyan-fg">exp_stats</span><span class="ansi-blue-fg">(epochs, all_train_metrics, all_test_metrics, n_models, lr, n_val, optimizer)</span>
+<span class="ansi-green-intense-fg ansi-bold">     27</span>                     train_op<span class="ansi-blue-fg">=</span>train_op<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">---&gt; 28</span><span class="ansi-red-fg">                     training_set_name=train_set)
+</span><span class="ansi-green-intense-fg ansi-bold">     29</span>                 all_train_metrics<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>metrics<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-26-9105d56a1207&gt;</span> in <span class="ansi-cyan-fg">train_stats</span><span class="ansi-blue-fg">(sess, lr, epochs, train_op, init_ops, n_train, training_set_name, n_val)</span>
+<span class="ansi-green-intense-fg ansi-bold">     28</span>                 alpha_ph<span class="ansi-blue-fg">:</span> lr<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">---&gt; 29</span><span class="ansi-red-fg">                 handler: handles[training_set_name]})
+</span><span class="ansi-green-intense-fg ansi-bold">     30</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">    928</span>       result = self._run(None, fetches, feed_dict, options_ptr,
+<span class="ansi-green-fg">--&gt; 929</span><span class="ansi-red-fg">                          run_metadata_ptr)
+</span><span class="ansi-green-intense-fg ansi-bold">    930</span>       <span class="ansi-green-fg">if</span> run_metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_run</span><span class="ansi-blue-fg">(self, handle, fetches, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1151</span>       results = self._do_run(handle, final_targets, final_fetches,
+<span class="ansi-green-fg">-&gt; 1152</span><span class="ansi-red-fg">                              feed_dict_tensor, options, run_metadata)
+</span><span class="ansi-green-intense-fg ansi-bold">   1153</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">_do_run</span><span class="ansi-blue-fg">(self, handle, target_list, fetch_list, feed_dict, options, run_metadata)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1309</span>     <span class="ansi-red-fg"># pylint: disable=protected-access</span>
+<span class="ansi-green-fg">-&gt; 1310</span><span class="ansi-red-fg">     </span>feeds <span class="ansi-blue-fg">=</span> dict<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>t<span class="ansi-blue-fg">.</span>_as_tf_output<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> t<span class="ansi-blue-fg">,</span> v <span class="ansi-green-fg">in</span> feed_dict<span class="ansi-blue-fg">.</span>items<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1311</span>     fetches <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>t<span class="ansi-blue-fg">.</span>_as_tf_output<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> t <span class="ansi-green-fg">in</span> fetch_list<span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/client/session.py</span> in <span class="ansi-cyan-fg">&lt;genexpr&gt;</span><span class="ansi-blue-fg">(.0)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1309</span>     <span class="ansi-red-fg"># pylint: disable=protected-access</span>
+<span class="ansi-green-fg">-&gt; 1310</span><span class="ansi-red-fg">     </span>feeds <span class="ansi-blue-fg">=</span> dict<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>t<span class="ansi-blue-fg">.</span>_as_tf_output<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> v<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> t<span class="ansi-blue-fg">,</span> v <span class="ansi-green-fg">in</span> feed_dict<span class="ansi-blue-fg">.</span>items<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1311</span>     fetches <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>t<span class="ansi-blue-fg">.</span>_as_tf_output<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">for</span> t <span class="ansi-green-fg">in</span> fetch_list<span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/framework/ops.py</span> in <span class="ansi-cyan-fg">_as_tf_output</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    603</span>     <span class="ansi-red-fg"># pylint: disable=protected-access</span>
+<span class="ansi-green-fg">--&gt; 604</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> c_api_util<span class="ansi-blue-fg">.</span>tf_output<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>op<span class="ansi-blue-fg">.</span>_c_op<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>value_index<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    605</span>     <span class="ansi-red-fg"># pylint: enable=protected-access</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/framework/c_api_util.py</span> in <span class="ansi-cyan-fg">tf_output</span><span class="ansi-blue-fg">(c_op, index)</span>
+<span class="ansi-green-intense-fg ansi-bold">    183</span>   &#34;&#34;&#34;
+<span class="ansi-green-fg">--&gt; 184</span><span class="ansi-red-fg">   </span>ret <span class="ansi-blue-fg">=</span> c_api<span class="ansi-blue-fg">.</span>TF_Output<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    185</span>   ret<span class="ansi-blue-fg">.</span>oper <span class="ansi-blue-fg">=</span> c_op
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/tensorflow/python/pywrap_tensorflow_internal.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1053</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1054</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>this<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>this<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1055</span>         <span class="ansi-green-fg">except</span> Exception<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">_input_request</span><span class="ansi-blue-fg">(self, prompt, ident, parent, password)</span>
+<span class="ansi-green-intense-fg ansi-bold">    877</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 878</span><span class="ansi-red-fg">                 </span>ident<span class="ansi-blue-fg">,</span> reply <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>session<span class="ansi-blue-fg">.</span>recv<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>stdin_socket<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    879</span>             <span class="ansi-green-fg">except</span> Exception<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/jupyter_client/session.py</span> in <span class="ansi-cyan-fg">recv</span><span class="ansi-blue-fg">(self, socket, mode, content, copy)</span>
+<span class="ansi-green-intense-fg ansi-bold">    802</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 803</span><span class="ansi-red-fg">             </span>msg_list <span class="ansi-blue-fg">=</span> socket<span class="ansi-blue-fg">.</span>recv_multipart<span class="ansi-blue-fg">(</span>mode<span class="ansi-blue-fg">,</span> copy<span class="ansi-blue-fg">=</span>copy<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    804</span>         <span class="ansi-green-fg">except</span> zmq<span class="ansi-blue-fg">.</span>ZMQError <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/zmq/sugar/socket.py</span> in <span class="ansi-cyan-fg">recv_multipart</span><span class="ansi-blue-fg">(self, flags, copy, track)</span>
+<span class="ansi-green-intense-fg ansi-bold">    469</span>         &#34;&#34;&#34;
+<span class="ansi-green-fg">--&gt; 470</span><span class="ansi-red-fg">         </span>parts <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>self<span class="ansi-blue-fg">.</span>recv<span class="ansi-blue-fg">(</span>flags<span class="ansi-blue-fg">,</span> copy<span class="ansi-blue-fg">=</span>copy<span class="ansi-blue-fg">,</span> track<span class="ansi-blue-fg">=</span>track<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    471</span>         <span class="ansi-red-fg"># have first part already, only loop while more to receive</span>
+
+<span class="ansi-green-fg">zmq/backend/cython/socket.pyx</span> in <span class="ansi-cyan-fg">zmq.backend.cython.socket.Socket.recv</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">zmq/backend/cython/socket.pyx</span> in <span class="ansi-cyan-fg">zmq.backend.cython.socket.Socket.recv</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">zmq/backend/cython/socket.pyx</span> in <span class="ansi-cyan-fg">zmq.backend.cython.socket._recv_copy</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/zmq/backend/cython/checkrc.pxd</span> in <span class="ansi-cyan-fg">zmq.backend.cython.checkrc._check_rc</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;timed exec&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-65-27ce4de587cb&gt;</span> in <span class="ansi-cyan-fg">exp_stats</span><span class="ansi-blue-fg">(epochs, all_train_metrics, all_test_metrics, n_models, lr, n_val, optimizer)</span>
+<span class="ansi-green-intense-fg ansi-bold">     31</span>             <span class="ansi-green-fg">except</span> KeyboardInterrupt<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     32</span>                 print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Encountered a KeyboardInterrupt. Starting a IPython Shell.&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 33</span><span class="ansi-red-fg">                 </span>ipy<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     34</span>                 inp <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;&#39;</span>
+<span class="ansi-green-intense-fg ansi-bold">     35</span>                 <span class="ansi-green-fg">while</span> inp<span class="ansi-blue-fg">.</span>lower<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;y&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;n&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;s&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/IPython/terminal/embed.py</span> in <span class="ansi-cyan-fg">embed</span><span class="ansi-blue-fg">(**kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    387</span>         frame.f_code.co_filename, frame.f_lineno), **kwargs)
+<span class="ansi-green-intense-fg ansi-bold">    388</span>     shell(header=header, stack_depth=2, compile_flags=compile_flags,
+<span class="ansi-green-fg">--&gt; 389</span><span class="ansi-red-fg">         _call_location_id=&#39;%s:%s&#39; % (frame.f_code.co_filename, frame.f_lineno))
+</span><span class="ansi-green-intense-fg ansi-bold">    390</span>     InteractiveShellEmbed<span class="ansi-blue-fg">.</span>clear_instance<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    391</span>     <span class="ansi-red-fg">#restore previous instance</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/IPython/terminal/embed.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, header, local_ns, module, dummy, stack_depth, global_ns, compile_flags, **kw)</span>
+<span class="ansi-green-intense-fg ansi-bold">    227</span>         <span class="ansi-red-fg"># our call and get the original caller&#39;s namespaces.</span>
+<span class="ansi-green-intense-fg ansi-bold">    228</span>         self.mainloop(local_ns, module, stack_depth=stack_depth,
+<span class="ansi-green-fg">--&gt; 229</span><span class="ansi-red-fg">                       global_ns=global_ns, compile_flags=compile_flags)
+</span><span class="ansi-green-intense-fg ansi-bold">    230</span>
+<span class="ansi-green-intense-fg ansi-bold">    231</span>         self<span class="ansi-blue-fg">.</span>banner2 <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>old_banner2
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/IPython/terminal/embed.py</span> in <span class="ansi-cyan-fg">mainloop</span><span class="ansi-blue-fg">(self, local_ns, module, stack_depth, display_banner, global_ns, compile_flags)</span>
+<span class="ansi-green-intense-fg ansi-bold">    322</span>
+<span class="ansi-green-intense-fg ansi-bold">    323</span>         <span class="ansi-green-fg">with</span> self<span class="ansi-blue-fg">.</span>builtin_trap<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>display_trap<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 324</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>interact<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    325</span>
+<span class="ansi-green-intense-fg ansi-bold">    326</span>         <span class="ansi-red-fg"># now, purge out the local namespace of IPython&#39;s hidden variables.</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/IPython/terminal/interactiveshell.py</span> in <span class="ansi-cyan-fg">interact</span><span class="ansi-blue-fg">(self, display_banner)</span>
+<span class="ansi-green-intense-fg ansi-bold">    479</span>
+<span class="ansi-green-intense-fg ansi-bold">    480</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 481</span><span class="ansi-red-fg">                 </span>code <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>prompt_for_code<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    482</span>             <span class="ansi-green-fg">except</span> EOFError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    483</span>                 <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">(</span><span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>confirm_exit<span class="ansi-blue-fg">)</span><span class="ansi-red-fg"> </span><span class="ansi-red-fg">\</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/IPython/terminal/interactiveshell.py</span> in <span class="ansi-cyan-fg">prompt</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">    252</span>             <span class="ansi-green-fg">def</span> prompt<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    253</span>                 prompt_text <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;&#34;</span><span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">for</span> x <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>prompts<span class="ansi-blue-fg">.</span>in_prompt_tokens<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 254</span><span class="ansi-red-fg">                 </span>lines <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span>input<span class="ansi-blue-fg">(</span>prompt_text<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    255</span>                 prompt_continuation <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;&#34;</span><span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>x<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">for</span> x <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>prompts<span class="ansi-blue-fg">.</span>continuation_prompt_tokens<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    256</span>                 <span class="ansi-green-fg">while</span> self<span class="ansi-blue-fg">.</span>check_complete<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;\n&#39;</span><span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>lines<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#39;incomplete&#39;</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/IPython/utils/py3compat.py</span> in <span class="ansi-cyan-fg">input</span><span class="ansi-blue-fg">(prompt)</span>
+<span class="ansi-green-intense-fg ansi-bold">    152</span> <span class="ansi-red-fg"># to forward requests to a frontend.</span>
+<span class="ansi-green-intense-fg ansi-bold">    153</span> <span class="ansi-green-fg">def</span> input<span class="ansi-blue-fg">(</span>prompt<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 154</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> builtin_mod<span class="ansi-blue-fg">.</span>input<span class="ansi-blue-fg">(</span>prompt<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    155</span>
+<span class="ansi-green-intense-fg ansi-bold">    156</span> builtin_mod_name <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;builtins&#34;</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">raw_input</span><span class="ansi-blue-fg">(self, prompt)</span>
+<span class="ansi-green-intense-fg ansi-bold">    851</span>             self<span class="ansi-blue-fg">.</span>_parent_ident<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    852</span>             self<span class="ansi-blue-fg">.</span>_parent_header<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 853</span><span class="ansi-red-fg">             </span>password<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    854</span>         )
+<span class="ansi-green-intense-fg ansi-bold">    855</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/leabra/lib/python3.6/site-packages/ipykernel/kernelbase.py</span> in <span class="ansi-cyan-fg">_input_request</span><span class="ansi-blue-fg">(self, prompt, ident, parent, password)</span>
+<span class="ansi-green-intense-fg ansi-bold">    881</span>             <span class="ansi-green-fg">except</span> KeyboardInterrupt<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    882</span>                 <span class="ansi-red-fg"># re-raise KeyboardInterrupt, to truncate traceback</span>
+<span class="ansi-green-fg">--&gt; 883</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">raise</span> KeyboardInterrupt
+<span class="ansi-green-intense-fg ansi-bold">    884</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    885</span>                 <span class="ansi-green-fg">break</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+In [1]:  quit
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[733]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dryrun</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">sgd_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sgd_train_metrics.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;sgd_test_metrics.pickle&#39;</span><span class="p">]</span>
+<span class="n">sgd_file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">exp_dir</span> <span class="o">/</span> <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">sgd_file_names</span><span class="p">]</span>
+<span class="n">sgd_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">sgd_train_metrics</span><span class="p">,</span> <span class="n">sgd_test_metrics</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sgd_file_paths</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dryrun</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">sgd_data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fp</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrote to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dryrun: did not write to file </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/sgd_train_metrics.pickle
+Wrote to file /home/abdullah_rashed/work/projects/leabra-tf/data/processed/test_statistics/sgd_test_metrics.pickle
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">met_op_names</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">adam_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;1e&#39;</span><span class="p">][</span><span class="s1">&#39;epoch&#39;</span><span class="p">],</span> <span class="n">adam_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;1e&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[701]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">met</span> <span class="o">=</span> <span class="s1">&#39;sm_acc&#39;</span>
+<span class="k">for</span> <span class="n">test_stat</span> <span class="ow">in</span> <span class="n">test_names</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">adam_test_metrics</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">test_stat</span><span class="p">][</span><span class="s1">&#39;epoch&#39;</span><span class="p">],</span>
+                 <span class="n">model</span><span class="p">[</span><span class="n">test_stat</span><span class="p">][</span><span class="n">met</span><span class="p">],</span>
+                 <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Stat: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_stat</span><span class="p">),</span>
+                <span class="p">)</span>
+
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">by_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+<span class="c1"># plt.legend()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.3-GPU-Performance-Metrics_51_0.png" src="../_images/notebooks_0.3.3-GPU-Performance-Metrics_51_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">set_plot_size</span>
+
+<span class="nd">@set_plot_size</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">plot_df_metrics</span><span class="p">(</span><span class="n">metrics_df</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Training History&#39;</span><span class="p">,</span>
+                    <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key_by_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">model_average</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">epoch_vline</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="c1"># What metrics to plot</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span> <span class="ow">or</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="c1"># Empty lists for the long form data</span>
+    <span class="n">long_epochs</span><span class="p">,</span> <span class="n">long_metrics</span><span class="p">,</span> <span class="n">long_hues</span><span class="p">,</span> <span class="n">long_units</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop through each model&#39;s data</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">metrics_series</span> <span class="ow">in</span> <span class="n">metrics_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="c1"># Series data is in a string format, convert to floats and put them in a</span>
+        <span class="c1"># dict</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics_series</span><span class="p">[</span><span class="n">metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">literal_eval</span><span class="p">(</span><span class="n">metrics_series</span><span class="p">[</span><span class="n">key</span><span class="p">])]</span>
+                            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">metrics_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metrics_series</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+                            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>
+
+        <span class="c1"># How many epochs to plot</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">epochs</span><span class="p">:</span>
+            <span class="n">len_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">metrics_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+            <span class="c1"># Plot the number of epochs according to the data with the shortest</span>
+            <span class="c1"># number of epochs.</span>
+            <span class="n">epochs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">len_metrics</span><span class="p">)</span>
+
+        <span class="c1"># Add to the long form lists</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">key</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="s1">&#39;Model </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">i</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">key_by_model</span> <span class="k">else</span> <span class="n">key</span>
+            <span class="n">long_epochs</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">))</span>
+            <span class="n">long_metrics</span> <span class="o">+=</span> <span class="n">metrics_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][:</span><span class="n">epochs</span><span class="p">]</span>
+            <span class="n">long_hues</span> <span class="o">+=</span> <span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
+            <span class="n">long_units</span> <span class="o">+=</span> <span class="p">[</span><span class="n">units</span><span class="p">]</span><span class="o">*</span><span class="n">epochs</span>
+
+    <span class="k">if</span> <span class="n">model_average</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot each line individually</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_epochs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">long_units</span><span class="p">)</span>
+
+    <span class="c1"># Title, axis, and 500 epoch line</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epoch_vline</span> <span class="ow">and</span> <span class="n">epochs</span> <span class="o">&gt;</span> <span class="n">epoch_vline</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">epoch_vline</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> Epochs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">epoch_vline</span><span class="p">))</span>
+
+    <span class="c1"># Prune down the number of labels to just the unique ones</span>
+    <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+    <span class="n">by_label</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">handles</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">by_label</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">by_label</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[781]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Losses</span>
+<span class="n">min_loss_sgd_train</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_train_metrics</span><span class="p">]</span>
+<span class="n">min_loss_adam_train</span> <span class="o">=</span> <span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_train_metrics</span><span class="p">]</span>
+<span class="n">max_mets_sgd_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span>
+                             <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">sgd_test_metrics</span><span class="p">]</span>
+                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sgd_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="n">max_mets_adam_test</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="p">:</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">met</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;sm_acc&#39;</span><span class="p">])</span>
+                              <span class="k">for</span> <span class="n">met</span> <span class="ow">in</span> <span class="n">adam_test_metrics</span><span class="p">]</span>
+                     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">adam_test_metrics</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[782]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">optimizer_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="s1">&#39;SGD&#39;</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">optimizer_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[782]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([&#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;, &#39;Adam&#39;,
+       &#39;Adam&#39;, &#39;Adam&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;,
+       &#39;SGD&#39;, &#39;SGD&#39;, &#39;SGD&#39;], dtype=&#39;&lt;U4&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[783]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data_loss</span> <span class="o">=</span> <span class="n">min_loss_adam_train</span> <span class="o">+</span> <span class="n">min_loss_sgd_train</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span> <span class="p">:</span> <span class="n">max_mets_adam_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_test</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_loss</span>
+<span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;Optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimizer_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[784]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">metric_labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">metric_values</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">optimizer_labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">max_mets_adam_test</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="n">metric_values</span> <span class="o">+=</span> <span class="n">max_mets_adam_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">max_mets_sgd_test</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">metric_labels</span> <span class="o">+=</span>  <span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span>
+    <span class="n">optimizer_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;SGD&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[785]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Values&#39;</span> <span class="p">:</span> <span class="n">metric_values</span><span class="p">,</span>
+             <span class="s1">&#39;Datasets&#39;</span> <span class="p">:</span> <span class="n">metric_labels</span><span class="p">,</span>
+             <span class="s1">&#39;Optimizer&#39;</span> <span class="p">:</span> <span class="n">optimizer_labels</span><span class="p">}</span>
+<span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+<span class="n">data_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[785]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Values</th>
+      <th>Datasets</th>
+      <th>Optimizer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.338</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.400</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.374</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.368</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.354</td>
+      <td>1e</td>
+      <td>Adam</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Plotting-Results">
+<h2>Plotting Results<a class="headerlink" href="#Plotting-Results" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Comparing-Datasets">
+<h3>Comparing Datasets<a class="headerlink" href="#Comparing-Datasets" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[786]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Datasets&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Values&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Optimizer&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_df</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sample Accuracy of Adam vs SGD&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.3.3-GPU-Performance-Metrics_60_0.png" src="../_images/notebooks_0.3.3-GPU-Performance-Metrics_60_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># taken from:</span>
+<span class="c1"># https://www.youtube.com/watch?time_continue=44&amp;v=FrEp94A9FoY</span>
+<span class="c1"># TensorFlow Graph visualizer code</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+
+<span class="k">def</span> <span class="nf">strip_consts</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">max_const_size</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Strip large constant values from graph_def.&quot;&quot;&quot;</span>
+    <span class="n">strip_def</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">GraphDef</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">n0</span> <span class="ow">in</span> <span class="n">graph_def</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">strip_def</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+        <span class="n">n</span><span class="o">.</span><span class="n">MergeFrom</span><span class="p">(</span><span class="n">n0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s1">&#39;Const&#39;</span><span class="p">:</span>
+            <span class="n">tensor</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tensor</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">tensor_content</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="n">max_const_size</span><span class="p">:</span>
+                <span class="n">tensor</span><span class="o">.</span><span class="n">tensor_content</span> <span class="o">=</span> <span class="s2">&quot;&lt;stripped </span><span class="si">%d</span><span class="s2"> bytes&gt;&quot;</span><span class="o">%</span><span class="k">size</span>
+    <span class="k">return</span> <span class="n">strip_def</span>
+
+<span class="k">def</span> <span class="nf">show_graph</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">max_const_size</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Visualize TensorFlow graph.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="s1">&#39;as_graph_def&#39;</span><span class="p">):</span>
+        <span class="n">graph_def</span> <span class="o">=</span> <span class="n">graph_def</span><span class="o">.</span><span class="n">as_graph_def</span><span class="p">()</span>
+    <span class="n">strip_def</span> <span class="o">=</span> <span class="n">strip_consts</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">max_const_size</span><span class="o">=</span><span class="n">max_const_size</span><span class="p">)</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/polymer/0.3.3/platform.js&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">        &lt;script&gt;</span>
+<span class="s2">          function load() {{</span>
+<span class="s2">            document.getElementById(&quot;</span><span class="si">{id}</span><span class="s2">&quot;).pbtxt = </span><span class="si">{data}</span><span class="s2">;</span>
+<span class="s2">          }}</span>
+<span class="s2">        &lt;/script&gt;</span>
+<span class="s2">        &lt;link rel=&quot;import&quot; href=&quot;https://tensorboard.appspot.com/tf-graph-basic.build.html&quot; onload=load()&gt;</span>
+<span class="s2">        &lt;div style=&quot;height:600px&quot;&gt;</span>
+<span class="s2">          &lt;tf-graph-basic id=&quot;</span><span class="si">{id}</span><span class="s2">&quot;&gt;&lt;/tf-graph-basic&gt;</span>
+<span class="s2">        &lt;/div&gt;</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">repr</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">strip_def</span><span class="p">)),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;graph&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()))</span>
+
+    <span class="n">iframe</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;iframe seamless style=&quot;width:1200px;height:620px;border:0&quot; srcdoc=&quot;</span><span class="si">{}</span><span class="s2">&quot;&gt;&lt;/iframe&gt;</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;quot;&#39;</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">iframe</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">g</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">g</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+
+    <span class="n">W1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;W1&quot;</span><span class="p">)</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b1&quot;</span><span class="p">)</span>
+
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">W1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span>
+
+    <span class="n">W2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;W2&quot;</span><span class="p">)</span>
+    <span class="n">b2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b2&quot;</span><span class="p">)</span>
+
+    <span class="n">a2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">W2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span>
+
+    <span class="n">W3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;W3&quot;</span><span class="p">)</span>
+    <span class="n">b3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b3&quot;</span><span class="p">)</span>
+
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">W3</span><span class="p">)</span> <span class="o">+</span> <span class="n">b3</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriter</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">show_graph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+    <iframe seamless style="width:1200px;height:620px;border:0" srcdoc="
+    <script src=&quot;//cdnjs.cloudflare.com/ajax/libs/polymer/0.3.3/platform.js&quot;></script>
+    <script>
+      function load() {
+        document.getElementById(&quot;graph0.18050236485929227&quot;).pbtxt = 'node {\n  name: &quot;X&quot;\n  op: &quot;Placeholder&quot;\n  attr {\n    key: &quot;dtype&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;shape&quot;\n    value {\n      shape {\n        unknown_rank: true\n      }\n    }\n  }\n}\nnode {\n  name: &quot;W1&quot;\n  op: &quot;Placeholder&quot;\n  attr {\n    key: &quot;dtype&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;shape&quot;\n    value {\n      shape {\n        unknown_rank: true\n      }\n    }\n  }\n}\nnode {\n  name: &quot;b1&quot;\n  op: &quot;Placeholder&quot;\n  attr {\n    key: &quot;dtype&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;shape&quot;\n    value {\n      shape {\n        unknown_rank: true\n      }\n    }\n  }\n}\nnode {\n  name: &quot;MatMul&quot;\n  op: &quot;BatchMatMul&quot;\n  input: &quot;X&quot;\n  input: &quot;W1&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;adj_x&quot;\n    value {\n      b: false\n    }\n  }\n  attr {\n    key: &quot;adj_y&quot;\n    value {\n      b: false\n    }\n  }\n}\nnode {\n  name: &quot;add&quot;\n  op: &quot;Add&quot;\n  input: &quot;MatMul&quot;\n  input: &quot;b1&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n}\nnode {\n  name: &quot;Relu&quot;\n  op: &quot;Relu&quot;\n  input: &quot;add&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n}\nnode {\n  name: &quot;W2&quot;\n  op: &quot;Placeholder&quot;\n  attr {\n    key: &quot;dtype&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;shape&quot;\n    value {\n      shape {\n        unknown_rank: true\n      }\n    }\n  }\n}\nnode {\n  name: &quot;b2&quot;\n  op: &quot;Placeholder&quot;\n  attr {\n    key: &quot;dtype&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;shape&quot;\n    value {\n      shape {\n        unknown_rank: true\n      }\n    }\n  }\n}\nnode {\n  name: &quot;MatMul_1&quot;\n  op: &quot;BatchMatMul&quot;\n  input: &quot;Relu&quot;\n  input: &quot;W2&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;adj_x&quot;\n    value {\n      b: false\n    }\n  }\n  attr {\n    key: &quot;adj_y&quot;\n    value {\n      b: false\n    }\n  }\n}\nnode {\n  name: &quot;add_1&quot;\n  op: &quot;Add&quot;\n  input: &quot;MatMul_1&quot;\n  input: &quot;b2&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n}\nnode {\n  name: &quot;Relu_1&quot;\n  op: &quot;Relu&quot;\n  input: &quot;add_1&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n}\nnode {\n  name: &quot;W3&quot;\n  op: &quot;Placeholder&quot;\n  attr {\n    key: &quot;dtype&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;shape&quot;\n    value {\n      shape {\n        unknown_rank: true\n      }\n    }\n  }\n}\nnode {\n  name: &quot;b3&quot;\n  op: &quot;Placeholder&quot;\n  attr {\n    key: &quot;dtype&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;shape&quot;\n    value {\n      shape {\n        unknown_rank: true\n      }\n    }\n  }\n}\nnode {\n  name: &quot;MatMul_2&quot;\n  op: &quot;BatchMatMul&quot;\n  input: &quot;Relu_1&quot;\n  input: &quot;W3&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n  attr {\n    key: &quot;adj_x&quot;\n    value {\n      b: false\n    }\n  }\n  attr {\n    key: &quot;adj_y&quot;\n    value {\n      b: false\n    }\n  }\n}\nnode {\n  name: &quot;add_2&quot;\n  op: &quot;Add&quot;\n  input: &quot;MatMul_2&quot;\n  input: &quot;b3&quot;\n  attr {\n    key: &quot;T&quot;\n    value {\n      type: DT_FLOAT\n    }\n  }\n}\n';
+      }
+    </script>
+    <link rel=&quot;import&quot; href=&quot;https://tensorboard.appspot.com/tf-graph-basic.build.html&quot; onload=load()>
+    <div style=&quot;height:600px&quot;>
+      <tf-graph-basic id=&quot;graph0.18050236485929227&quot;></tf-graph-basic>
+    </div>
+"></iframe></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="0.4-Exploring-Different-Learning-Rates.html" class="btn btn-neutral float-right" title="0.4 Exploring Different Learning Rates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="0.3.2-Model-Checkpoints.html" class="btn btn-neutral float-left" title="0.3.2 Model Checkpoints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
