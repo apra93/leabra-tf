@@ -7,6 +7,8 @@ from pstar import pdict
 
 from leabratf import constants
 
+import tensorflow as tf
+
 logger = logging.getLogger(__name__)
 
 # Combigen Task Variables
@@ -81,7 +83,8 @@ _name = 'default'
 _config = True
 
 def default_config(**kwargs):
-    """Function that turns all the values defined above into a dictionary.
+    """Function (hack) that turns all the values defined above into a
+    dictionary.
 
     Grabs all the values in the ``globals`` dictionary and adds them to the
     returned dictionary if it is a relevant variable.
