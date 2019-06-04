@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.gf762e21 documentation</title>
+  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.g0acecbc documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.52.gf762e21
+                0+untagged.52.g0acecbc
               </div>
             
           
@@ -132,6 +132,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#Constants">Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Phase-Colors-and-Shapes">Phase Colors and Shapes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Action-Mapping">Action Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Data-Generation-Functions">Data Generation Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Phase">Phase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Helper-Functions">Helper Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Action-Selection">Action Selection</a></li>
 </ul>
 </li>
 </ul>
@@ -455,7 +461,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Mon Jun 03 2019 21:13:16
+Tue Jun 04 2019 10:59:56
 
 CPython 3.6.8
 IPython 7.3.0
@@ -472,7 +478,7 @@ machine    : x86_64
 processor  : x86_64
 CPU cores  : 8
 interpreter: 64bit
-Git hash   : d48242bb76989e2a67519e27e258f29143676920
+Git hash   : f762e214932528459f0359da3bcdd7d2f372710b
 Git branch : master
 </pre></div></div>
 </div>
@@ -590,7 +596,7 @@ Git branch : master
 <div class="section" id="Phase-Colors-and-Shapes">
 <h3>Phase Colors and Shapes<a class="headerlink" href="#Phase-Colors-and-Shapes" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -608,7 +614,7 @@ Git branch : master
 
 <span class="c1"># Phase C</span>
 <span class="n">phase_c_colors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">phase_b_shapes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">phase_c_shapes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 
 <span class="c1"># Color lines correspond to a particular horizontal line</span>
 <span class="c1"># # colors are not uniformly selected for</span>
@@ -621,90 +627,148 @@ Git branch : master
 <div class="section" id="Action-Mapping">
 <h3>Action Mapping<a class="headerlink" href="#Action-Mapping" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">action_dictonary</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># (Color,Shape) : Action</span>
-    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="c1">#      Phase A       |       Phase B</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># TS 1</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># TS 1</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># TS 2</span>
+    <span class="c1">#      Phase C</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># TS Old</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">}</span> <span class="c1"># TS New</span>
 </pre></div>
 </div>
 </div>
+</div>
+</div>
+<div class="section" id="Data-Generation-Functions">
+<h2>Data Generation Functions<a class="headerlink" href="#Data-Generation-Functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Phase">
+<h3>Phase<a class="headerlink" href="#Phase" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">phase_a_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                 <span class="n">colors</span><span class="o">=</span><span class="n">phase_a_colors</span><span class="p">,</span>
-                 <span class="n">shapes</span><span class="o">=</span><span class="n">phase_a_shapes</span><span class="p">,</span>
+<span></span><span class="k">def</span> <span class="nf">phase_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span>
+                 <span class="n">phase_colors</span><span class="p">,</span>
+                 <span class="n">phase_shapes</span><span class="p">,</span>
+                 <span class="n">p_colors</span><span class="p">,</span>
+                 <span class="n">p_shapes</span><span class="p">,</span>
+                 <span class="n">n_colors</span><span class="o">=</span><span class="n">N_COLORS</span><span class="p">,</span>
+                 <span class="n">n_shapes</span><span class="o">=</span><span class="n">N_SHAPES</span><span class="p">,</span>
                 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base label generator.&quot;&quot;&quot;</span>
     <span class="c1"># N Color samples</span>
-    <span class="n">color_choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N_COLORS</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-        <span class="n">phase_a_colors</span><span class="p">,</span>
+    <span class="n">color_choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n_colors</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+        <span class="n">phase_colors</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
         <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">],</span>
-    <span class="p">)]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">N_COLORS</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">p_colors</span><span class="p">,</span>
+    <span class="p">)]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_colors</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="c1"># N Shape samples</span>
-    <span class="n">shape_choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N_SHAPES</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">s</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">phase_a_shapes</span><span class="p">],</span>
+    <span class="n">shape_choices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n_shapes</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">s</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">phase_shapes</span><span class="p">],</span>
         <span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
         <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">],</span>
-    <span class="p">)]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">N_SHAPES</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="c1"># Make the labels</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">p_shapes</span><span class="p">,</span>
+    <span class="p">)]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_shapes</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># Return the choices</span>
     <span class="k">return</span> <span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span>
 
-<span class="k">def</span> <span class="nf">integer_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">color_choices</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">phase_a_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="n">phase_a_colors</span><span class="p">,</span>
+                   <span class="n">shapes</span><span class="o">=</span><span class="n">phase_a_shapes</span><span class="p">,</span>
+                   <span class="n">p_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">p_shapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Label generator with defaults for phase a&quot;&quot;&quot;</span>
+    <span class="c1"># Color and shape probabilities</span>
+    <span class="n">p_colors</span> <span class="o">=</span> <span class="n">p_colors</span> <span class="ow">or</span> <span class="p">[</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">p_shapes</span> <span class="o">=</span> <span class="n">p_shapes</span> <span class="ow">or</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">phase_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span>
+                        <span class="n">p_colors</span><span class="p">,</span> <span class="n">p_shapes</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">input_array</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">phase_b_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="n">phase_b_colors</span><span class="p">,</span>
+                   <span class="n">shapes</span><span class="o">=</span><span class="n">phase_b_shapes</span><span class="p">,</span>
+                   <span class="n">p_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">p_shapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Label generator with defaults for phase b&quot;&quot;&quot;</span>
+    <span class="c1"># Color and shape probabilities</span>
+    <span class="n">p_colors</span> <span class="o">=</span> <span class="n">p_colors</span> <span class="ow">or</span> <span class="p">[</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">p_shapes</span> <span class="o">=</span> <span class="n">p_shapes</span> <span class="ow">or</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">phase_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span>
+                        <span class="n">p_colors</span><span class="p">,</span> <span class="n">p_shapes</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">phase_b_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+                   <span class="n">colors</span><span class="o">=</span><span class="n">phase_c_colors</span><span class="p">,</span>
+                   <span class="n">shapes</span><span class="o">=</span><span class="n">phase_c_shapes</span><span class="p">,</span>
+                   <span class="n">p_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">p_shapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Label generator with defaults for phase c&quot;&quot;&quot;</span>
+    <span class="c1"># Color and shape probabilities</span>
+    <span class="n">p_colors</span> <span class="o">=</span> <span class="n">p_colors</span> <span class="ow">or</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">p_shapes</span> <span class="o">=</span> <span class="n">p_shapes</span> <span class="ow">or</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">phase_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span>
+                        <span class="n">p_colors</span><span class="p">,</span> <span class="n">p_shapes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Helper-Functions">
+<h3>Helper Functions<a class="headerlink" href="#Helper-Functions" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">integer_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turns one-hot labels to integers&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">input_array</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">,</span>
+                <span class="n">n_shapes</span><span class="o">=</span><span class="n">N_SHAPES</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="n">N_COLORS</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Turns one-hot labels to 2D input arrays with lines&quot;&quot;&quot;</span>
     <span class="c1"># Full Color array</span>
-    <span class="n">color_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">N_SHAPES</span><span class="p">)</span>
+    <span class="n">color_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">n_shapes</span><span class="p">)</span>
     <span class="c1"># Full Shape Array</span>
     <span class="n">shape_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">shape_choices</span><span class="p">,</span> <span class="n">N_COLORS</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">shape_choices</span><span class="p">,</span> <span class="n">n_colors</span><span class="p">),</span>
         <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
     <span class="c1"># Full data with both</span>
     <span class="n">x_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">color_array</span><span class="p">,</span> <span class="n">shape_array</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">x_data</span>
-
-<span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span> <span class="o">=</span> <span class="n">phase_a_labels</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">shape_choices</span>
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="Action-Selection">
+<h3>Action Selection<a class="headerlink" href="#Action-Selection" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">actions</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">actions</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">,</span> <span class="n">action_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Implements the mapping from shapes and colors to actions&quot;&quot;&quot;</span>
-    <span class="n">binarized</span> <span class="o">=</span>
+    <span class="c1"># Create the action dictionary to compare to</span>
+    <span class="n">action_dict</span> <span class="o">=</span> <span class="n">action_dict</span> <span class="ow">or</span> <span class="n">action_dictonary</span>
+    <span class="c1"># Make binary from one hot and increment shape by 1</span>
+    <span class="n">color_binarized</span> <span class="o">=</span> <span class="n">integer_labels</span><span class="p">(</span><span class="n">color_choices</span><span class="p">)</span>
+    <span class="n">shape_binarized</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">integer_labels</span><span class="p">(</span><span class="n">shape_choices</span><span class="p">)]</span>
+    <span class="c1"># Compile into a list of tuples</span>
     <span class="n">label_tuples</span> <span class="o">=</span> <span class="p">[(</span><span class="n">color</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-        <span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">)]</span>
-    <span class="k">return</span> <span class="n">label_tuples</span>
-
-<span class="n">actions</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">)</span>
+        <span class="n">color_binarized</span><span class="p">,</span> <span class="n">shape_binarized</span><span class="p">)]</span>
+    <span class="c1"># Substitute based on the action dictionary</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">action_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">label_tuples</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -713,95 +777,26 @@ Git branch : master
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[(array([[0.],
-         [1.],
-         [0.],
-         [0.],
-         [0.]]), array([[1.],
-         [0.],
-         [0.],
-         [0.]])), (array([[0.],
-         [0.],
-         [1.],
-         [0.],
-         [0.]]), array([[0.],
-         [1.],
-         [0.],
-         [0.]])), (array([[0.],
-         [0.],
-         [1.],
-         [0.],
-         [0.]]), array([[1.],
-         [0.],
-         [0.],
-         [0.]])), (array([[0.],
-         [1.],
-         [0.],
-         [0.],
-         [0.]]), array([[0.],
-         [1.],
-         [0.],
-         [0.]])), (array([[1.],
-         [0.],
-         [0.],
-         [0.],
-         [0.]]), array([[0.],
-         [1.],
-         [0.],
-         [0.]])), (array([[0.],
-         [1.],
-         [0.],
-         [0.],
-         [0.]]), array([[1.],
-         [0.],
-         [0.],
-         [0.]])), (array([[0.],
-         [0.],
-         [1.],
-         [0.],
-         [0.]]), array([[0.],
-         [1.],
-         [0.],
-         [0.]])), (array([[0.],
-         [1.],
-         [0.],
-         [0.],
-         [0.]]), array([[1.],
-         [0.],
-         [0.],
-         [0.]])), (array([[0.],
-         [0.],
-         [1.],
-         [0.],
-         [0.]]), array([[0.],
-         [1.],
-         [0.],
-         [0.]])), (array([[1.],
-         [0.],
-         [0.],
-         [0.],
-         [0.]]), array([[1.],
-         [0.],
-         [0.],
-         [0.]]))]
+<span></span>[3, 1, 3, 2, 2, 4, 2, 1, 1, 3]
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">color_choices</span><span class="p">]</span>
+<span></span><span class="n">choices</span> <span class="o">=</span> <span class="n">phase_a_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">actions</span><span class="p">(</span><span class="o">*</span><span class="n">choices</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[1, 2, 2, 1, 0, 1, 2, 1, 2, 0]
+<span></span>[2, 3, 3, 1, 3, 4, 4, 1, 2, 2]
 </pre></div>
 </div>
 </div>
