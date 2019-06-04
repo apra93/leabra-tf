@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.52.g51625b7 documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.52.gd48242b documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.52.g51625b7
+                0+untagged.52.gd48242b
               </div>
             
           
@@ -289,6 +289,8 @@ pertaining to the task itself are likely pulled straight from the paper.</p>
 
 <span class="kn">from</span> <span class="nn">leabratf</span> <span class="kn">import</span> <span class="n">constants</span>
 
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="c1"># Combigen Task Variables</span>
@@ -363,7 +365,8 @@ pertaining to the task itself are likely pulled straight from the paper.</p>
 <span class="n">_config</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="k">def</span> <span class="nf">default_config</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Function that turns all the values defined above into a dictionary.</span>
+    <span class="sd">&quot;&quot;&quot;Function (hack) that turns all the values defined above into a</span>
+<span class="sd">    dictionary.</span>
 
 <span class="sd">    Grabs all the values in the ``globals`` dictionary and adds them to the</span>
 <span class="sd">    returned dictionary if it is a relevant variable.</span>
