@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.gd48242b documentation</title>
+  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.gf762e21 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.52.gd48242b
+                0+untagged.52.gf762e21
               </div>
             
           
@@ -455,24 +455,24 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Tue May 28 2019 22:28:57
+Mon Jun 03 2019 21:13:16
 
 CPython 3.6.8
 IPython 7.3.0
 
 numpy 1.16.2
-matplotlib 3.0.3
+matplotlib 3.0.2
 seaborn 0.9.0
-tensorflow 1.12.0
+tensorflow 1.10.0
 
 compiler   : GCC 7.3.0
 system     : Linux
-release    : 4.4.0-130-generic
+release    : 4.18.0-20-generic
 machine    : x86_64
 processor  : x86_64
-CPU cores  : 12
+CPU cores  : 8
 interpreter: 64bit
-Git hash   : b05a537249072d1ffeee1d2927e868a4c995b283
+Git hash   : d48242bb76989e2a67519e27e258f29143676920
 Git branch : master
 </pre></div></div>
 </div>
@@ -577,7 +577,7 @@ Git branch : master
 <div class="section" id="Constants">
 <h3>Constants<a class="headerlink" href="#Constants" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -590,7 +590,7 @@ Git branch : master
 <div class="section" id="Phase-Colors-and-Shapes">
 <h3>Phase Colors and Shapes<a class="headerlink" href="#Phase-Colors-and-Shapes" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -620,116 +620,38 @@ Git branch : master
 </div>
 <div class="section" id="Action-Mapping">
 <h3>Action Mapping<a class="headerlink" href="#Action-Mapping" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">leabratf.tasks.combinatorics.default_configuration</span> <span class="k">as</span> <span class="nn">config</span>
-<span class="kn">from</span> <span class="nn">leabratf.utils</span> <span class="k">import</span> <span class="n">as_list</span><span class="p">,</span> <span class="n">flatten</span>
-
-<span class="k">def</span> <span class="nf">generate_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="n">slots</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">slots</span><span class="p">,</span>
-                    <span class="n">size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
-                    <span class="n">dims</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
-                    <span class="n">n_lines</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">n_lines</span><span class="p">,</span>
-                    <span class="n">line_stats</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns an array of labels to construct the data from.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    n_samples : int, optional</span>
-<span class="sd">            Number of samples to return.</span>
-
-<span class="sd">    slots : int, optional</span>
-<span class="sd">            Number of slots per sample.</span>
-
-<span class="sd">    size : int, optional</span>
-<span class="sd">            Size of the nxn matrix to use for the task.</span>
-
-<span class="sd">    dims : int, optional</span>
-<span class="sd">            Number of dimensions for the task.</span>
-
-<span class="sd">    n_lines : int, optional</span>
-<span class="sd">            Total number of lines to have per sample.</span>
-
-<span class="sd">    line_stats : list or None, optional</span>
-<span class="sd">            Statistics for sampling from the ``size x dims`` elements.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    labels : np.ndarray of shape ``(n_samples, stack, size, dims)``</span>
-<span class="sd">            The resulting task labels.</span>
-
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    ValueError</span>
-<span class="sd">            If ``dims`` does not match the number of lines provided (assuming more</span>
-<span class="sd">            than one number was provided for it)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Ensure `n_lines` is an int</span>
-    <span class="n">n_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_lines</span><span class="p">)</span>
-    <span class="c1"># This will be useful going forward</span>
-    <span class="n">n_idx</span> <span class="o">=</span> <span class="n">size</span> <span class="o">*</span> <span class="n">dims</span>
-    <span class="c1"># It must be less than the number of available indices</span>
-    <span class="k">if</span> <span class="n">n_lines</span> <span class="o">&gt;=</span> <span class="n">n_idx</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;n_lines must be less than size * dims.&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Get default value for line_stats if its None</span>
-    <span class="k">if</span> <span class="n">line_stats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Check if these are default conditions, ie n_idx is what ``config``</span>
-        <span class="c1"># would specify them to be.</span>
-        <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">size</span> <span class="ow">and</span> <span class="n">dims</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
-            <span class="n">line_stats</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">line_stats</span>
-        <span class="c1"># Otherwise, generate a uniform distribution with the appropriate length</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">line_stats</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span> <span class="o">*</span> <span class="n">dims</span>
-
-    <span class="c1"># Normalize `line_stats` to sum to 1 if it isn&#39;t already</span>
-    <span class="n">line_stats</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">line_stats</span><span class="p">)</span>
-    <span class="n">line_stats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">line_stats</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">line_stats</span><span class="p">)</span>
-
-    <span class="c1"># Generate a zero array to fill with 1s</span>
-    <span class="n">raw_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">slots</span><span class="p">,</span> <span class="n">n_idx</span><span class="p">))</span>
-
-    <span class="c1"># Create a list of length `dims` that contains arrays with the indices which</span>
-    <span class="c1"># to set the value to 1. Each array is of shape `n_samples` by `stack` by</span>
-    <span class="c1"># `n_line[i]` where `i` is the line index.</span>
-    <span class="n">arg_ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_idx</span><span class="p">),</span>
-                                          <span class="n">n_lines</span><span class="p">,</span>
-                                          <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                          <span class="n">p</span><span class="o">=</span><span class="n">line_stats</span><span class="p">)</span>
-                         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">*</span> <span class="n">slots</span><span class="p">)])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                                 <span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">slots</span><span class="p">,</span> <span class="n">n_lines</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">arg_ones</span>
-
-<span class="n">generate_labels</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span></span><span class="n">action_dictonary</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># (Color,Shape) : Action</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>array([[[1, 2],
-        [0, 7],
-        [6, 7],
-        [6, 4]],
-
-       [[7, 1],
-        [6, 8],
-        [6, 0],
-        [5, 2]]])
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">phase_a_data</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span></span><span class="k">def</span> <span class="nf">phase_a_labels</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                  <span class="n">colors</span><span class="o">=</span><span class="n">phase_a_colors</span><span class="p">,</span>
                  <span class="n">shapes</span><span class="o">=</span><span class="n">phase_a_shapes</span><span class="p">,</span>
                 <span class="p">):</span>
@@ -747,7 +669,13 @@ Git branch : master
         <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">],</span>
     <span class="p">)]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">N_SHAPES</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># Make the labels</span>
+    <span class="k">return</span> <span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span>
 
+<span class="k">def</span> <span class="nf">integer_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">color_choices</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">input_array</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">):</span>
     <span class="c1"># Full Color array</span>
     <span class="n">color_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">N_SHAPES</span><span class="p">)</span>
     <span class="c1"># Full Shape Array</span>
@@ -757,76 +685,123 @@ Git branch : master
 
     <span class="c1"># Full data with both</span>
     <span class="n">x_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">color_array</span><span class="p">,</span> <span class="n">shape_array</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">full_data</span>
+    <span class="k">return</span> <span class="n">x_data</span>
 
-<span class="n">phase_a_data</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span> <span class="o">=</span> <span class="n">phase_a_labels</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">shape_choices</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">actions</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implements the mapping from shapes and colors to actions&quot;&quot;&quot;</span>
+    <span class="n">binarized</span> <span class="o">=</span>
+    <span class="n">label_tuples</span> <span class="o">=</span> <span class="p">[(</span><span class="n">color</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">label_tuples</span>
+
+<span class="n">actions</span><span class="p">(</span><span class="n">color_choices</span><span class="p">,</span> <span class="n">shape_choices</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>array([[[1., 0., 0., 0.],
-        [1., 0., 0., 0.],
-        [1., 1., 1., 1.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.]],
-
-       [[1., 0., 0., 0.],
-        [1., 1., 1., 1.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.]],
-
-       [[1., 1., 1., 1.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.]],
-
-       [[0., 1., 0., 0.],
-        [1., 1., 1., 1.],
-        [0., 1., 0., 0.],
-        [0., 1., 0., 0.],
-        [0., 1., 0., 0.]],
-
-       [[1., 0., 0., 0.],
-        [1., 0., 0., 0.],
-        [1., 1., 1., 1.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.]],
-
-       [[0., 1., 0., 0.],
-        [0., 1., 0., 0.],
-        [1., 1., 1., 1.],
-        [0., 1., 0., 0.],
-        [0., 1., 0., 0.]],
-
-       [[0., 1., 0., 0.],
-        [0., 1., 0., 0.],
-        [1., 1., 1., 1.],
-        [0., 1., 0., 0.],
-        [0., 1., 0., 0.]],
-
-       [[0., 1., 0., 0.],
-        [1., 1., 1., 1.],
-        [0., 1., 0., 0.],
-        [0., 1., 0., 0.],
-        [0., 1., 0., 0.]],
-
-       [[1., 0., 0., 0.],
-        [1., 1., 1., 1.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.]],
-
-       [[1., 0., 0., 0.],
-        [1., 0., 0., 0.],
-        [1., 1., 1., 1.],
-        [1., 0., 0., 0.],
-        [1., 0., 0., 0.]]])
+<span></span>[(array([[0.],
+         [1.],
+         [0.],
+         [0.],
+         [0.]]), array([[1.],
+         [0.],
+         [0.],
+         [0.]])), (array([[0.],
+         [0.],
+         [1.],
+         [0.],
+         [0.]]), array([[0.],
+         [1.],
+         [0.],
+         [0.]])), (array([[0.],
+         [0.],
+         [1.],
+         [0.],
+         [0.]]), array([[1.],
+         [0.],
+         [0.],
+         [0.]])), (array([[0.],
+         [1.],
+         [0.],
+         [0.],
+         [0.]]), array([[0.],
+         [1.],
+         [0.],
+         [0.]])), (array([[1.],
+         [0.],
+         [0.],
+         [0.],
+         [0.]]), array([[0.],
+         [1.],
+         [0.],
+         [0.]])), (array([[0.],
+         [1.],
+         [0.],
+         [0.],
+         [0.]]), array([[1.],
+         [0.],
+         [0.],
+         [0.]])), (array([[0.],
+         [0.],
+         [1.],
+         [0.],
+         [0.]]), array([[0.],
+         [1.],
+         [0.],
+         [0.]])), (array([[0.],
+         [1.],
+         [0.],
+         [0.],
+         [0.]]), array([[1.],
+         [0.],
+         [0.],
+         [0.]])), (array([[0.],
+         [0.],
+         [1.],
+         [0.],
+         [0.]]), array([[0.],
+         [1.],
+         [0.],
+         [0.]])), (array([[1.],
+         [0.],
+         [0.],
+         [0.],
+         [0.]]), array([[1.],
+         [0.],
+         [0.],
+         [0.]]))]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">color_choices</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[1, 2, 2, 1, 0, 1, 2, 1, 2, 0]
 </pre></div>
 </div>
 </div>
