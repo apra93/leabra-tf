@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.gf1b6772 documentation</title>
+  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.g862bad7 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.52.gf1b6772
+                0+untagged.52.g862bad7
               </div>
             
           
@@ -154,7 +154,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Training-and-Testing-on-the-Phase-Data">Training and Testing on the Phase Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Plots-for-Multiple-Models">Plots for Multiple Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#One-Model-Performance">One Model Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Running-Multiple-Models">Running Multiple Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Average-Performance-Across-Models">Average Performance Across Models</a></li>
 </ul>
 </li>
 </ul>
@@ -1173,7 +1175,7 @@ Git branch : master
 <div class="section" id="Training-and-Testing-on-the-Phase-Data">
 <h2>Training and Testing on the Phase Data<a class="headerlink" href="#Training-and-Testing-on-the-Phase-Data" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1189,32 +1191,46 @@ Git branch : master
     <span class="n">n_train</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">n_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">for</span> <span class="n">phase</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">phase_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2019-06-06 17:20:44 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.350156
+</pre></div></div>
+</div>
+<div class="section" id="One-Model-Performance">
+<h3>One Model Performance<a class="headerlink" href="#One-Model-Performance" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">phase</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">phase_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Phase </span><span class="si">{phase}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Accuracy on Respective Test Phase Datasets&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Training Sample&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-2019-06-06 16:52:04 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.995685
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.8-Hierarchical-Learning_53_1.png" src="../_images/notebooks_0.8-Hierarchical-Learning_53_1.png" />
+<img alt="../_images/notebooks_0.8-Hierarchical-Learning_55_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_55_0.png" />
 </div>
 </div>
-<div class="section" id="Plots-for-Multiple-Models">
-<h3>Plots for Multiple Models<a class="headerlink" href="#Plots-for-Multiple-Models" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+</div>
+<div class="section" id="Running-Multiple-Models">
+<h3>Running Multiple Models<a class="headerlink" href="#Running-Multiple-Models" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1234,74 +1250,11 @@ Git branch : master
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-2019-06-06 17:15:20 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.041440
-2019-06-06 17:15:21 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.228136
-2019-06-06 17:15:23 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.943069
-2019-06-06 17:15:24 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.460180
-2019-06-06 17:15:26 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.710909
-2019-06-06 17:15:28 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.786138
-2019-06-06 17:15:29 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.877848
-2019-06-06 17:15:30 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.969888
-2019-06-06 17:15:30 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.847245
-2019-06-06 17:15:31 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.755489
-2019-06-06 17:15:32 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.825465
-2019-06-06 17:15:33 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.846412
-2019-06-06 17:15:33 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.634927
-2019-06-06 17:15:34 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.797285
-2019-06-06 17:15:35 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.732039
-2019-06-06 17:15:36 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.650897
-2019-06-06 17:15:37 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.152825
-2019-06-06 17:15:37 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.596847
-2019-06-06 17:15:38 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.892151
-2019-06-06 17:15:39 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.807828
-2019-06-06 17:15:40 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.806340
-2019-06-06 17:15:41 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.894829
-2019-06-06 17:15:42 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.196724
-2019-06-06 17:15:43 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.457882
-2019-06-06 17:15:45 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.509160
-2019-06-06 17:15:46 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.281539
-2019-06-06 17:15:47 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.866191
-2019-06-06 17:15:49 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.514011
-2019-06-06 17:15:50 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.151063
-2019-06-06 17:15:51 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.932965
-2019-06-06 17:15:52 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.612062
-2019-06-06 17:15:53 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.104999
-2019-06-06 17:15:55 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.928141
-2019-06-06 17:15:57 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.256205
-2019-06-06 17:15:57 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.865153
-2019-06-06 17:15:58 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.808647
-2019-06-06 17:15:59 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.796027
-2019-06-06 17:16:00 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.027891
-2019-06-06 17:16:02 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.622923
-2019-06-06 17:16:03 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.813958
-2019-06-06 17:16:04 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.447787
-2019-06-06 17:16:06 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.494929
-2019-06-06 17:16:07 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.327435
-2019-06-06 17:16:08 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.948221
-2019-06-06 17:16:09 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.939908
-2019-06-06 17:16:10 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.901593
-2019-06-06 17:16:10 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:00.758578
-2019-06-06 17:16:12 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.186275
-2019-06-06 17:16:13 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.050638
-2019-06-06 17:16:14 apra-xps-13 leabratf[22508] INFO Elapsed time: 0:00:01.002513
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-CPU times: user 1min 15s, sys: 6.89 s, total: 1min 22s
-Wall time: 55.1 s
-</pre></div></div>
-</div>
+<div class="section" id="Average-Performance-Across-Models">
+<h3>Average Performance Across Models<a class="headerlink" href="#Average-Performance-Across-Models" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1332,7 +1285,9 @@ Wall time: 55.1 s
                  <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">long_units</span><span class="p">)</span>
 
 <span class="c1"># Title, axis, and 500 epoch line</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Samples&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Accuracy on Respective Test Phase Datasets for </span><span class="si">{N_MODELS}</span><span class="s1"> Models&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Training Sample&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1341,7 +1296,7 @@ Wall time: 55.1 s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0.8-Hierarchical-Learning_56_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_56_0.png" />
+<img alt="../_images/notebooks_0.8-Hierarchical-Learning_59_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_59_0.png" />
 </div>
 </div>
 </div>
