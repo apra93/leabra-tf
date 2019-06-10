@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tensorflow Utility Functions &mdash; Leabra Tensorflow 0+untagged.52.g862bad7 documentation</title>
+  <title>Tensorflow Utility Functions &mdash; Leabra Tensorflow 0+untagged.52.ge1fecd8 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.52.g862bad7
+                0+untagged.52.ge1fecd8
               </div>
             
           
@@ -224,7 +224,7 @@
 <p>Tensorflow helper functions.</p>
 <dl class="function">
 <dt id="leabratf.tfutils.define_scope">
-<code class="descclassname">leabratf.tfutils.</code><code class="descname">define_scope</code><span class="sig-paren">(</span><em>function</em>, <em>scope=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tfutils.define_scope" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tfutils.</code><code class="sig-name descname">define_scope</code><span class="sig-paren">(</span><em class="sig-param">function</em>, <em class="sig-param">scope=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tfutils.define_scope" title="Permalink to this definition">¶</a></dt>
 <dd><p>The operations added by the function live within a
 <code class="docutils literal notranslate"><span class="pre">tf.variable_scope()</span></code>.</p>
 <p>If this decorator is used with arguments, they will be forwarded to the
@@ -233,7 +233,7 @@ variable scope. The scope name defaults to the name of the wrapped function.</p>
 
 <dl class="function">
 <dt id="leabratf.tfutils.lazy_property">
-<code class="descclassname">leabratf.tfutils.</code><code class="descname">lazy_property</code><span class="sig-paren">(</span><em>function</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tfutils.lazy_property" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tfutils.</code><code class="sig-name descname">lazy_property</code><span class="sig-paren">(</span><em class="sig-param">function</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tfutils.lazy_property" title="Permalink to this definition">¶</a></dt>
 <dd><p>The wrapped method will only be executed once, and the result will be
 stored in a cache variable.</p>
 <p>Subsequent calls to it will directly return the result so that operations
@@ -243,7 +243,7 @@ classes.</p>
 
 <dl class="function">
 <dt id="leabratf.tfutils.repeat">
-<code class="descclassname">leabratf.tfutils.</code><code class="descname">repeat</code><span class="sig-paren">(</span><em>tensor</em>, <em>repeats</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tfutils.repeat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tfutils.</code><code class="sig-name descname">repeat</code><span class="sig-paren">(</span><em class="sig-param">tensor</em>, <em class="sig-param">repeats</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tfutils.repeat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements <code class="docutils literal notranslate"><span class="pre">np.repeat</span></code> but for tensors since this is still not
 implemented in tensorflow.</p>
 <p>This function and its test was taken from this github issue page:

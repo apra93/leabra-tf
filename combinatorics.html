@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.52.g862bad7 documentation</title>
+  <title>Combinatorial Generalizaton and Interactivity &mdash; Leabra Tensorflow 0+untagged.52.ge1fecd8 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.52.g862bad7
+                0+untagged.52.ge1fecd8
               </div>
             
           
@@ -414,7 +414,7 @@ pertaining to the task itself are likely pulled straight from the paper.</p>
 arrays used for inputs and labels.</p>
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.combigen.generate_labels">
-<code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">generate_labels</code><span class="sig-paren">(</span><em>n_samples=1</em>, <em>slots=4</em>, <em>size=5</em>, <em>dims=2</em>, <em>n_lines=2</em>, <em>line_stats=None</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.generate_labels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="sig-name descname">generate_labels</code><span class="sig-paren">(</span><em class="sig-param">n_samples=1</em>, <em class="sig-param">slots=4</em>, <em class="sig-param">size=5</em>, <em class="sig-param">dims=2</em>, <em class="sig-param">n_lines=2</em>, <em class="sig-param">line_stats=None</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.generate_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an array of labels to construct the data from.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -442,7 +442,7 @@ arrays used for inputs and labels.</p>
 
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.combigen.inverse_transform">
-<code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>Y</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param">Y</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for first pass implementation that accounts for multiple
 samples.</p>
 <dl class="field-list simple">
@@ -460,7 +460,7 @@ samples.</p>
 
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.combigen.inverse_transform_single_sample">
-<code class="descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="descname">inverse_transform_single_sample</code><span class="sig-paren">(</span><em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.inverse_transform_single_sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tasks.combinatorics.combigen.</code><code class="sig-name descname">inverse_transform_single_sample</code><span class="sig-paren">(</span><em class="sig-param">y</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.combigen.inverse_transform_single_sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turns the inputted nxn array into the nx2 array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -482,7 +482,7 @@ samples.</p>
 models.</p>
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.make_datasets.generate_combigen_x_y_dataset">
-<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_combigen_x_y_dataset</code><span class="sig-paren">(</span><em>n_samples=100</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_x_y_dataset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="sig-name descname">generate_combigen_x_y_dataset</code><span class="sig-paren">(</span><em class="sig-param">n_samples=100</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_x_y_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to generate X and y pairs for the combigen task.</p>
 <p>Convenience function that runs <code class="docutils literal notranslate"><span class="pre">cg.generate_labels</span></code> followed by
 <code class="docutils literal notranslate"><span class="pre">cg.inverse_transform</span></code> to creat the <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> pairs for the data.
@@ -505,7 +505,7 @@ The only change is that now the default number of samples is defined as
 
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.make_datasets.generate_combigen_datasets">
-<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_combigen_datasets</code><span class="sig-paren">(</span><em>n_samples_train=100, n_lines_train=2, line_stats_train=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], n_samples_val=50, n_lines_val=2, line_stats_val=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], n_samples_test=500, n_lines_test=2, line_stats_test=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], *args, **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_datasets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="sig-name descname">generate_combigen_datasets</code><span class="sig-paren">(</span><em class="sig-param">n_samples_train=100, n_lines_train=2, line_stats_train=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], n_samples_val=50, n_lines_val=2, line_stats_val=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], n_samples_test=500, n_lines_test=2, line_stats_test=[[1, 1, 1, 1, 1], [1, 1, 1, 1, 1]], *args, **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_datasets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the training, validation, and testing set data.</p>
 <p>Higher level wrapper that organizes the dataset into the expected groups of
 training, validation, and testing sets. Default values are defined in
@@ -543,7 +543,7 @@ testing data.</p></li>
 
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.make_datasets.generate_iters_inits_and_handle">
-<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_iters_inits_and_handle</code><span class="sig-paren">(</span><em>tf_datasets</em>, <em>init_ops=None</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_iters_inits_and_handle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="sig-name descname">generate_iters_inits_and_handle</code><span class="sig-paren">(</span><em class="sig-param">tf_datasets</em>, <em class="sig-param">init_ops=None</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_iters_inits_and_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the iterators, initializers, and string handler for a list of
 <a href="#id1"><span class="problematic" id="id2">``</span></a>tf.Dataset``s.</p>
 <p>In order to allow for switching between different <code class="docutils literal notranslate"><span class="pre">tf.Dataset</span></code>, create a
@@ -579,7 +579,7 @@ initializers for each iterator.</p></li>
 
 <dl class="function">
 <dt id="leabratf.tasks.combinatorics.make_datasets.generate_combigen_tf_datasets">
-<code class="descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="descname">generate_combigen_tf_datasets</code><span class="sig-paren">(</span><em>batch_size_train=1</em>, <em>batch_size_val=50</em>, <em>batch_size_test=500</em>, <em>init_ops=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_tf_datasets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.tasks.combinatorics.make_datasets.</code><code class="sig-name descname">generate_combigen_tf_datasets</code><span class="sig-paren">(</span><em class="sig-param">batch_size_train=1</em>, <em class="sig-param">batch_size_val=50</em>, <em class="sig-param">batch_size_test=500</em>, <em class="sig-param">init_ops=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.tasks.combinatorics.make_datasets.generate_combigen_tf_datasets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the combigen <a href="#id3"><span class="problematic" id="id4">``</span></a>tf.Dataset``s necessary to run with tensorflow.</p>
 <p>Creates all the tensorflow nodes to properly set up the data pipeline, and
 returns the necessary variables. First generate the numpy arrays of the

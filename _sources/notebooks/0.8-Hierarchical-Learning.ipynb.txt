@@ -41,7 +41,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Thu Jun 06 2019 16:35:02 \n",
+      "Mon Jun 10 2019 12:01:19 \n",
       "\n",
       "CPython 3.6.8\n",
       "IPython 7.3.0\n",
@@ -53,12 +53,12 @@
       "\n",
       "compiler   : GCC 7.3.0\n",
       "system     : Linux\n",
-      "release    : 4.18.0-20-generic\n",
+      "release    : 4.18.0-21-generic\n",
       "machine    : x86_64\n",
       "processor  : x86_64\n",
       "CPU cores  : 8\n",
       "interpreter: 64bit\n",
-      "Git hash   : 0acecbc0d8d21d0b2ddae2d03e5b9a2ba46c9778\n",
+      "Git hash   : 862bad7e54d1a18d21b3050f084bc7d321371667\n",
       "Git branch : master\n"
      ]
     }
@@ -310,7 +310,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 58,
+   "execution_count": 11,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -395,7 +395,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 59,
+   "execution_count": 12,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -427,7 +427,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 60,
+   "execution_count": 13,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -462,7 +462,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 61,
+   "execution_count": 14,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -606,7 +606,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 64,
+   "execution_count": 104,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -751,7 +751,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 68,
+   "execution_count": 117,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -778,7 +778,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 69,
+   "execution_count": 111,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -1013,6 +1013,460 @@
     "plt.ylabel('Accuracy')\n",
     "plt.show()"
    ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Learning Curves for Different Task-Sets"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Making the Task-Sets"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define the constants\n",
+    "# TS Colors\n",
+    "ts1_colors = [0, 1]\n",
+    "ts2_colors = [2]\n",
+    "ts_old_colors = [3]\n",
+    "ts_new_colors = [4]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def explicit_phase_labels(phase_colors,\n",
+    "                          phase_shapes,\n",
+    "                          n_colors=N_COLORS,\n",
+    "                          n_shapes=N_SHAPES,\n",
+    "                         ):\n",
+    "    # Meshgrid across the colors and shapes\n",
+    "    choices = np.array(np.meshgrid(phase_colors, phase_shapes)).T.reshape(-1,2)\n",
+    "    # Turn them into one hot vectors\n",
+    "    color_choices = np.eye(n_colors)[choices[:,0]]\n",
+    "    shape_choices = np.eye(n_shapes)[choices[:,1] - 1]\n",
+    "    # Reshape to the desired shape\n",
+    "    color_choices = color_choices.reshape((len(color_choices), n_colors, 1))\n",
+    "    shape_choices = shape_choices.reshape((len(shape_choices), n_shapes, 1))\n",
+    "    \n",
+    "    return color_choices, shape_choices"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 94,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ts_test_keys = [\n",
+    "    'TS 1 Phase A',\n",
+    "    'TS 2 Phase A',\n",
+    "    'TS 1 Phase B',\n",
+    "    'TS 2 Phase B',\n",
+    "    'TS Old Phase C',\n",
+    "    'TS New Phase C',\n",
+    "]\n",
+    "ts_shape_color_pairs = {key : pairs for key, pairs in zip(ts_test_keys, [\n",
+    "    (ts1_colors, phase_a_shapes),\n",
+    "    (ts2_colors, phase_a_shapes),\n",
+    "    (ts1_colors, phase_b_shapes),\n",
+    "    (ts2_colors, phase_b_shapes),\n",
+    "    (ts_old_colors, phase_c_shapes),\n",
+    "    (ts_new_colors, phase_c_shapes),\n",
+    "])}\n",
+    "\n",
+    "ts_test_datasets = {}\n",
+    "for key in ts_test_keys:\n",
+    "    choices = explicit_phase_labels(*ts_shape_color_pairs[key])\n",
+    "    inputs = input_array(*choices)\n",
+    "    labels = actions(*choices)\n",
+    "    ts_test_datasets[key] = (inputs, labels)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 98,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Recombine the datasets into one dataset list of train and ts\n",
+    "phase_train_datasets = {f'Phase {key.upper()}' : data \n",
+    "                        for key, data in train_dataset.items()}\n",
+    "phase_test_datasets = {f'Phase {key.upper()} Test' : data\n",
+    "                       for key, data in test_dataset.items()}\n",
+    "ts_datasets = [phase_train_datasets, phase_test_datasets, ts_test_datasets]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 106,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "metric_keys = ts_test_keys + list(phase_test_datasets.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 107,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['TS 1 Phase A',\n",
+      " 'TS 2 Phase A',\n",
+      " 'TS 1 Phase B',\n",
+      " 'TS 2 Phase B',\n",
+      " 'TS Old Phase C',\n",
+      " 'TS New Phase C',\n",
+      " 'Phase A Test',\n",
+      " 'Phase B Test',\n",
+      " 'Phase C Test']\n"
+     ]
+    }
+   ],
+   "source": [
+    "pprint(metric_keys)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Redefining the Computational Graph"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 99,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def make_tf_ts_datasets(datasets, init_ops=None):\n",
+    "    # The first step of the setup is that each of the datasets (training, validation, and \n",
+    "    # testing) are turned into their own `Dataset` objects.\n",
+    "    tf_datasets = pdict()\n",
+    "    for data, name in zip(datasets, ['train', 'test', 'ts']):\n",
+    "        for key in data.keys():\n",
+    "            tf_datasets[key] = tf.data.Dataset.from_tensor_slices(\n",
+    "                data[key]).repeat().batch(1 if name=='train' \n",
+    "                                          else len(data[key][0]))\n",
+    "    \n",
+    "    # Next, let's define the iterators for each of the datasets, and then add their \n",
+    "    # initializations to the `init_ops` list.\n",
+    "    # Training iterator\n",
+    "    iterators = pdict({name : data.make_initializable_iterator()\n",
+    "                      for name, data in tf_datasets.items()})\n",
+    "\n",
+    "    # Add the initiatlizations to the init opts\n",
+    "    init_ops = init_ops or []\n",
+    "    init_ops += [iter.initializer for iter in iterators.values()]\n",
+    "    \n",
+    "    first_dataset = list(tf_datasets.values())[0] \n",
+    "    output_types, output_shapes = first_dataset.output_types, first_dataset.output_shapes\n",
+    "    \n",
+    "    # And finally, the interesting part. Rather than creating separate next elements for \n",
+    "    # the model, the `tf.data` API has a string handler iterator so we can contextually \n",
+    "    # switch the active `Dataset` object, resulting in different values being used for `x` \n",
+    "    # and `y`.\n",
+    "\n",
+    "    # The way this is done is by defining a `tf.placeholder` variable, which is used \n",
+    "    # first to create a string handler iterator, and later to hold the dataset-indicating \n",
+    "    # string handle. The string handler iterator is what then changes the values of `x` and \n",
+    "    # `y`, naturally also supplying them using the `get_next` method.\n",
+    "    # The placeholder variable of type string\n",
+    "    handle = tf.placeholder(tf.string, shape=[])\n",
+    "    \n",
+    "    # Iterator from string handle\n",
+    "    handle_iterator = tf.data.Iterator.from_string_handle(\n",
+    "        handle, output_types, output_shapes)\n",
+    "\n",
+    "    # x and y that will be used in the graph\n",
+    "    x, y = handle_iterator.get_next()\n",
+    "    \n",
+    "    return x, y, iterators, handle, init_ops"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 102,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "N_INPUTS = N_COLORS * N_SHAPES\n",
+    "N_HIDDEN_1 = 100 \n",
+    "N_OUTPUTS = 4\n",
+    "TF_DEVICE = '/device:CPU:0'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 108,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Cleanup any residual nodes\n",
+    "tf.reset_default_graph()\n",
+    "init_ops = []\n",
+    "\n",
+    "# Weights and biases\n",
+    "weights = pdict({\n",
+    "    'h1': tf.get_variable(\n",
+    "        name='w_h1', \n",
+    "        shape=[N_INPUTS, N_HIDDEN_1],\n",
+    "        initializer=tf.contrib.layers.xavier_initializer(),\n",
+    "        dtype=tf.float64),\n",
+    "    'out': tf.get_variable(\n",
+    "        name='w_out', \n",
+    "        shape=[N_HIDDEN_1, N_OUTPUTS],\n",
+    "        initializer=tf.contrib.layers.xavier_initializer(),\n",
+    "        dtype=tf.float64),\n",
+    "})\n",
+    "biases = pdict({\n",
+    "    'b1': tf.get_variable(\n",
+    "        name=\"b_1\", \n",
+    "        shape=[N_HIDDEN_1], \n",
+    "        initializer=tf.zeros_initializer(),\n",
+    "        dtype=tf.float64),\n",
+    "    'out': tf.get_variable(\n",
+    "        name=\"b_out\", \n",
+    "        shape=[N_OUTPUTS], \n",
+    "        initializer=tf.zeros_initializer(),\n",
+    "        dtype=tf.float64),\n",
+    "})\n",
+    "\n",
+    "init_ops = []\n",
+    "\n",
+    "with tf.device(TF_DEVICE):\n",
+    "    # Get the relevant dataset nodes\n",
+    "    x, y, iterators, handler, init_ops = make_tf_ts_datasets(\n",
+    "        ts_datasets, init_ops)\n",
+    "\n",
+    "    # Build the model\n",
+    "    logits = oreilly_model(x)\n",
+    "    # Ensure y is cast to the same type as logits\n",
+    "    labels = tf.cast(y, logits.dtype)\n",
+    "    \n",
+    "    # We will keep this in for now\n",
+    "    # Define alpha as placeholder variable\n",
+    "    alpha_ph = tf.placeholder(tf.float32, shape=[])\n",
+    "\n",
+    "    # Define loss and optimizer\n",
+    "    loss_op = tf.reduce_mean(tf.losses.softmax_cross_entropy(\n",
+    "        labels, logits))\n",
+    "\n",
+    "    # Define some intermediate nodes\n",
+    "    predictions = tf.nn.softmax(logits)\n",
+    "    rounded_predictions = tf.round(predictions)\n",
+    "    equal_labels_and_preds = tf.equal(rounded_predictions, labels)\n",
+    "    \n",
+    "    # Accuracy \n",
+    "    sample_acc = tf.reduce_all(equal_labels_and_preds, axis=1)\n",
+    "    accuracy = tf.reduce_mean(tf.cast(sample_acc, tf.float64))\n",
+    " \n",
+    "    # Adam\n",
+    "    train_op_adam = tf.train.AdamOptimizer(alpha_ph).minimize(loss_op)\n",
+    "    # Adadelta \n",
+    "    train_op_adadelta = tf.train.AdadeltaOptimizer(alpha_ph).minimize(loss_op)\n",
+    "    # RMSProp\n",
+    "    train_op_rmsprop = tf.train.RMSPropOptimizer(alpha_ph).minimize(loss_op)\n",
+    "    # SGD\n",
+    "    train_op_sgd = tf.train.GradientDescentOptimizer(alpha_ph).minimize(loss_op)\n",
+    "    \n",
+    "# And now add these to a dictionary\n",
+    "optimizer_dict = pdict({\n",
+    "    'Adam' : train_op_adam,\n",
+    "    'Adadelta' : train_op_adadelta,\n",
+    "    'RMSProp' : train_op_rmsprop,\n",
+    "    'sgd' : train_op_sgd,\n",
+    "})"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Training Routine"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 112,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "@timing\n",
+    "def ts_train_exp(\n",
+    "    sess, \n",
+    "    phases,\n",
+    "    lr=0.0033, \n",
+    "    epochs=1,\n",
+    "    train_op=optimizer_dict['Adam'], \n",
+    "    init_ops=None,\n",
+    "    verbose=False,\n",
+    "    n_train=None,\n",
+    "    n_val=5,\n",
+    "):\n",
+    "    log_level = logger.info if verbose else logger.debug\n",
+    "    log_level(f'Beginning training using learning rate {lr}, {train_op.name} '\n",
+    "              f'training routine, for {epochs} epochs')\n",
+    "    # Ensure this is an int\n",
+    "    epochs = int(epochs)\n",
+    "    # Dict with the various metrics we care about while training\n",
+    "    phase_metrics = pdict()\n",
+    "    \n",
+    "    # Run the initialization ops\n",
+    "    init_ops = init_ops or []\n",
+    "    if tf.global_variables_initializer() not in init_ops:\n",
+    "        init_ops += [tf.global_variables_initializer(), \n",
+    "                     tf.local_variables_initializer()]\n",
+    "    sess.run(init_ops)\n",
+    "    \n",
+    "    # Define training and validation handlers\n",
+    "    handles = pdict({name : sess.run(iterators[name].string_handle())\n",
+    "                    for name in iterators.keys()})\n",
+    "    \n",
+    "    n_samples = 0\n",
+    "    for phase in phases:\n",
+    "        n_train = len(phase_train_datasets[phase][0])\n",
+    "        training_metrics = pdict({key : pdict({'loss':[], 'accuracy':[], 'sample':[]})\n",
+    "                                  for key in metric_keys})\n",
+    "        for epoch in range(epochs):\n",
+    "            for i in range(n_train):\n",
+    "                # Training op and compute metrics\n",
+    "                _ = sess.run(\n",
+    "                    train_op, \n",
+    "                    feed_dict={alpha_ph: lr, handler: handles[phase]})\n",
+    "\n",
+    "                if not i % n_val or i == n_train - 1:\n",
+    "                    for met_key in metric_keys:\n",
+    "                        metrics = sess.run(\n",
+    "                            [loss_op, accuracy],\n",
+    "                            feed_dict={handler: handles[met_key]})\n",
+    "                        # Record\n",
+    "                        for key, metric in zip(['loss', 'accuracy'], metrics):\n",
+    "                            training_metrics[met_key][key].append(metric)\n",
+    "                        training_metrics[met_key]['sample'].append(i + epoch*n_train)\n",
+    "                    phase_n_samples = i + epoch*n_train + n_samples\n",
+    "                    log_level(f'Completed Sample {phase_n_samples} for {phase}')\n",
+    "        phase_metrics[phase] = training_metrics\n",
+    "        n_samples = phase_n_samples\n",
+    "        log_level(f'Completed {phase}')\n",
+    "\n",
+    "    return phase_metrics"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Recreating Previous Plots"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Running One model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 114,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "phases = list(phase_train_datasets.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 123,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2019-06-10 15:09:56 apra-xps-13 leabratf[9498] INFO Elapsed time: 0:00:04.109046\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "CPU times: user 6.17 s, sys: 569 ms, total: 6.74 s\n",
+      "Wall time: 4.12 s\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "sess = new_session()\n",
+    "phase_metrics = ts_train_exp(\n",
+    "    sess, \n",
+    "    phases=phases,\n",
+    "    lr=0.00333, \n",
+    "    epochs=1,\n",
+    "    train_op=optimizer_dict['Adam'], \n",
+    "    init_ops=init_ops,\n",
+    "    verbose=False,\n",
+    "    n_train=None,\n",
+    "    n_val=1,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### One Model Recreated Plot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for phase, data in phase_metrics.items():\n",
+    "    for \n",
+    "    plt.plot(data.sample, data['accuracy'], label=f'Phase {phase}')\n",
+    "plt.title('Accuracy on Respective Test Phase Datasets')\n",
+    "plt.xlabel('Training Sample')\n",
+    "plt.ylabel('Accuracy')\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
   }
  ],
  "metadata": {

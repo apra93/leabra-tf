@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.52.g862bad7 documentation</title>
+  <title>Visualization &mdash; Leabra Tensorflow 0+untagged.52.ge1fecd8 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.52.g862bad7
+                0+untagged.52.ge1fecd8
               </div>
             
           
@@ -232,7 +232,7 @@ throughout the repo.</p>
 <p>Functions specifically for visualizing the combigen task.</p>
 <dl class="function">
 <dt id="leabratf.visualization.combigen_heatmap.heatmap">
-<code class="descclassname">leabratf.visualization.combigen_heatmap.</code><code class="descname">heatmap</code><span class="sig-paren">(</span><em>data</em>, <em>data2=None</em>, <em>vmin=0</em>, <em>vmax=2</em>, <em>cbar=False</em>, <em>linewidths=1</em>, <em>square=True</em>, <em>gridspec_kw=None</em>, <em>sharey=True</em>, <em>sharex=True</em>, <em>titles=None</em>, <em>squeeze=False</em>, <em>y_label='Samples'</em>, <em>x_label=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.combigen_heatmap.heatmap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.visualization.combigen_heatmap.</code><code class="sig-name descname">heatmap</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">data2=None</em>, <em class="sig-param">vmin=0</em>, <em class="sig-param">vmax=2</em>, <em class="sig-param">cbar=False</em>, <em class="sig-param">linewidths=1</em>, <em class="sig-param">square=True</em>, <em class="sig-param">gridspec_kw=None</em>, <em class="sig-param">sharey=True</em>, <em class="sig-param">sharex=True</em>, <em class="sig-param">titles=None</em>, <em class="sig-param">squeeze=False</em>, <em class="sig-param">y_label='Samples'</em>, <em class="sig-param">x_label=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.combigen_heatmap.heatmap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper function of <code class="docutils literal notranslate"><span class="pre">sns.heatmap</span></code> with some different defaults.</p>
 <p>Only changed values are shown, see the documentation for <code class="docutils literal notranslate"><span class="pre">sns.heatmap</span></code>
 for all available parameters.</p>
@@ -260,7 +260,7 @@ for all available parameters.</p>
 
 <dl class="function">
 <dt id="leabratf.visualization.combigen_heatmap.visualize_combigen">
-<code class="descclassname">leabratf.visualization.combigen_heatmap.</code><code class="descname">visualize_combigen</code><span class="sig-paren">(</span><em>n_pairs=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.combigen_heatmap.visualize_combigen" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.visualization.combigen_heatmap.</code><code class="sig-name descname">visualize_combigen</code><span class="sig-paren">(</span><em class="sig-param">n_pairs=1</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.combigen_heatmap.visualize_combigen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot <code class="docutils literal notranslate"><span class="pre">n_pairs</span></code> of <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> from the combigen task</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -275,7 +275,7 @@ for all available parameters.</p>
 <p>Functions for visualizing model metrics.</p>
 <dl class="function">
 <dt id="leabratf.visualization.metrics.plot_df_metrics">
-<code class="descclassname">leabratf.visualization.metrics.</code><code class="descname">plot_df_metrics</code><span class="sig-paren">(</span><em>metrics_df</em>, <em>metrics=None</em>, <em>title='Training History'</em>, <em>epochs=None</em>, <em>key_by_model=False</em>, <em>model_average=False</em>, <em>epoch_vline=500</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.metrics.plot_df_metrics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">leabratf.visualization.metrics.</code><code class="sig-name descname">plot_df_metrics</code><span class="sig-paren">(</span><em class="sig-param">metrics_df</em>, <em class="sig-param">metrics=None</em>, <em class="sig-param">title='Training History'</em>, <em class="sig-param">epochs=None</em>, <em class="sig-param">key_by_model=False</em>, <em class="sig-param">model_average=False</em>, <em class="sig-param">epoch_vline=500</em><span class="sig-paren">)</span><a class="headerlink" href="#leabratf.visualization.metrics.plot_df_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots a dataframe of metrics for multiple models.</p>
 <p>This function was written to plot multiple metrics of 10 models. The metrics
 were stored as csv files, and then read in using <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code>, which
