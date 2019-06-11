@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.ge1fecd8 documentation</title>
+  <title>0.8 Hierarchical Learning &mdash; Leabra Tensorflow 0+untagged.52.g51f786f documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.52.ge1fecd8
+                0+untagged.52.g51f786f
               </div>
             
           
@@ -168,6 +168,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#Recreating-Previous-Plots">Recreating Previous Plots</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Running-One-model">Running One model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#One-Model-Recreated-Plot">One Model Recreated Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Multi-Model-Plot">Multi-Model Plot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Task-Set-Plots">Task Set Plots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#TS1-and-TS2-Phase-A-Full-Plots">TS1 and TS2 Phase A Full Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TS1-and-TS2-Phase-B-Full-Plots">TS1 and TS2 Phase B Full Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#TS-Old-and-New-Phase-C-Full-Plots">TS Old and New Phase C Full Plots</a></li>
 </ul>
 </li>
 </ul>
@@ -991,25 +998,6 @@ Git branch : master
     <span class="c1"># Accuracy</span>
     <span class="n">sample_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
-
-<span class="c1">#     # Elemental Accuracy</span>
-<span class="c1">#     el_acc_op = tf.reduce_mean(tf.cast(equal_labels_and_preds, tf.float32))</span>
-<span class="c1">#     # Axis Accuracy</span>
-<span class="c1">#     axis_acc_op = tf.reduce_mean(tf.cast(axis_acc, tf.float32))</span>
-<span class="c1">#     # Slot Accuracy</span>
-<span class="c1">#     slot_acc_op = tf.reduce_mean(tf.cast(slot_acc, tf.float32))</span>
-<span class="c1">#     # Sample Accuracy</span>
-<span class="c1">#     sample_acc_op = tf.reduce_mean(tf.cast(sample_acc, tf.float32))</span>
-
-<span class="c1">#     # metric ops</span>
-<span class="c1">#     met_op_names = [&#39;loss&#39;, &#39;el_acc&#39;, &#39;ax_acc&#39;, &#39;sl_acc&#39;, &#39;sm_acc&#39;]</span>
-<span class="c1">#     met_ops = [loss_op, el_acc_op, axis_acc_op, slot_acc_op, sample_acc_op]</span>
-<span class="c1">#     # Put them in a dict</span>
-<span class="c1">#     met_op_dict = pdict({name : op for name, op in zip(met_op_names, met_ops)})</span>
-
-<span class="c1">#     # Generic metrics dict</span>
-<span class="c1">#     generic_metrics_dict = lambda : pdict({name : []</span>
-<span class="c1">#                                            for name in met_op_names+[&#39;epoch&#39;]})</span>
 </pre></div>
 </div>
 </div>
@@ -1585,7 +1573,7 @@ Git branch : master
 <div class="section" id="Training-Routine">
 <h3>Training Routine<a class="headerlink" href="#Training-Routine" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[132]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1633,6 +1621,7 @@ Git branch : master
                     <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">alpha_ph</span><span class="p">:</span> <span class="n">lr</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">handles</span><span class="p">[</span><span class="n">phase</span><span class="p">]})</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="o">%</span> <span class="n">n_val</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n_train</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">phase_n_samples</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">epoch</span><span class="o">*</span><span class="n">n_train</span> <span class="o">+</span> <span class="n">n_samples</span>
                     <span class="k">for</span> <span class="n">met_key</span> <span class="ow">in</span> <span class="n">metric_keys</span><span class="p">:</span>
                         <span class="n">metrics</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                             <span class="p">[</span><span class="n">loss_op</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">],</span>
@@ -1640,8 +1629,7 @@ Git branch : master
                         <span class="c1"># Record</span>
                         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">metrics</span><span class="p">):</span>
                             <span class="n">training_metrics</span><span class="p">[</span><span class="n">met_key</span><span class="p">][</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
-                        <span class="n">training_metrics</span><span class="p">[</span><span class="n">met_key</span><span class="p">][</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">epoch</span><span class="o">*</span><span class="n">n_train</span><span class="p">)</span>
-                    <span class="n">phase_n_samples</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">epoch</span><span class="o">*</span><span class="n">n_train</span> <span class="o">+</span> <span class="n">n_samples</span>
+                        <span class="n">training_metrics</span><span class="p">[</span><span class="n">met_key</span><span class="p">][</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phase_n_samples</span><span class="p">)</span>
                     <span class="n">log_level</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Completed Sample </span><span class="si">{phase_n_samples}</span><span class="s1"> for </span><span class="si">{phase}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">phase_metrics</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="o">=</span> <span class="n">training_metrics</span>
         <span class="n">n_samples</span> <span class="o">=</span> <span class="n">phase_n_samples</span>
@@ -1667,7 +1655,7 @@ Git branch : master
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[123]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[133]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1692,7 +1680,7 @@ Git branch : master
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2019-06-10 15:09:56 apra-xps-13 leabratf[9498] INFO Elapsed time: 0:00:04.109046
+2019-06-10 16:08:15 apra-xps-13 leabratf[9498] INFO Elapsed time: 0:00:02.491549
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1700,36 +1688,232 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 6.17 s, sys: 569 ms, total: 6.74 s
-Wall time: 4.12 s
+CPU times: user 3.33 s, sys: 298 ms, total: 3.63 s
+Wall time: 2.5 s
 </pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[137]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">phase_metrics</span><span class="p">[</span><span class="s1">&#39;Phase A&#39;</span><span class="p">][</span><span class="s1">&#39;Phase A Test&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[137]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>dict_keys([&#39;loss&#39;, &#39;accuracy&#39;, &#39;sample&#39;])
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="One-Model-Recreated-Plot">
 <h3>One Model Recreated Plot<a class="headerlink" href="#One-Model-Recreated-Plot" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[159]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">phase</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">phase_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">for</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Phase </span><span class="si">{phase}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Accuracy on Respective Test Phase Datasets&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Training Sample&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span></span><span class="k">def</span> <span class="nf">plot_ts_phase_data</span><span class="p">(</span><span class="n">phase_metrics</span><span class="p">,</span> <span class="n">datasets_to_plot</span><span class="p">,</span> <span class="n">phases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">vlines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data_to_plot</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span><span class="n">key</span> <span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">datasets_to_plot</span><span class="p">})</span>
+    <span class="n">phases</span> <span class="o">=</span> <span class="n">phases</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="n">phase_metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">phase</span> <span class="ow">in</span> <span class="n">phases</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">datasets_to_plot</span><span class="p">:</span>
+            <span class="n">data_to_plot</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">phase_metrics</span><span class="p">[</span><span class="n">phase</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+        <span class="n">samples</span> <span class="o">+=</span> <span class="n">phase_metrics</span><span class="p">[</span><span class="n">phase</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span>
+        <span class="n">vlines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">data_to_plot</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{key}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">vline</span> <span class="ow">in</span> <span class="n">vlines</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">vline</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Training Sample&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[160]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plot_ts_phase_data</span><span class="p">(</span><span class="n">phase_metrics</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">phase_test_datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+                   <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Accuracy on Test Phase Datasets Across Phases&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8-Hierarchical-Learning_81_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_81_0.png" />
+</div>
+</div>
+<p>In the plot above, the dashed lines correspond to phase boundaries.</p>
+</div>
+<div class="section" id="Multi-Model-Plot">
+<h3>Multi-Model Plot<a class="headerlink" href="#Multi-Model-Plot" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<span></span><span class="n">N_MODELS</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">all_ts_phase_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">ts_train_exp</span><span class="p">(</span>
+    <span class="n">sess</span><span class="p">,</span>
+    <span class="n">phases</span><span class="o">=</span><span class="n">phases</span><span class="p">,</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">0.00333</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">train_op</span><span class="o">=</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">],</span>
+    <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_train</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_MODELS</span><span class="p">)]</span>
 </pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[178]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">plot_multiple_models</span><span class="p">(</span><span class="n">all_ts_phase_metrics</span><span class="p">,</span> <span class="n">dataset_to_plot</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">model_average</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Empty lists for the long form data</span>
+    <span class="n">long_samples</span><span class="p">,</span> <span class="n">long_metrics</span><span class="p">,</span> <span class="n">long_hues</span><span class="p">,</span> <span class="n">long_units</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop through each model&#39;s data</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">model_metrics</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_ts_phase_metrics</span><span class="p">):</span>
+        <span class="c1"># Plot the number of epochs according to the data with the shortest</span>
+        <span class="c1"># number of epochs.</span>
+        <span class="c1"># Add to the long form lists</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">phase</span><span class="p">,</span> <span class="n">phase_metrics</span> <span class="ow">in</span> <span class="n">model_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">dataname</span> <span class="ow">in</span> <span class="n">dataset_to_plot</span><span class="p">:</span>
+                <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">phase_metrics</span><span class="p">[</span><span class="n">dataname</span><span class="p">][</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">dataname</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">long_samples</span> <span class="o">+=</span> <span class="n">phase_metrics</span><span class="p">[</span><span class="n">dataname</span><span class="p">][</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span>
+                <span class="n">long_metrics</span> <span class="o">+=</span> <span class="n">phase_metrics</span><span class="p">[</span><span class="n">dataname</span><span class="p">][</span><span class="s1">&#39;accuracy&#39;</span><span class="p">]</span>
+                <span class="n">long_hues</span> <span class="o">+=</span> <span class="p">[</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{dataname}</span><span class="s1">&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">n_samples</span>
+                <span class="n">long_units</span> <span class="o">+=</span> <span class="p">[</span><span class="n">units</span><span class="p">]</span><span class="o">*</span><span class="n">n_samples</span>
+
+    <span class="k">if</span> <span class="n">model_average</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_samples</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot each line individually</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long_samples</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">long_metrics</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">long_hues</span><span class="p">,</span>
+                     <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">long_units</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">vline</span> <span class="ow">in</span> <span class="p">[</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">*</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">vline</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Training Sample&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[175]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dataset_to_plot</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">phase_test_datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">plot_multiple_models</span><span class="p">(</span><span class="n">all_ts_phase_metrics</span><span class="p">,</span> <span class="n">dataset_to_plot</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Accuracy on Respective Test Phase Datasets for </span><span class="si">{N_MODELS}</span><span class="s1"> Models&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8-Hierarchical-Learning_86_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_86_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Task-Set-Plots">
+<h2>Task Set Plots<a class="headerlink" href="#Task-Set-Plots" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="TS1-and-TS2-Phase-A-Full-Plots">
+<h3>TS1 and TS2 Phase A Full Plots<a class="headerlink" href="#TS1-and-TS2-Phase-A-Full-Plots" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[179]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dataset_to_plot</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TS 1 Phase A&#39;</span><span class="p">,</span> <span class="s1">&#39;TS 2 Phase A&#39;</span><span class="p">]</span>
+<span class="n">plot_multiple_models</span><span class="p">(</span><span class="n">all_ts_phase_metrics</span><span class="p">,</span> <span class="n">dataset_to_plot</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;TS 1 and 2 Phase A Full Training&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8-Hierarchical-Learning_89_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_89_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="TS1-and-TS2-Phase-B-Full-Plots">
+<h3>TS1 and TS2 Phase B Full Plots<a class="headerlink" href="#TS1-and-TS2-Phase-B-Full-Plots" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[180]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dataset_to_plot</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TS 1 Phase B&#39;</span><span class="p">,</span> <span class="s1">&#39;TS 2 Phase B&#39;</span><span class="p">]</span>
+<span class="n">plot_multiple_models</span><span class="p">(</span><span class="n">all_ts_phase_metrics</span><span class="p">,</span> <span class="n">dataset_to_plot</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;TS 1 and 2 Phase B Full Training&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8-Hierarchical-Learning_91_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_91_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="TS-Old-and-New-Phase-C-Full-Plots">
+<h3>TS Old and New Phase C Full Plots<a class="headerlink" href="#TS-Old-and-New-Phase-C-Full-Plots" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[182]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dataset_to_plot</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TS Old Phase C&#39;</span><span class="p">,</span> <span class="s1">&#39;TS New Phase C&#39;</span><span class="p">]</span>
+<span class="n">plot_multiple_models</span><span class="p">(</span><span class="n">all_ts_phase_metrics</span><span class="p">,</span> <span class="n">dataset_to_plot</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;TS Old and New Phase C Full Training&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8-Hierarchical-Learning_93_0.png" src="../_images/notebooks_0.8-Hierarchical-Learning_93_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
