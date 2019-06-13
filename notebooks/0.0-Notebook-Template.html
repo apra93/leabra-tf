@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.0 Leabra-tf Notebook Template &mdash; Leabra Tensorflow 0+untagged.52.g9b13887 documentation</title>
+  <title>0.0 Leabra-tf Notebook Template &mdash; Leabra Tensorflow 0+untagged.52.g12f4021 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0+untagged.52.g9b13887
+                0+untagged.52.g12f4021
               </div>
             
           
@@ -103,9 +103,12 @@
 <p class="caption"><span class="caption-text">Notebooks</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">0.0 Leabra-tf Notebook Template</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Imports">Imports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Boilerplate">Boilerplate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Jupyter-Extensions">Jupyter Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initial-Setup">Initial Setup</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#Global-Definitions">Global Definitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Get-the-Data">Get the Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Preprocessing">Preprocessing</a></li>
@@ -133,6 +136,7 @@
 <li class="toctree-l1"><a class="reference internal" href="0.7-Replicating-Results-with-the-Updated-Task.html">0.7 Replicating Results with the Updated Task</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.7.1-Managing-Technical-Debt.html">0.7.1 Managing Technical Debt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="0.8-Hierarchical-Learning.html">0.8 Hierarchical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.8.1-Hierarchical-DQ-Learning.html">0.8.1 Hierarchical DQ Learning</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Project Links</span></p>
 <ul>
@@ -430,8 +434,11 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="0.0-Leabra-tf-Notebook-Template">
 <h1>0.0 Leabra-tf Notebook Template<a class="headerlink" href="#0.0-Leabra-tf-Notebook-Template" title="Permalink to this headline">¶</a></h1>
 <p>–<em>Set the notebook number, describe the background of the project, the nature of the data, and what analyses will be performed.</em>–</p>
+<div class="section" id="Boilerplate">
+<h2>Boilerplate<a class="headerlink" href="#Boilerplate" title="Permalink to this headline">¶</a></h2>
+<p>The following subsections are largely boilerplate code, so skip around as needed.</p>
 <div class="section" id="Jupyter-Extensions">
-<h2>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h2>
+<h3>Jupyter Extensions<a class="headerlink" href="#Jupyter-Extensions" title="Permalink to this headline">¶</a></h3>
 <p>Load <a class="reference external" href="https://github.com/rasbt/watermark">watermark</a> to see the state of the machine and environment that’s running the notebook. To make sense of the options, take a look at the <a class="reference external" href="https://github.com/rasbt/watermark#usage">usage</a> section of the readme.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -472,7 +479,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Imports">
-<h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h2>
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <p>Static imports that shouldn’t necessarily change throughout the notebook.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -511,7 +518,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="section" id="Initial-Setup">
-<h2>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h2>
+<h3>Initial Setup<a class="headerlink" href="#Initial-Setup" title="Permalink to this headline">¶</a></h3>
 <p>Set <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.set.html">seaborn defaults</a> for matplotlib.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -534,6 +541,7 @@ div.rendered_html tbody tr:hover {
 <span class="c1"># Define a logger object</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;leabratf&quot;</span><span class="p">)</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>

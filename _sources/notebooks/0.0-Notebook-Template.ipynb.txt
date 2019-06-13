@@ -13,7 +13,16 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Jupyter Extensions"
+    "## Boilerplate\n",
+    "\n",
+    "The following subsections are largely boilerplate code, so skip around as needed."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Jupyter Extensions"
    ]
   },
   {
@@ -77,7 +86,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Imports"
+    "### Imports"
    ]
   },
   {
@@ -132,7 +141,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Initial Setup"
+    "### Initial Setup"
    ]
   },
   {
