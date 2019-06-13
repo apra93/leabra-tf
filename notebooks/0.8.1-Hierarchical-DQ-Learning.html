@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>0.8.1 Hierarchical DQ Learning &mdash; Leabra Tensorflow 0+untagged.52.g12f4021 documentation</title>
+  <title>0.8.1 Hierarchical DQ Learning &mdash; Leabra Tensorflow 0+untagged.52.g7b53b1a documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0+untagged.52.g12f4021
+                0+untagged.52.g7b53b1a
               </div>
             
           
@@ -154,9 +154,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#TF-Helper-Functions">TF Helper Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Training-Function">Training Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Running-the-Experiment">Running the Experiment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Plotting-TS-Data">Plotting TS Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Plotting-TS1-for-TS-Old-Data">Plotting TS1 for TS Old Data</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Plotting-Functions">Plotting Functions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Full-Plots-Using-TS1-for-TS-Old">Full Plots Using TS1 for TS Old</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Rerunning-TS2-for-TS-Old">Rerunning TS2 for TS Old</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Redeclaring-Relevant-Stuff">Redeclaring Relevant Stuff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Plots-for-TS2-for-TS-Old">Plots for TS2 for TS Old</a></li>
 </ul>
 </li>
 </ul>
@@ -1160,8 +1165,8 @@ Git branch : master
 </div>
 </div>
 </div>
-<div class="section" id="Plotting-TS-Data">
-<h3>Plotting TS Data<a class="headerlink" href="#Plotting-TS-Data" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Plotting-TS1-for-TS-Old-Data">
+<h3>Plotting TS1 for TS Old Data<a class="headerlink" href="#Plotting-TS1-for-TS-Old-Data" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="Plotting-Functions">
 <h4>Plotting Functions<a class="headerlink" href="#Plotting-Functions" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput nblast docutils container">
@@ -1214,7 +1219,7 @@ Git branch : master
 <div class="section" id="Full-Plots-Using-TS1-for-TS-Old">
 <h4>Full Plots Using TS1 for TS Old<a class="headerlink" href="#Full-Plots-Using-TS1-for-TS-Old" title="Permalink to this headline">¶</a></h4>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[143]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[147]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1223,7 +1228,7 @@ Git branch : master
                     <span class="p">[</span><span class="s1">&#39;TS Old Phase C&#39;</span><span class="p">,</span> <span class="s1">&#39;TS New Phase C&#39;</span><span class="p">]]</span>
 <span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TS 1 and 2 Phase A Full Training&#39;</span><span class="p">,</span>
           <span class="s1">&#39;TS 1 and 2 Phase B Full Training&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;TS Old and New Phase C Full Training&#39;</span><span class="p">]</span>
+          <span class="s1">&#39;TS1 for TS Old and TS New Phase C Full Training&#39;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">datasets_to_plot</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
     <span class="n">plot_multiple_models</span><span class="p">(</span><span class="n">all_ts_phase_metrics</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span>
                          <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
@@ -1249,6 +1254,179 @@ Git branch : master
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_60_2.png" src="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_60_2.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Rerunning-TS2-for-TS-Old">
+<h3>Rerunning TS2 for TS Old<a class="headerlink" href="#Rerunning-TS2-for-TS-Old" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Redeclaring-Relevant-Stuff">
+<h4>Redeclaring Relevant Stuff<a class="headerlink" href="#Redeclaring-Relevant-Stuff" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[144]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">phase_datasets_ts2</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">phase</span><span class="p">,</span> <span class="n">phase_pair</span> <span class="ow">in</span> <span class="n">phase_color_shape_pairs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">explicit_phase_labels</span><span class="p">(</span><span class="o">*</span><span class="n">phase_pair</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">input_array</span><span class="p">(</span><span class="o">*</span><span class="n">choices</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">actions</span><span class="p">(</span><span class="o">*</span><span class="n">choices</span><span class="p">,</span>
+                     <span class="n">action_dict</span><span class="o">=</span><span class="n">action_dictonary_ts2</span><span class="p">)</span>
+    <span class="n">phase_datasets_ts2</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+<span class="n">ts_datasets_ts2</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ts_pair</span> <span class="ow">in</span> <span class="n">ts_color_shape_pairs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">explicit_phase_labels</span><span class="p">(</span><span class="o">*</span><span class="n">ts_pair</span><span class="p">)</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">input_array</span><span class="p">(</span><span class="o">*</span><span class="n">choices</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">actions</span><span class="p">(</span><span class="o">*</span><span class="n">choices</span><span class="p">,</span>
+                     <span class="n">action_dict</span><span class="o">=</span><span class="n">action_dictonary_ts2</span><span class="p">)</span>
+    <span class="n">ts_datasets_ts2</span><span class="p">[</span><span class="n">ts</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[145]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Cleanup any residual nodes</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+<span class="n">init_ops</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Weights and biases</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span>
+    <span class="s1">&#39;h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_h1&#39;</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_INPUTS</span><span class="p">,</span> <span class="n">N_HIDDEN_1</span><span class="p">],</span>
+        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">(),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w_out&#39;</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">,</span> <span class="n">N_OUTPUTS</span><span class="p">],</span>
+        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">(),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+<span class="p">})</span>
+<span class="n">biases</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span>
+    <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_HIDDEN_1</span><span class="p">],</span>
+        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">(),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+    <span class="s1">&#39;out&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b_out&quot;</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">N_OUTPUTS</span><span class="p">],</span>
+        <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">(),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+<span class="p">})</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">TF_DEVICE</span><span class="p">):</span>
+    <span class="c1"># Get the relevant dataset nodes</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iterators</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">init_ops</span> <span class="o">=</span> <span class="n">make_tf_ts_datasets</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">phase_datasets_ts2</span><span class="p">,</span> <span class="n">ts_datasets_ts2</span><span class="p">),</span> <span class="n">init_ops</span><span class="p">)</span>
+
+    <span class="c1"># Build the model</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">oreilly_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># Ensure y is cast to the same type as logits</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="c1"># We will keep this in for now</span>
+    <span class="c1"># Define alpha as placeholder variable</span>
+    <span class="n">alpha_ph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+
+    <span class="c1"># Define loss and optimizer</span>
+    <span class="n">loss_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">softmax_cross_entropy</span><span class="p">(</span>
+        <span class="n">labels</span><span class="p">,</span> <span class="n">logits</span><span class="p">))</span>
+
+    <span class="c1"># Define some intermediate nodes</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+    <span class="n">rounded_predictions</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+    <span class="n">equal_labels_and_preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">rounded_predictions</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="c1"># Accuracy</span>
+    <span class="n">sample_acc</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_all</span><span class="p">(</span><span class="n">equal_labels_and_preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">sample_acc</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+    <span class="c1"># Adam</span>
+    <span class="n">train_op_adam</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+    <span class="c1"># Adadelta</span>
+    <span class="n">train_op_adadelta</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdadeltaOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+    <span class="c1"># RMSProp</span>
+    <span class="n">train_op_rmsprop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">RMSPropOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+    <span class="c1"># SGD</span>
+    <span class="n">train_op_sgd</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">alpha_ph</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss_op</span><span class="p">)</span>
+
+<span class="c1"># And now add these to a dictionary</span>
+<span class="n">optimizer_dict</span> <span class="o">=</span> <span class="n">pdict</span><span class="p">({</span>
+    <span class="s1">&#39;Adam&#39;</span> <span class="p">:</span> <span class="n">train_op_adam</span><span class="p">,</span>
+    <span class="s1">&#39;Adadelta&#39;</span> <span class="p">:</span> <span class="n">train_op_adadelta</span><span class="p">,</span>
+    <span class="s1">&#39;RMSProp&#39;</span> <span class="p">:</span> <span class="n">train_op_rmsprop</span><span class="p">,</span>
+    <span class="s1">&#39;sgd&#39;</span> <span class="p">:</span> <span class="n">train_op_sgd</span><span class="p">,</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">N_MODELS</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">new_session</span><span class="p">()</span>
+<span class="n">all_ts_phase_metrics_ts2</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_exp</span><span class="p">(</span>
+    <span class="n">sess</span><span class="p">,</span>
+    <span class="n">phases</span><span class="o">=</span><span class="n">phase_datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+    <span class="n">lr</span><span class="o">=</span><span class="mf">0.00333</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">train_op</span><span class="o">=</span><span class="n">optimizer_dict</span><span class="p">[</span><span class="s1">&#39;Adam&#39;</span><span class="p">],</span>
+    <span class="n">init_ops</span><span class="o">=</span><span class="n">init_ops</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_train</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">n_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_MODELS</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Plots-for-TS2-for-TS-Old">
+<h4>Plots for TS2 for TS Old<a class="headerlink" href="#Plots-for-TS2-for-TS-Old" title="Permalink to this headline">¶</a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[148]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">datasets_to_plot</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;TS 1 Phase A&#39;</span><span class="p">,</span> <span class="s1">&#39;TS 2 Phase A&#39;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s1">&#39;TS 1 Phase B&#39;</span><span class="p">,</span> <span class="s1">&#39;TS 2 Phase B&#39;</span><span class="p">],</span>
+                    <span class="p">[</span><span class="s1">&#39;TS Old Phase C&#39;</span><span class="p">,</span> <span class="s1">&#39;TS New Phase C&#39;</span><span class="p">]]</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TS 1 and 2 Phase A Full Training&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;TS 1 and 2 Phase B Full Training&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;TS2 for TS Old and TS New Phase C Full Training&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">datasets_to_plot</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
+    <span class="n">plot_multiple_models</span><span class="p">(</span><span class="n">all_ts_phase_metrics_ts2</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span>
+                         <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_67_0.png" src="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_67_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_67_1.png" src="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_67_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_67_2.png" src="../_images/notebooks_0.8.1-Hierarchical-DQ-Learning_67_2.png" />
 </div>
 </div>
 </div>
